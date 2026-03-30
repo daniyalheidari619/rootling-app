@@ -1,0 +1,87 @@
+import React, { useState } from 'react';
+import {
+  View, Text, TextInput, TouchableOpacity,
+  StyleSheet, ActivityIndicator, KeyboardAvoidingView,
+  Platform, ScrollView, Alert,
+} from 'react-native';
+import client from '../../api/client';
+
+export default function RegisterScreen({ navigation }: any) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState<'CLIENT' | 'TASKER'>('TASKER');
+  const [loading, setLoading] = useState(false);
+
+  const handleRegister = async () => {
+    if (!name || !email || !password) return Alert.alert('Error', 'Please fill in all fields');
+    setLoading(true);
+    try {
+      const { data } = await client.post('/api/auth/register', { name, email, password, role });
+      if (data.success) {
+        Alert.alert('Check your email', 'We sent a verification link to your email.', [
+          { text: 'OK', onPress: () => navigation.navigate('Login') },
+        ]);
+      } else {
+        Alert.alert('Error', data.message || 'Registration failed');
+      }
+    } catch (e: any) {
+      Alert.alert('Error', e?.response?.data?.message || 'Registration failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.logo}>root-ling</Text>
+        <Text style={styles.tagline}>Join your local task marketplace</Text>
+        <View style={styles.card}>
+          <Text style={styles.title}>Create account</Text>
+          <Text style={styles.label}>I want to</Text>
+          <View style={styles.roleRow}>
+            <TouchableOpacity style={[styles.roleBtn, role === 'TASKER' && styles.roleBtnActive]} onPress={() => setRole('TASKER')}>
+              <Text style={[styles.roleText, role === 'TASKER' && styles.roleTextActive]}>🔨 Find Work</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.roleBtn, role === 'CLIENT' && styles.roleBtnActive]} onPress={() => setRole('CLIENT')}>
+              <Text style={[styles.roleText, role === 'CLIENT' && styles.roleTextActive]}>📋 Post Tasks</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.label}>Full Name</Text>
+          <TextInput style={styles.input} value={name} onChangeText={setName} placeholder="John Smith" placeholderTextColor="#9CA3AF" />
+          <Text style={styles.label}>Email</Text>
+          <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder="you@example.com" autoCapitalize="none" keyboardType="email-address" placeholderTextColor="#9CA3AF" />
+          <Text style={styles.label}>Password</Text>
+          <TextInput style={styles.input} value={password} onChangeText={setPassword} placeholder="••••••••" secureTextEntry placeholderTextColor="#9CA3AF" />
+          <TouchableOpacity style={styles.btn} onPress={handleRegister} disabled={loading}>
+            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.btnText}>Create Account</Text>}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.link}>
+            <Text style={styles.linkText}>Already have an account? <Text style={styles.linkBold}>Sign In</Text></Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flexGrow: 1, backgroundColor: '#F7F9FB', alignItems: 'center', justifyContent: 'center', padding: 24 },
+  logo: { fontSize: 36, fontWeight: '800', color: '#1FB6AE', marginBottom: 4 },
+  tagline: { fontSize: 14, color: '#6B7280', marginBottom: 32 },
+  card: { width: '100%', backgroundColor: '#fff', borderRadius: 20, padding: 24, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 12, elevation: 4 },
+  title: { fontSize: 22, fontWeight: '700', color: '#111827', marginBottom: 24 },
+  label: { fontSize: 13, fontWeight: '600', color: '#374151', marginBottom: 6 },
+  roleRow: { flexDirection: 'row', gap: 12, marginBottom: 20 },
+  roleBtn: { flex: 1, borderWidth: 2, borderColor: '#E5E7EB', borderRadius: 12, padding: 12, alignItems: 'center' },
+  roleBtnActive: { borderColor: '#1FB6AE', backgroundColor: '#F0FAFA' },
+  roleText: { color: '#6B7280', fontWeight: '600', fontSize: 14 },
+  roleTextActive: { color: '#1FB6AE' },
+  input: { borderWidth: 1, borderColor: '#E5E7EB', borderRadius: 12, padding: 14, fontSize: 15, color: '#111827', marginBottom: 16, backgroundColor: '#F9FAFB' },
+  btn: { backgroundColor: '#1FB6AE', borderRadius: 12, padding: 16, alignItems: 'center', marginTop: 8 },
+  btnText: { color: '#fff', fontWeight: '700', fontSize: 16 },
+  link: { marginTop: 16, alignItems: 'center' },
+  linkText: { color: '#6B7280', fontSize: 14 },
+  linkBold: { color: '#1FB6AE', fontWeight: '700' },
+});

@@ -1,0 +1,61 @@
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { Text, View } from 'react-native';
+import HomeScreen from '../screens/Home/HomeScreen';
+import SwipeScreen from '../screens/Swipe/SwipeScreen';
+import PostScreen from '../screens/Post/PostScreen';
+import MessagesScreen from '../screens/Messages/MessagesScreen';
+import ProfileScreen from '../screens/Profile/ProfileScreen';
+
+const Tab = createBottomTabNavigator();
+
+const TabIcon = ({ icon, focused }: { icon: string; focused: boolean }) => (
+  <Text style={{ fontSize: 22, opacity: focused ? 1 : 0.5 }}>{icon}</Text>
+);
+
+export default function AppNavigator() {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+          tabBarStyle: {
+            backgroundColor: '#fff',
+            borderTopColor: '#E5E7EB',
+            borderTopWidth: 1,
+            paddingBottom: 8,
+            paddingTop: 8,
+            height: 64,
+          },
+          tabBarActiveTintColor: '#1FB6AE',
+          tabBarInactiveTintColor: '#9CA3AF',
+          tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
+        }}
+      >
+        <Tab.Screen name="Home" component={HomeScreen}
+          options={{ tabBarIcon: ({ focused }) => <TabIcon icon="🏠" focused={focused} />, tabBarLabel: 'Home' }} />
+        <Tab.Screen name="Swipe" component={SwipeScreen}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <View style={{
+                backgroundColor: '#1FB6AE', width: 52, height: 52, borderRadius: 26,
+                justifyContent: 'center', alignItems: 'center', marginBottom: 8,
+                shadowColor: '#1FB6AE', shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.3, shadowRadius: 8, elevation: 5,
+              }}>
+                <Text style={{ fontSize: 24 }}>⚡</Text>
+              </View>
+            ),
+            tabBarLabel: 'Find Tasks',
+          }} />
+        <Tab.Screen name="Post" component={PostScreen}
+          options={{ tabBarIcon: ({ focused }) => <TabIcon icon="➕" focused={focused} />, tabBarLabel: 'Post' }} />
+        <Tab.Screen name="Messages" component={MessagesScreen}
+          options={{ tabBarIcon: ({ focused }) => <TabIcon icon="💬" focused={focused} />, tabBarLabel: 'Messages' }} />
+        <Tab.Screen name="Profile" component={ProfileScreen}
+          options={{ tabBarIcon: ({ focused }) => <TabIcon icon="👤" focused={focused} />, tabBarLabel: 'Profile' }} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
