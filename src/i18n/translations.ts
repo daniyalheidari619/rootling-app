@@ -125,6 +125,10 @@ export const en: Record<string, string> = {
   'billing.connectBank': 'Connect Bank Account',
   'billing.completeSetup': 'Complete Stripe Setup',
   'billing.manageAccount': 'Manage / Change Payout Account',
+  'billing.payoutsDesc': 'Payments go directly to your bank account after task completion.',
+  'billing.setupDesc': 'Your Stripe account needs additional information to activate payouts.',
+  'billing.connectDesc': 'Connect your bank account to receive payouts from completed tasks.',
+  'billing.exp': 'Exp',
   'task.offerSentDesc': 'The client will review your price offer.',
   // Profile
   'profile.overview': 'Overview',
@@ -319,6 +323,10 @@ export const lt: Record<string, string> = {
   'billing.connectBank': 'Prijungti banko sąskaitą',
   'billing.completeSetup': 'Baigti Stripe sąranką',
   'billing.manageAccount': 'Tvarkyti išmokų paskyrą',
+  'billing.payoutsDesc': 'Mokėjimai siunčiami tiesiai į jūsų banko sąskaitą po užduoties atlikimo.',
+  'billing.setupDesc': 'Jūsų Stripe paskyrai reikia papildomos informacijos.',
+  'billing.connectDesc': 'Prijunkite banko sąskaitą, kad gautumėte išmokas.',
+  'billing.exp': 'Gal. data',
   'task.offerSentDesc': 'Klientas peržiūrės jūsų kainos pasiūlymą.',
   // Profile
   'profile.overview': 'Apžvalga',

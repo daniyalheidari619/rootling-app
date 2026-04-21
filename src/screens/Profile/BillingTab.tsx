@@ -96,18 +96,18 @@ export default function BillingTab({ profile, navigation }: { profile: any; navi
       {/* Balance */}
       {earnings && (
         <View style={[s.card, { borderColor: '#86EFAC', borderWidth: 2 }]}>
-          <Text style={s.lbl}>Available Balance</Text>
+          <Text style={s.lbl}>{t('billing.balance')}</Text>
           <Text style={[s.bigVal, { color: '#10B981', fontSize: 28 }]}>
             €{((earnings?.available || 0) / 100).toFixed(2)}
           </Text>
-          <Text style={[s.lbl, { marginTop: 8 }]}>Pending</Text>
+          <Text style={[s.lbl, { marginTop: 8 }]}>{t('billing.pending')}</Text>
           <Text style={s.bigVal}>€{((earnings?.pending || 0) / 100).toFixed(2)}</Text>
         </View>
       )}
 
       {/* Subscription */}
       <View style={s.card}>
-        <Text style={s.lbl}>Subscription Plan</Text>
+        <Text style={s.lbl}>{t('billing.subscription')}</Text>
         <Text style={s.bigVal}>{profile?.isSubscriber ? t('billing.premium') : t('billing.free')}</Text>
         {!profile?.isSubscriber && navigation && (
         <TouchableOpacity
@@ -120,7 +120,7 @@ export default function BillingTab({ profile, navigation }: { profile: any; navi
       </View>
 
       {/* Payment Methods */}
-      <Text style={s.sectionTitle}>Payment Methods</Text>
+      <Text style={s.sectionTitle}>{t('billing.paymentMethods')}</Text>
       {paymentMethods.map((pm: any) => (
         <View key={pm.id} style={s.card}>
           <View style={s.row}>
@@ -136,7 +136,7 @@ export default function BillingTab({ profile, navigation }: { profile: any; navi
         </TouchableOpacity>
       ) : (
         <View style={s.card}>
-          <Text style={s.lbl}>Card Details</Text>
+          <Text style={s.lbl}>{t('billing.cardDetails')}</Text>
           <CardField
             postalCodeEnabled={false}
             style={{ height: 50, marginVertical: 8 }}
@@ -153,17 +153,17 @@ export default function BillingTab({ profile, navigation }: { profile: any; navi
       )}
 
       {/* Stripe Connect */}
-      <Text style={s.sectionTitle}>Payout Account</Text>
+      <Text style={s.sectionTitle}>{t('billing.payoutAccount')}</Text>
       <View style={[s.card, { borderColor: getConnectColor(), borderWidth: 2 }]}>
         <Text style={[s.bigVal, { color: getConnectColor() }]}>{getConnectLabel()}</Text>
         {connectStatus?.chargesEnabled && (
-          <Text style={s.mutedTxt}>Payments go directly to your bank account after task completion.</Text>
+          <Text style={s.mutedTxt}>{t('billing.payoutsDesc') || 'Payments go directly to your bank account after task completion.'}</Text>
         )}
         {connectStatus?.accountId && !connectStatus?.chargesEnabled && (
-          <Text style={s.mutedTxt}>Your Stripe account needs additional information to activate payouts.</Text>
+          <Text style={s.mutedTxt}>{t('billing.setupDesc') || 'Your Stripe account needs additional information.'}</Text>
         )}
         {!connectStatus?.accountId && (
-          <Text style={s.mutedTxt}>Connect your bank account to receive payouts from completed tasks.</Text>
+          <Text style={s.mutedTxt}>{t('billing.connectDesc') || 'Connect your bank account to receive payouts.'}</Text>
         )}
       </View>
 

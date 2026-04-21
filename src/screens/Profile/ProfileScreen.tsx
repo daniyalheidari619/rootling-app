@@ -209,7 +209,7 @@ export default function ProfileScreen({ navigation }: any) {
                   <Row label={t('profile.email')} val={profile?.email} />
                   <Row label={t('profile.phone')} val={profile?.phone || t('profile.notSet')} />
                   <Row label={t('profile.bio')} val={profile?.bio || t('profile.notSet')} />
-                  <Row label={t('profile.role')} val={profile?.role} />
+                  <Row label={t('profile.role')} val={profile?.role === "BOTH" ? (lang === "lt" ? "Abu" : "Both") : profile?.role === "CLIENT" ? (lang === "lt" ? "Klientas" : "Client") : (lang === "lt" ? "Vykdytojas" : "Tasker")} />
                   <Row label={t('profile.memberSince')} val={profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString() : '-'} />
                 </View>
                 <TouchableOpacity style={s.secondaryBtn} onPress={() => {
@@ -252,7 +252,7 @@ export default function ProfileScreen({ navigation }: any) {
             </ScrollView>
             <Text style={s.sectionTitle}>{t('profile.myTasks')} ({(myTasks || []).filter((t: any) => taskFilter === lang === 'lt' ? 'VISI' : 'ALL' || t.status === taskFilter).length})</Text>
             {(myTasks || []).filter((t: any) => taskFilter === lang === 'lt' ? 'VISI' : 'ALL' || t.status === taskFilter).length === 0
-              ? <Empty icon="CLIPBOARD" text="No tasks yet" />
+              ? <Empty icon="CLIPBOARD" text={t("profile.noTasks")} />
               : (myTasks || []).filter((t: any) => taskFilter === lang === 'lt' ? 'VISI' : 'ALL' || t.status === taskFilter).map((task: any) => (
                 <View key={task.id} style={s.card}>
                   <View style={s.row}>
@@ -281,7 +281,7 @@ export default function ProfileScreen({ navigation }: any) {
               </View>
             )}
             {reviews.length === 0
-              ? <Empty icon="STAR" text="No reviews yet" />
+              ? <Empty icon="STAR" text={t("profile.noReviews")} />
               : (reviews || []).map((r: any) => (
                 <View key={r.id} style={s.card}>
                   <View style={s.row}>
@@ -310,7 +310,7 @@ export default function ProfileScreen({ navigation }: any) {
             </View>
             <View style={s.card}>
               <Text style={s.lbl}>{t('profile.uploadOnWebTitle')}</Text>
-              <Text style={s.mutedTxt}>Visit root-ling.com in your browser and go to Profile then Verification to upload your ID front, back, and selfie. Native camera upload is coming soon.</Text>
+              <Text style={s.mutedTxt}>{t('profile.uploadOnWeb')}</Text>
             </View>
           </View>
         )}
@@ -320,8 +320,8 @@ export default function ProfileScreen({ navigation }: any) {
           <View style={s.section}>
             <Text style={s.sectionTitle}>{t('profile.settings')}</Text>
             <View style={s.card}>
-              <Row label="Account Type" val={profile?.role || '-'} />
-              <Row label="Verified" val={vs} />
+              <Row label=t("profile.accountType") val={profile?.role || '-'} />
+              <Row label=t("profile.verified") val={getVerificationLabel(vs)} />
             </View>
 
             <View style={s.card}>
@@ -364,7 +364,7 @@ function Row({ label, val }: { label: string; val?: string | null }) {
   );
 }
 
-function Empty({ icon, text }: { icon: string; text: string }) {
+function Empty({ icon, text }: { icon: string; text: any }) {
   return (
     <View style={s.emptyWrap}>
       <Text style={s.emptyTxt}>{text}</Text>
