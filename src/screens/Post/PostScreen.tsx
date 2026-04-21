@@ -44,7 +44,7 @@ const CATEGORIES_DATA = [
     'Companionship', 'Grocery Help Elderly', 'Meal Preparation',
     'Light Housekeeping', 'Technology Help', 'Walking Assistance',
   ]},
-  { value: 'events-hospitality', labelKey: 'cat.eventsHty', icon: '🎉', subcategories: [
+  { value: 'events-hospitality', labelKey: 'cat.eventsHospitality', icon: '🎉', subcategories: [
     'Party Setup', 'Party Cleanup', 'Serving Help', 'Event Decoration',
     'BBQ Help', 'Holiday Decoration', 'Holiday Decoration Removal',
   ]},
