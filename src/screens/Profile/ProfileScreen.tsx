@@ -254,7 +254,7 @@ export default function ProfileScreen({ navigation }: any) {
             {(myTasks || []).filter((t: any) => taskFilter === lang === 'lt' ? 'VISI' : 'ALL' || t.status === taskFilter).length === 0
               ? <Empty icon="CLIPBOARD" text={t("profile.noTasks")} />
               : (myTasks || []).filter((t: any) => taskFilter === 'ALL' || t.status === taskFilter).map((task: any) => (
-                <View key={task.id} style={s.card}>
+                <TouchableOpacity key={task.id} style={s.card} onPress={() => navigation.navigate('TaskDetail', { task })}>
                   <View style={s.row}>
                     <Text style={s.taskTitle} numberOfLines={2}>{task.title}</Text>
                     <View style={[s.statusBadge, { backgroundColor: getStatusColor(task.status) + '20' }]}>
@@ -266,7 +266,7 @@ export default function ProfileScreen({ navigation }: any) {
                   {task.boostType && task.boostedUntil && new Date(task.boostedUntil) > new Date() && (
                     <Text style={s.boostTxt}>{task.boostType === 'SPOTLIGHT' ? 'STAR Spotlight Active' : 'BOLT Boost Active'}</Text>
                   )}
-                </View>
+                </TouchableOpacity>
               ))}
           </View>
         )}
