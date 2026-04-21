@@ -32,7 +32,7 @@ export default function ProfileScreen({ navigation }: any) {
   const [editName, setEditName] = useState('');
   const [editPhone, setEditPhone] = useState('');
   const [editBio, setEditBio] = useState('');
-  const [taskFilter, setTaskFilter] = useState<lang === 'lt' ? 'VISI' : 'ALL' | lang === 'lt' ? 'ATVIRA' : 'OPEN' | lang === 'lt' ? 'PRISKIRTA' : 'ASSIGNED' | lang === 'lt' ? 'ATLIKTA' : 'COMPLETED' | lang === 'lt' ? 'ATŠAUKTA' : 'CANCELLED'>(lang === 'lt' ? 'VISI' : 'ALL');
+  const [taskFilter, setTaskFilter] = useState<'ALL' | 'OPEN' | 'ASSIGNED' | 'COMPLETED' | 'CANCELLED'>('ALL');
   const queryClient = useQueryClient();
 
   const { data: profile, isLoading, refetch } = useQuery({
@@ -243,17 +243,17 @@ export default function ProfileScreen({ navigation }: any) {
         {tab === 'tasks' && (
           <View style={s.section}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 12 }} bounces={false}>
-              {[lang === 'lt' ? 'VISI' : 'ALL', lang === 'lt' ? 'ATVIRA' : 'OPEN', lang === 'lt' ? 'PRISKIRTA' : 'ASSIGNED', lang === 'lt' ? 'ATLIKTA' : 'COMPLETED', lang === 'lt' ? 'ATŠAUKTA' : 'CANCELLED'].map(f => (
+              {(['ALL', 'OPEN', 'ASSIGNED', 'COMPLETED', 'CANCELLED'] as const).map(f => (
                 <TouchableOpacity key={f} onPress={() => setTaskFilter(f as any)}
                   style={[s.filterBtn, taskFilter === f && s.filterBtnActive]}>
                   <Text style={[s.filterTxt, taskFilter === f && s.filterTxtActive]}>{f}</Text>
                 </TouchableOpacity>
               ))}
             </ScrollView>
-            <Text style={s.sectionTitle}>{t('profile.myTasks')} ({(myTasks || []).filter((t: any) => taskFilter === lang === 'lt' ? 'VISI' : 'ALL' || t.status === taskFilter).length})</Text>
+            <Text style={s.sectionTitle}>{t('profile.myTasks')} ({(myTasks || []).filter((t: any) => taskFilter === 'ALL' || t.status === taskFilter).length})</Text>
             {(myTasks || []).filter((t: any) => taskFilter === lang === 'lt' ? 'VISI' : 'ALL' || t.status === taskFilter).length === 0
               ? <Empty icon="CLIPBOARD" text={t("profile.noTasks")} />
-              : (myTasks || []).filter((t: any) => taskFilter === lang === 'lt' ? 'VISI' : 'ALL' || t.status === taskFilter).map((task: any) => (
+              : (myTasks || []).filter((t: any) => taskFilter === 'ALL' || t.status === taskFilter).map((task: any) => (
                 <View key={task.id} style={s.card}>
                   <View style={s.row}>
                     <Text style={s.taskTitle} numberOfLines={2}>{task.title}</Text>
