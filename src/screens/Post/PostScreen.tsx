@@ -396,7 +396,7 @@ export default function PostScreen({ navigation }: any) {
             </TouchableOpacity>
           </View>
 
-          <View style={styles.trustBox}>}>
+          <View style={styles.trustBox}>
             <Text style={styles.trustText}>{t('post.paymentNotice')}</Text>
           </View>
 
