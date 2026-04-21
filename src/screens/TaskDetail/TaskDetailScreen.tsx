@@ -1,3 +1,4 @@
+import { translations } from '../../i18n/translations';
 import TranslateButton from '../../components/TranslateButton';
 import { anonName, anonAvatar } from '../../utils/anonName';
 import { useTranslation } from '../../i18n';
@@ -104,7 +105,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
                 'other': 'cat.other',
               };
               const key = catMap[safeTask.category || ''];
-              return key ? t(key).toUpperCase() : (safeTask.category || '').replace(/-/g, ' ').toUpperCase();
+              return key ? (translations[lang]?.[key] || translations['en']?.[key] || '').toUpperCase() : (safeTask.category || '').replace(/-/g, ' ').toUpperCase();
             })()}</Text>
           </View>
           <Text style={styles.price}>€{safeTask.budget || 0}</Text>
