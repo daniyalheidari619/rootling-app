@@ -88,7 +88,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           </TouchableOpacity>
         </View>
         <View style={styles.heroSection}>
-          <View style={styles.categoryBadge}>
+          <View key={lang} style={styles.categoryBadge}>
             <Text style={styles.categoryText}>{(() => {
               const catMap: Record<string, string> = {
                 'home-services': 'cat.homeServices',
