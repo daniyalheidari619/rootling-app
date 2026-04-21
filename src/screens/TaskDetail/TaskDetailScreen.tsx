@@ -20,20 +20,26 @@ export default function TaskDetailScreen({ route, navigation }: any) {
   const [negotiateNote, setNegotiateNote] = useState('');
   const [negotiating, setNegotiating] = useState(false);
 
-  const { data: task = initialTask } = useQuery({
+  const { data: task, isLoading: taskLoading } = useQuery({
     queryKey: ['task', initialTask.id],
     queryFn: async () => {
       const { data } = await client.get(`/api/tasks/${initialTask.id}`);
-      return data.task || data;
+      return data.task || data.data || data;
     },
-    initialData: initialTask,
+    initialData: initialTask?.title && initialTask?.client?.name ? initialTask : undefined,
   });
+
+  if (taskLoading && !task) {
+    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><ActivityIndicator size="large" color="#1FB6AE" /></View>;
+  }
+
+  const safeTask = task || initialTask;
 
   const handleApply = async () => {
     if (!user) return navigation.navigate('Login');
     setApplying(true);
     try {
-      await client.post(`/api/tasks/${task.id}/apply`, {
+      await client.post(`/api/tasks/${safeTask.id}/apply`, {
         coverLetter: 'Interested in this task.',
         proposedBudget: task.budget,
       });
@@ -47,7 +53,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
 
   const handleMessage = () => {
     if (!user) return navigation.navigate('Login');
-    navigation.navigate('ChatScreen', { taskId: task.id, otherUser: task.client });
+    navigation.navigate('ChatScreen', { taskId: safeTask.id, otherUser: task.client });
   };
 
   const handleNegotiate = async () => {
@@ -56,7 +62,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
     }
     setNegotiating(true);
     try {
-      await client.post(`/api/tasks/${task.id}/negotiate`, {
+      await client.post(`/api/tasks/${safeTask.id}/negotiate`, {
         proposedPrice: Number(negotiatePrice),
         message: negotiateNote,
       });
@@ -83,40 +89,40 @@ export default function TaskDetailScreen({ route, navigation }: any) {
         </View>
         <View style={styles.heroSection}>
           <View style={styles.categoryBadge}>
-            <Text style={styles.categoryText}>{task.category?.replace(/-/g, ' ').toUpperCase()}</Text>
+            <Text style={styles.categoryText}>{safeTask.category?.replace(/-/g, ' ').toUpperCase()}</Text>
           </View>
-          <Text style={styles.price}>€{task.budget || 0}</Text>
-          <Text style={styles.title}>{task.title}</Text>
-          {task.priority === 'HIGH' && (
+          <Text style={styles.price}>€{safeTask.budget || 0}</Text>
+          <Text style={styles.title}>{safeTask.title}</Text>
+          {safeTask.priority === 'HIGH' && (
             <View style={styles.priorityBadge}>
               <Text style={styles.priorityText}>{t('task.priorityTask')}</Text>
             </View>
           )}
         </View>
         <View style={styles.metaRow}>
-          {task.distance != null && <View style={styles.metaItem}><Text style={styles.metaText}>📍 {task.distance.toFixed(1)} km away</Text></View>}
-          {task.createdAt && <View style={styles.metaItem}><Text style={styles.metaText}>📅 {formatDate(task.createdAt)}</Text></View>}
+          {safeTask.distance != null && <View style={styles.metaItem}><Text style={styles.metaText}>📍 {safeTask.distance.toFixed(1)} km away</Text></View>}
+          {safeTask.createdAt && <View style={styles.metaItem}><Text style={styles.metaText}>📅 {formatDate(safeTask.createdAt)}</Text></View>}
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>{t('task.description')}</Text>
-          <TranslateButton text={task.description} textStyle={styles.description} />
+          <TranslateButton text={safeTask.description} textStyle={styles.description} />
         </View>
-        {task.location && (
+        {safeTask.location && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>{t('task.location')}</Text>
-            <View style={styles.locationBox}><Text style={styles.locationText}>📍 {task.location}</Text></View>
+            <View style={styles.locationBox}><Text style={styles.locationText}>📍 {safeTask.location}</Text></View>
           </View>
         )}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>{t('task.aboutClient')}</Text>
           <View style={styles.clientCard}>
             <View style={styles.clientAvatar}>
-              <Text style={styles.clientAvatarText}>{anonAvatar(task.client?.name)}</Text>
+              <Text style={styles.clientAvatarText}>{anonAvatar(safeTask.client?.name)}</Text>
             </View>
             <View style={styles.clientInfo}>
-              <Text style={styles.clientName}>{anonName(task.client?.name, 'client')}</Text>
-              {task.client?.clientRating > 0 && <Text style={styles.clientRating}>★ {task.client.clientRating.toFixed(1)}</Text>}
-              {task.client?.idVerificationStatus === 'VERIFIED' && <Text style={styles.verifiedBadge}>✓ ID Verified</Text>}
+              <Text style={styles.clientName}>{anonName(safeTask.client?.name, 'client')}</Text>
+              {safeTask.client?.clientRating > 0 && <Text style={styles.clientRating}>★ {safeTask.client.clientRating.toFixed(1)}</Text>}
+              {safeTask.client?.idVerificationStatus === 'VERIFIED' && <Text style={styles.verifiedBadge}>✓ ID Verified</Text>}
             </View>
           </View>
         </View>
@@ -125,29 +131,29 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           <View style={styles.trustItem}><Text style={styles.trustIcon}>✓</Text><Text style={styles.trustText}>{t('task.securePlatform')}</Text></View>
           <View style={styles.trustItem}><Text style={styles.trustIcon}>⭐</Text><Text style={styles.trustText}>{t('task.ratedService')}</Text></View>
         </View>
-        {(task.requiresCar || task.requiresTools) && (
+        {(safeTask.requiresCar || task.requiresTools) && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>{t('task.requirements')}</Text>
             <View style={styles.requirementsBox}>
-              {task.requiresCar && (
+              {safeTask.requiresCar && (
                 <View style={styles.requirementItem}>
                   <Text style={styles.requirementIcon}>🚗</Text>
                   <Text style={styles.requirementText}>{t('task.carRequired')}</Text>
                 </View>
               )}
-              {task.requiresTools && (
+              {safeTask.requiresTools && (
                 <View style={styles.requirementItem}>
                   <Text style={styles.requirementIcon}>🔧</Text>
-                  <Text style={styles.requirementText}>Tools required{task.toolsList ? ': ' + task.toolsList : ''}</Text>
+                  <Text style={styles.requirementText}>Tools required{safeTask.toolsList ? ': ' + task.toolsList : ''}</Text>
                 </View>
               )}
             </View>
           </View>
         )}
-        {task.slotsRequired > 1 && (
+        {safeTask.slotsRequired > 1 && (
           <View style={styles.section}>
             <View style={styles.slotsBox}>
-              <Text style={styles.slotsText}>👥 {task.slotsRequired} taskers needed ({task.slotsFilled || 0} filled)</Text>
+              <Text style={styles.slotsText}>👥 {safeTask.slotsRequired} taskers needed ({safeTask.slotsFilled || 0} filled)</Text>
             </View>
           </View>
         )}
@@ -155,7 +161,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           <View style={styles.modalOverlay}>
             <View style={styles.modalCard}>
               <Text style={styles.modalTitle}>{t('task.proposePrice')}</Text>
-              <Text style={styles.modalSub}>Client's budget: €{task.budget}</Text>
+              <Text style={styles.modalSub}>Client's budget: €{safeTask.budget}</Text>
               <TextInput
                 style={styles.modalInput}
                 value={negotiatePrice}
