@@ -1,3 +1,4 @@
+import { useTranslation } from '../../i18n';
 import React, { useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity,
@@ -8,6 +9,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import client from '../../api/client';
 
 export default function BillingTab({ profile, navigation }: { profile: any; navigation?: any }) {
+  const { t } = useTranslation();
   const { confirmSetupIntent } = useStripe();
   const queryClient = useQueryClient();
   const [showCardForm, setShowCardForm] = useState(false);
@@ -40,7 +42,7 @@ export default function BillingTab({ profile, navigation }: { profile: any; navi
   });
 
   const handleAddCard = async () => {
-    if (!cardComplete) return Alert.alert('Error', 'Please enter complete card details');
+    if (!cardComplete) return Alert.alert(t('common.error'), 'Please enter complete card details');
     setSaving(true);
     try {
       const { data } = await client.post('/api/payments/setup-intent');
@@ -48,14 +50,14 @@ export default function BillingTab({ profile, navigation }: { profile: any; navi
         paymentMethodType: 'Card',
       });
       if (error) {
-        Alert.alert('Error', error.message);
+        Alert.alert(t('common.error'), error.message);
       } else if (setupIntent) {
         await refetchPM();
         setShowCardForm(false);
-        Alert.alert('Success', 'Card saved successfully!');
+        Alert.alert(t('common.success') || 'Success', t('billing.cardSaved') || 'Card saved successfully!');
       }
     } catch (e: any) {
-      Alert.alert('Error', e.response?.data?.error || 'Failed to save card');
+      Alert.alert(t('common.error'), e.response?.data?.error || 'Failed to save card');
     } finally {
       setSaving(false);
     }
@@ -71,7 +73,7 @@ export default function BillingTab({ profile, navigation }: { profile: any; navi
         await Linking.openURL(data.url);
       }
     } catch (e: any) {
-      Alert.alert('Error', e.response?.data?.error || 'Failed to start Stripe onboarding');
+      Alert.alert(t('common.error'), e.response?.data?.error || 'Failed to start Stripe onboarding');
     } finally {
       setConnectLoading(false);
     }
@@ -84,9 +86,9 @@ export default function BillingTab({ profile, navigation }: { profile: any; navi
   };
 
   const getConnectLabel = () => {
-    if (connectStatus?.chargesEnabled) return '✓ Payouts Active';
-    if (connectStatus?.accountId) return '⏳ Setup Incomplete';
-    return '✗ Not Connected';
+    if (connectStatus?.chargesEnabled) return t('billing.payoutsActive');
+    if (connectStatus?.accountId) return t('billing.setupIncomplete');
+    return t('billing.notConnected');
   };
 
   return (
@@ -106,7 +108,7 @@ export default function BillingTab({ profile, navigation }: { profile: any; navi
       {/* Subscription */}
       <View style={s.card}>
         <Text style={s.lbl}>Subscription Plan</Text>
-        <Text style={s.bigVal}>{profile?.isSubscriber ? '⭐ Premium Active' : 'Free Plan'}</Text>
+        <Text style={s.bigVal}>{profile?.isSubscriber ? t('billing.premium') : t('billing.free')}</Text>
         {!profile?.isSubscriber && navigation && (
         <TouchableOpacity
           style={[s.primaryBtn, { marginTop: 12, marginBottom: 0 }]}
@@ -174,10 +176,10 @@ export default function BillingTab({ profile, navigation }: { profile: any; navi
           ? <ActivityIndicator color="#1FB6AE" />
           : <Text style={connectStatus?.chargesEnabled ? s.secondaryBtnTxt : s.primaryBtnTxt}>
               {connectStatus?.chargesEnabled
-                ? 'Manage / Change Payout Account'
+                ? t('billing.manageAccount')
                 : connectStatus?.accountId
-                  ? 'Complete Stripe Setup'
-                  : 'Connect Bank Account'}
+                  ? t('billing.completeSetup')
+                  : t('billing.connectBank')}
             </Text>}
       </TouchableOpacity>
 

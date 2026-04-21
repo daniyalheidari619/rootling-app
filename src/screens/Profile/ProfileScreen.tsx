@@ -32,7 +32,7 @@ export default function ProfileScreen({ navigation }: any) {
   const [editName, setEditName] = useState('');
   const [editPhone, setEditPhone] = useState('');
   const [editBio, setEditBio] = useState('');
-  const [taskFilter, setTaskFilter] = useState<'ALL' | 'OPEN' | 'ASSIGNED' | 'COMPLETED' | 'CANCELLED'>('ALL');
+  const [taskFilter, setTaskFilter] = useState<lang === 'lt' ? 'VISI' : 'ALL' | lang === 'lt' ? 'ATVIRA' : 'OPEN' | lang === 'lt' ? 'PRISKIRTA' : 'ASSIGNED' | lang === 'lt' ? 'ATLIKTA' : 'COMPLETED' | lang === 'lt' ? 'ATŠAUKTA' : 'CANCELLED'>(lang === 'lt' ? 'VISI' : 'ALL');
   const queryClient = useQueryClient();
 
   const { data: profile, isLoading, refetch } = useQuery({
@@ -143,6 +143,12 @@ export default function ProfileScreen({ navigation }: any) {
     ({ VERIFIED: '#10B981', EXPIRING: '#F59E0B', EXPIRED: '#EF4444', PENDING: '#3B82F6' } as any)[st] || '#6B7280';
   const getVerificationLabel = (st: string) =>
     ({ VERIFIED: t('profile.verified'), EXPIRING: t('profile.expiringSoon'), EXPIRED: t('profile.expired'), PENDING: t('profile.pendingReview') } as any)[st] || t('profile.notVerified');
+  const getStatusLabel = (st: string) => {
+    if (lang === 'lt') {
+      return ({ OPEN: 'Atvira', ASSIGNED: 'Priskirta', COMPLETED: 'Atlikta', CANCELLED: 'Atšaukta', IN_PROGRESS: 'Vykdoma', PENDING_PAYMENT: 'Laukia mok.', PRICE_REVISION_PENDING: 'Kainos peržiūra', PRICE_REVISION_REJECTED: 'Kaina atmesta' } as any)[st] || st;
+    }
+    return ({ OPEN: 'Open', ASSIGNED: 'Assigned', COMPLETED: 'Completed', CANCELLED: 'Cancelled', IN_PROGRESS: 'In Progress', PENDING_PAYMENT: 'Pending Payment', PRICE_REVISION_PENDING: 'Price Revision', PRICE_REVISION_REJECTED: 'Revision Rejected' } as any)[st] || st;
+  };
   const getStatusColor = (st: string) =>
     ({ OPEN: '#10B981', ASSIGNED: '#3B82F6', COMPLETED: '#6B7280', CANCELLED: '#EF4444' } as any)[st] || '#6B7280';
 
@@ -237,22 +243,22 @@ export default function ProfileScreen({ navigation }: any) {
         {tab === 'tasks' && (
           <View style={s.section}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 12 }} bounces={false}>
-              {['ALL', 'OPEN', 'ASSIGNED', 'COMPLETED', 'CANCELLED'].map(f => (
+              {[lang === 'lt' ? 'VISI' : 'ALL', lang === 'lt' ? 'ATVIRA' : 'OPEN', lang === 'lt' ? 'PRISKIRTA' : 'ASSIGNED', lang === 'lt' ? 'ATLIKTA' : 'COMPLETED', lang === 'lt' ? 'ATŠAUKTA' : 'CANCELLED'].map(f => (
                 <TouchableOpacity key={f} onPress={() => setTaskFilter(f as any)}
                   style={[s.filterBtn, taskFilter === f && s.filterBtnActive]}>
                   <Text style={[s.filterTxt, taskFilter === f && s.filterTxtActive]}>{f}</Text>
                 </TouchableOpacity>
               ))}
             </ScrollView>
-            <Text style={s.sectionTitle}>My Tasks ({(myTasks || []).filter((t: any) => taskFilter === 'ALL' || t.status === taskFilter).length})</Text>
-            {(myTasks || []).filter((t: any) => taskFilter === 'ALL' || t.status === taskFilter).length === 0
+            <Text style={s.sectionTitle}>{t('profile.myTasks')} ({(myTasks || []).filter((t: any) => taskFilter === lang === 'lt' ? 'VISI' : 'ALL' || t.status === taskFilter).length})</Text>
+            {(myTasks || []).filter((t: any) => taskFilter === lang === 'lt' ? 'VISI' : 'ALL' || t.status === taskFilter).length === 0
               ? <Empty icon="CLIPBOARD" text="No tasks yet" />
-              : (myTasks || []).filter((t: any) => taskFilter === 'ALL' || t.status === taskFilter).map((task: any) => (
+              : (myTasks || []).filter((t: any) => taskFilter === lang === 'lt' ? 'VISI' : 'ALL' || t.status === taskFilter).map((task: any) => (
                 <View key={task.id} style={s.card}>
                   <View style={s.row}>
                     <Text style={s.taskTitle} numberOfLines={2}>{task.title}</Text>
                     <View style={[s.statusBadge, { backgroundColor: getStatusColor(task.status) + '20' }]}>
-                      <Text style={[s.statusTxt, { color: getStatusColor(task.status) }]}>{task.status}</Text>
+                      <Text style={[s.statusTxt, { color: getStatusColor(task.status) }]}>{getStatusLabel(task.status)}</Text>
                     </View>
                   </View>
                   <Text style={s.budget}>EUR {task.budget}</Text>
@@ -267,7 +273,7 @@ export default function ProfileScreen({ navigation }: any) {
 
         {tab === 'reviews' && (
           <View style={s.section}>
-            <Text style={s.sectionTitle}>Reviews ({reviews.length})</Text>
+            <Text style={s.sectionTitle}>{t('profile.reviews')} ({reviews.length})</Text>
             {avgRating && (
               <View style={[s.card, { alignItems: 'center' }]}>
                 <Text style={{ fontSize: 36, fontWeight: '800', color: '#1FB6AE' }}>STAR {avgRating}</Text>
@@ -303,7 +309,7 @@ export default function ProfileScreen({ navigation }: any) {
               )}
             </View>
             <View style={s.card}>
-              <Text style={s.lbl}>To upload your ID documents:</Text>
+              <Text style={s.lbl}>{t('profile.uploadOnWebTitle')}</Text>
               <Text style={s.mutedTxt}>Visit root-ling.com in your browser and go to Profile then Verification to upload your ID front, back, and selfie. Native camera upload is coming soon.</Text>
             </View>
           </View>
