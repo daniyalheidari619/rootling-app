@@ -1,3 +1,4 @@
+import SubscriptionScreen from '../screens/Subscription/SubscriptionScreen';
 import { useTranslation } from '../i18n';
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -70,6 +71,7 @@ function AuthStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="Subscription" component={SubscriptionScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

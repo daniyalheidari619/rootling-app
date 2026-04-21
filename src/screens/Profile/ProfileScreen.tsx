@@ -23,7 +23,7 @@ const TABS = [
   { key: 'settings', labelKey: 'profile.settings' },
 ] as const;
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }: any) {
   const { user, logout, setAuth } = useAuthStore();
   const { t, lang } = useTranslation();
   const [tab, setTab] = useState<Tab>('overview');
@@ -309,7 +309,7 @@ export default function ProfileScreen() {
           </View>
         )}
 
-        {tab === 'billing' && <BillingTab profile={profile} />}
+        {tab === 'billing' && <BillingTab profile={profile} navigation={navigation} />}
         {tab === 'settings' && (
           <View style={s.section}>
             <Text style={s.sectionTitle}>{t('profile.settings')}</Text>
