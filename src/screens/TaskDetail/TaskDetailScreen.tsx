@@ -89,7 +89,23 @@ export default function TaskDetailScreen({ route, navigation }: any) {
         </View>
         <View style={styles.heroSection}>
           <View style={styles.categoryBadge}>
-            <Text style={styles.categoryText}>{t('cat.' + (safeTask.category || '').replace(/-([a-z])/g, (_: any, l: string) => l.toUpperCase())).toUpperCase()}</Text>
+            <Text style={styles.categoryText}>{(() => {
+              const catMap: Record<string, string> = {
+                'home-services': 'cat.homeServices',
+                'moving-delivery': 'cat.movingDelivery',
+                'handyman': 'cat.handyman',
+                'gardening-outdoor': 'cat.gardeningOutdoor',
+                'pet-care': 'cat.petCare',
+                'personal-assistance': 'cat.personalAssistance',
+                'elderly-special-care': 'cat.elderlySpecialCare',
+                'events-hospitality': 'cat.eventsHospitality',
+                'administrative-digital': 'cat.administrativeDigital',
+                'seasonal-special': 'cat.seasonalSpecial',
+                'other': 'cat.other',
+              };
+              const key = catMap[safeTask.category || ''];
+              return key ? t(key).toUpperCase() : (safeTask.category || '').replace(/-/g, ' ').toUpperCase();
+            })()}</Text>
           </View>
           <Text style={styles.price}>€{safeTask.budget || 0}</Text>
           <Text style={styles.title}>{safeTask.title}</Text>
