@@ -1,3 +1,4 @@
+import { useTranslation } from '../../i18n';
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Dimensions } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
@@ -11,6 +12,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export default function SwipeScreen({ navigation }: any) {
   const { latitude, longitude } = useLocationStore();
+  const { t } = useTranslation();
   const { skip, hasSkipped } = useSwipeStore();
   const [cards, setCards] = useState<Task[]>([]);
 
@@ -48,7 +50,7 @@ export default function SwipeScreen({ navigation }: any) {
     return (
       <View style={styles.center}>
         <ActivityIndicator size="large" color="#1FB6AE" />
-        <Text style={styles.loadingText}>Loading tasks...</Text>
+        <Text style={styles.loadingText}>{t('swipe.loading')}</Text>
       </View>
     );
   }
@@ -57,10 +59,10 @@ export default function SwipeScreen({ navigation }: any) {
     return (
       <View style={styles.center}>
         <Text style={styles.emptyEmoji}>🎉</Text>
-      <Text style={styles.emptyTitle}>All caught up!</Text>
-        <Text style={styles.emptyDesc}>No more tasks in your area right now.</Text>
+      <Text style={styles.emptyTitle}>{t('swipe.allCaughtUp')}</Text>
+        <Text style={styles.emptyDesc}>{t('swipe.noMoreTasks')}</Text>
         <TouchableOpacity style={styles.refreshBtn} onPress={() => setCards(tasks?.filter(t => !hasSkipped(t.id)) || [])}>
-          <Text style={styles.refreshText}>Refresh</Text>
+          <Text style={styles.refreshText}>{t('swipe.refresh')}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -69,8 +71,8 @@ export default function SwipeScreen({ navigation }: any) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Find Tasks</Text>
-        <Text style={styles.headerSub}>{cards.length} tasks near you</Text>
+        <Text style={styles.headerTitle}>{t('swipe.title')}</Text>
+        <Text style={styles.headerSub}>{cards.length} {t('swipe.nearYou')}</Text>
       </View>
       <View style={styles.cardStack}>
         {cards.slice(0, 3).reverse().map((task, index) => (

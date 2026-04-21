@@ -1,3 +1,4 @@
+import { useTranslation } from '../../i18n';
 import React, { useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity,
@@ -11,6 +12,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
   const { task: initialTask } = route.params;
   const { user } = useAuthStore();
   const [applying, setApplying] = useState(false);
+  const { t } = useTranslation();
   const [showNegotiate, setShowNegotiate] = useState(false);
   const [negotiatePrice, setNegotiatePrice] = useState('');
   const [negotiateNote, setNegotiateNote] = useState('');
@@ -30,7 +32,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
     setApplying(true);
     try {
       await client.post(`/api/tasks/${task.id}/interest`);
-      Alert.alert('Interest Sent!', 'The client will be notified of your interest.');
+      Alert.alert(t('task.interestSent'), t('task.interestSentDesc'));
     } catch (e: any) {
       Alert.alert('Error', e?.response?.data?.message || 'Failed to send interest');
     } finally {
@@ -53,7 +55,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
         proposedPrice: Number(negotiatePrice),
         message: negotiateNote,
       });
-      Alert.alert('Offer Sent!', 'The client will review your price offer.');
+      Alert.alert(t('task.offerSent'), t('task.offerSentDesc'));
       setShowNegotiate(false);
       setNegotiatePrice('');
       setNegotiateNote('');
@@ -71,7 +73,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-            <Text style={styles.backText}>← Back</Text>
+            <Text style={styles.backText}>{t('common.back')}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.heroSection}>
@@ -82,7 +84,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           <Text style={styles.title}>{task.title}</Text>
           {task.priority === 'HIGH' && (
             <View style={styles.priorityBadge}>
-              <Text style={styles.priorityText}>⭐ Priority Task</Text>
+              <Text style={styles.priorityText}>{t('task.priorityTask')}</Text>
             </View>
           )}
         </View>
@@ -91,17 +93,17 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           <View style={styles.metaItem}><Text style={styles.metaText}>📅 {formatDate(task.createdAt)}</Text></View>
         </View>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Description</Text>
+          <Text style={styles.sectionTitle}>{t('task.description')}</Text>
           <Text style={styles.description}>{task.description}</Text>
         </View>
         {task.location && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Location</Text>
+            <Text style={styles.sectionTitle}>{t('task.location')}</Text>
             <View style={styles.locationBox}><Text style={styles.locationText}>📍 {task.location}</Text></View>
           </View>
         )}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>About the Client</Text>
+          <Text style={styles.sectionTitle}>{t('task.aboutClient')}</Text>
           <View style={styles.clientCard}>
             <View style={styles.clientAvatar}>
               <Text style={styles.clientAvatarText}>{task.client?.name?.[0]?.toUpperCase() || '?'}</Text>
@@ -114,18 +116,18 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           </View>
         </View>
         <View style={styles.trustRow}>
-          <View style={styles.trustItem}><Text style={styles.trustIcon}>🔒</Text><Text style={styles.trustText}>Payment Protected</Text></View>
-          <View style={styles.trustItem}><Text style={styles.trustIcon}>✓</Text><Text style={styles.trustText}>Secure Platform</Text></View>
-          <View style={styles.trustItem}><Text style={styles.trustIcon}>⭐</Text><Text style={styles.trustText}>Rated Service</Text></View>
+          <View style={styles.trustItem}><Text style={styles.trustIcon}>🔒</Text><Text style={styles.trustText}>{t('task.paymentProtected')}</Text></View>
+          <View style={styles.trustItem}><Text style={styles.trustIcon}>✓</Text><Text style={styles.trustText}>{t('task.securePlatform')}</Text></View>
+          <View style={styles.trustItem}><Text style={styles.trustIcon}>⭐</Text><Text style={styles.trustText}>{t('task.ratedService')}</Text></View>
         </View>
         {(task.requiresCar || task.requiresTools) && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Requirements</Text>
+            <Text style={styles.sectionTitle}>{t('task.requirements')}</Text>
             <View style={styles.requirementsBox}>
               {task.requiresCar && (
                 <View style={styles.requirementItem}>
                   <Text style={styles.requirementIcon}>🚗</Text>
-                  <Text style={styles.requirementText}>Car required</Text>
+                  <Text style={styles.requirementText}>{t('task.carRequired')}</Text>
                 </View>
               )}
               {task.requiresTools && (
@@ -147,13 +149,13 @@ export default function TaskDetailScreen({ route, navigation }: any) {
         <Modal visible={showNegotiate} transparent animationType="slide">
           <View style={styles.modalOverlay}>
             <View style={styles.modalCard}>
-              <Text style={styles.modalTitle}>Propose Your Price</Text>
+              <Text style={styles.modalTitle}>{t('task.proposePrice')}</Text>
               <Text style={styles.modalSub}>Client's budget: €{task.budget}</Text>
               <TextInput
                 style={styles.modalInput}
                 value={negotiatePrice}
                 onChangeText={setNegotiatePrice}
-                placeholder="Your price (€)"
+                placeholder={t('task.yourPrice')}
                 placeholderTextColor="#9CA3AF"
                 keyboardType="numeric"
               />
@@ -161,15 +163,15 @@ export default function TaskDetailScreen({ route, navigation }: any) {
                 style={[styles.modalInput, { height: 80 }]}
                 value={negotiateNote}
                 onChangeText={setNegotiateNote}
-                placeholder="Why this price? (optional)"
+                placeholder={t('task.whyThisPrice')}
                 placeholderTextColor="#9CA3AF"
                 multiline
               />
               <TouchableOpacity style={styles.modalBtn} onPress={handleNegotiate} disabled={negotiating}>
-                {negotiating ? <ActivityIndicator color="#fff" /> : <Text style={styles.modalBtnText}>Send Offer</Text>}
+                {negotiating ? <ActivityIndicator color="#fff" /> : <Text style={styles.modalBtnText}>{t('task.sendOffer')}</Text>}
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setShowNegotiate(false)} style={styles.modalCancel}>
-                <Text style={styles.modalCancelText}>Cancel</Text>
+                <Text style={styles.modalCancelText}>{t('common.cancel')}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -178,10 +180,10 @@ export default function TaskDetailScreen({ route, navigation }: any) {
       </ScrollView>
       <View style={styles.actionBar}>
         <TouchableOpacity style={styles.messageBtn} onPress={handleMessage}>
-          <Text style={styles.messageBtnText}>💬 Message</Text>
+          <Text style={styles.messageBtnText}>{t('task.message')}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.applyBtn} onPress={handleApply} disabled={applying}>
-          {applying ? <ActivityIndicator color="#fff" /> : <Text style={styles.applyBtnText}>✓ I'm Interested</Text>}
+          {applying ? <ActivityIndicator color="#fff" /> : <Text style={styles.applyBtnText}>{t('task.interested')}</Text>}
         </TouchableOpacity>
       </View>
     </View>

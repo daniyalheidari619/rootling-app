@@ -1,28 +1,30 @@
+import { useTranslation } from '../../i18n';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useAuthStore } from '../../store/authStore';
 
 export default function HomeScreen({ navigation }: any) {
   const { user } = useAuthStore();
+  const { t } = useTranslation();
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.header}>
-        <Text style={styles.greeting}>Hey {user?.name?.split(' ')[0] || 'there'} 👋</Text>
-        <Text style={styles.subtitle}>Ready to earn or get things done?</Text>
+        <Text style={styles.greeting}>{t('home.greeting')} {user?.name?.split(' ')[0] || 'there'} 👋</Text>
+        <Text style={styles.subtitle}>{t('home.subtitle')}</Text>
       </View>
 
       <TouchableOpacity style={styles.swipeCTA} onPress={() => navigation.navigate('Swipe')}>
-        <Text style={styles.swipeCTATitle}>Find Tasks Near You</Text>
-        <Text style={styles.swipeCTADesc}>Swipe through available tasks in your area</Text>
+        <Text style={styles.swipeCTATitle}>{t('home.findTasks')}</Text>
+        <Text style={styles.swipeCTADesc}>{t('home.findTasksDesc')}</Text>
         <Text style={styles.swipeCTAArrow}>→</Text>
       </TouchableOpacity>
 
       <View style={styles.statsRow}>
         {[
-          { label: 'Protected', icon: '🔒' },
-          { label: 'Verified', icon: '✓' },
-          { label: 'Fast Pay', icon: '⚡' },
+          { label: t('home.protected'), icon: '🔒' },
+          { label: t('home.verified'), icon: '✓' },
+          { label: t('home.fastPay'), icon: '⚡' },
         ].map((s, i) => (
           <View key={i} style={styles.statCard}>
             <Text style={styles.statIcon}>{s.icon}</Text>
@@ -32,7 +34,7 @@ export default function HomeScreen({ navigation }: any) {
       </View>
 
       <TouchableOpacity style={styles.postBtn} onPress={() => navigation.navigate('Post')}>
-        <Text style={styles.postBtnText}>+ Post a Task</Text>
+        <Text style={styles.postBtnText}>{t('home.postTask')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

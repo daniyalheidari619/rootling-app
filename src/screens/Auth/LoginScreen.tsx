@@ -1,3 +1,4 @@
+import { useTranslation } from '../../i18n';
 import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
@@ -17,6 +18,7 @@ export default function LoginScreen({ navigation }: any) {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const { setAuth } = useAuthStore();
+  const { t } = useTranslation();
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     iosClientId: '588978066613-08eafmkaf2uc0jqo39mgtnq0nqgbl9ce.apps.googleusercontent.com',
@@ -73,14 +75,14 @@ export default function LoginScreen({ navigation }: any) {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.logo}>root-ling</Text>
-        <Text style={styles.tagline}>Your local task marketplace</Text>
+        <Text style={styles.logo}>{"root-ling"}</Text>
+        <Text style={styles.tagline}>{t('auth.tagline')}</Text>
         <View style={styles.card}>
-          <Text style={styles.title}>Welcome back</Text>
+          <Text style={styles.title}>{t('auth.welcomeBack')}</Text>
           <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder="you@example.com" autoCapitalize="none" keyboardType="email-address" placeholderTextColor="#9CA3AF" />
           <TextInput style={styles.input} value={password} onChangeText={setPassword} placeholder="password" secureTextEntry placeholderTextColor="#9CA3AF" />
           <TouchableOpacity style={styles.btn} onPress={handleLogin} disabled={loading}>
-            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.btnText}>Sign In</Text>}
+            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.btnText}>{t('auth.login')}</Text>}
           </TouchableOpacity>
           <View style={styles.dividerRow}>
             <View style={styles.dividerLine} />
@@ -89,11 +91,11 @@ export default function LoginScreen({ navigation }: any) {
           </View>
           <TouchableOpacity style={styles.googleBtn} onPress={() => promptAsync()} disabled={!request || googleLoading}>
             {googleLoading ? <ActivityIndicator color="#374151" /> : (
-              <><Text style={styles.googleIcon}>G</Text><Text style={styles.googleBtnText}>Continue with Google</Text></>
+              <><Text style={styles.googleIcon}>G</Text><Text style={styles.googleBtnText}>{t('auth.continueGoogle')}</Text></>
             )}
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Register')} style={styles.link}>
-            <Text style={styles.linkText}>Don't have an account? <Text style={styles.linkBold}>Register</Text></Text>
+            <Text style={styles.linkText}>{t('auth.noAccount')} <Text style={styles.linkBold}>{t('auth.register')}</Text></Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

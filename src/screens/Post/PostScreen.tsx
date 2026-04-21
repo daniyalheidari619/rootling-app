@@ -1,3 +1,4 @@
+import { useTranslation } from '../../i18n';
 import React, { useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, Image,
@@ -25,6 +26,7 @@ const CATEGORIES = [
 
 export default function PostScreen({ navigation }: any) {
   const { user } = useAuthStore();
+  const { t } = useTranslation();
   const [step, setStep] = useState<'category' | 'form'>('category');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [subcategory, setSubcategory] = useState('');
@@ -52,8 +54,8 @@ export default function PostScreen({ navigation }: any) {
     return (
       <View style={styles.center}>
         <Text style={styles.emptyIcon}>📋</Text>
-        <Text style={styles.emptyTitle}>Sign in to post tasks</Text>
-        <Text style={styles.emptySub}>Go to Profile tab to sign in</Text>
+        <Text style={styles.emptyTitle}>{t('auth.signInPost')}</Text>
+        <Text style={styles.emptySub}>{t('auth.signInProfile')}</Text>
       </View>
     );
   }
@@ -62,8 +64,8 @@ export default function PostScreen({ navigation }: any) {
     return (
       <ScrollView nestedScrollEnabled={true} style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Post a Task</Text>
-          <Text style={styles.headerSub}>What do you need help with?</Text>
+          <Text style={styles.headerTitle}>{t('post.title')}</Text>
+          <Text style={styles.headerSub}>{t('post.subtitle')}</Text>
         </View>
         <View style={styles.grid}>
           {CATEGORIES.map((cat) => (
@@ -149,7 +151,7 @@ export default function PostScreen({ navigation }: any) {
         toolsList: requiresTools ? toolsList : '',
         slotsRequired,
       });
-      Alert.alert('Task Posted!', 'Your task is now live and taskers can find it.', [
+      Alert.alert(t('post.success'), t('post.successDesc'), [
         { text: 'OK', onPress: () => {
           setStep('category');
           setTitle(''); setDescription(''); setBudget(''); setItemBudget(''); setTaskImages([]);
@@ -168,16 +170,16 @@ export default function PostScreen({ navigation }: any) {
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => setStep('category')} style={styles.backBtn}>
-            <Text style={styles.backText}>← Back</Text>
+            <Text style={styles.backText}>{t('post.back')}</Text>
           </TouchableOpacity>
           <Text style={styles.headerTitle}>{selectedCat?.icon} {selectedCat?.label}</Text>
-          <Text style={styles.headerSub}>Fill in the task details</Text>
+          <Text style={styles.headerSub}>{t('post.formSubtitle')}</Text>
         </View>
 
         <View style={styles.form}>
-          <Text style={styles.label}>Subcategory *</Text>
+          <Text style={styles.label}>{t('post.subcategory')} *</Text>
           <TouchableOpacity style={styles.dropdownBtn} onPress={() => setShowSubDropdown(prev => !prev)}>
-            <Text style={subcategory ? styles.dropdownSelected : styles.dropdownPlaceholder}>{subcategory || 'Select a subcategory...'}</Text>
+            <Text style={subcategory ? styles.dropdownSelected : styles.dropdownPlaceholder}>{subcategory || t('post.selectSubcategory')}</Text>
             <Text style={styles.dropdownArrow}>{showSubDropdown ? '▲' : '▼'}</Text>
           </TouchableOpacity>
           {showSubDropdown && (
@@ -191,7 +193,7 @@ export default function PostScreen({ navigation }: any) {
             </ScrollView>
           )}
 
-          <Text style={styles.label}>Task Title *</Text>
+          <Text style={styles.label}>{t('post.taskTitle')} *</Text>
           <TextInput
             style={styles.input}
             value={title}
@@ -202,7 +204,7 @@ export default function PostScreen({ navigation }: any) {
           />
           <Text style={styles.charCount}>{title.length}/100</Text>
 
-          <Text style={styles.label}>Description *</Text>
+          <Text style={styles.label}>{t('post.description')} *</Text>
           <TextInput
             style={[styles.input, styles.textarea]}
             value={description}
@@ -215,7 +217,7 @@ export default function PostScreen({ navigation }: any) {
           />
           <Text style={styles.charCount}>{description.length}/1000</Text>
 
-          <Text style={styles.label}>Budget (€) *</Text>
+          <Text style={styles.label}>{t('post.budget')} *</Text>
           <View style={styles.budgetRow}>
             <Text style={styles.euroSign}>€</Text>
             <TextInput
@@ -249,7 +251,7 @@ export default function PostScreen({ navigation }: any) {
               <Text style={styles.totalValue}>€{(Number(budget) + Number(itemBudget)).toFixed(2)}</Text>
             </View>
           )}
-          <Text style={styles.label}>Location *</Text>
+          <Text style={styles.label}>{t('post.location')} *</Text>
           <TextInput
             style={styles.input}
             value={location}
@@ -271,7 +273,7 @@ export default function PostScreen({ navigation }: any) {
             </View>
           )}
 
-          <Text style={styles.label}>Due Date & Time (optional)</Text>
+          <Text style={styles.label}>{t('post.dueDate')}</Text>
           <Text style={styles.hint}>Enter date and time — must be in the future</Text>
           <View style={{ flexDirection: 'row', gap: 8 }}>
             <TextInput
@@ -309,8 +311,8 @@ export default function PostScreen({ navigation }: any) {
 
           <View style={styles.priorityRow}>
             <View style={styles.priorityInfo}>
-              <Text style={styles.label}>Priority Task</Text>
-              <Text style={styles.hint}>Mark as urgent to get faster responses</Text>
+              <Text style={styles.label}>{t('post.priority')}</Text>
+              <Text style={styles.hint}>{t('post.priorityHint')}</Text>
             </View>
             <Switch
               value={priority}
@@ -320,7 +322,7 @@ export default function PostScreen({ navigation }: any) {
             />
           </View>
 
-          <Text style={styles.label}>Task Photos (Optional)</Text>
+          <Text style={styles.label}>{t('post.photos')}</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 12 }}>
             {(taskImages || []).map((img, idx) => (
               <View key={idx} style={{ marginRight: 8, position: 'relative' }}>
@@ -342,22 +344,22 @@ export default function PostScreen({ navigation }: any) {
           </ScrollView>
           <View style={styles.priorityRow}>
             <View style={styles.priorityInfo}>
-              <Text style={styles.label}>Requires a Car</Text>
-              <Text style={styles.hint}>Tasker must have a vehicle</Text>
+              <Text style={styles.label}>{t('post.requiresCar')}</Text>
+              <Text style={styles.hint}>{t('post.requiresCarHint')}</Text>
             </View>
             <Switch value={requiresCar} onValueChange={setRequiresCar} trackColor={{ false: '#E5E7EB', true: '#1FB6AE' }} thumbColor="#fff" />
           </View>
 
           <View style={styles.priorityRow}>
             <View style={styles.priorityInfo}>
-              <Text style={styles.label}>Requires Tools</Text>
-              <Text style={styles.hint}>Tasker must bring specific tools</Text>
+              <Text style={styles.label}>{t('post.requiresTools')}</Text>
+              <Text style={styles.hint}>{t('post.requiresToolsHint')}</Text>
             </View>
             <Switch value={requiresTools} onValueChange={setRequiresTools} trackColor={{ false: '#E5E7EB', true: '#1FB6AE' }} thumbColor="#fff" />
           </View>
           {requiresTools && (
             <>
-              <Text style={styles.label}>List Required Tools</Text>
+              <Text style={styles.label}>{t('post.toolsList')}</Text>
               <TextInput
                 style={[styles.input, { height: 80 }]}
                 value={toolsList}
@@ -369,7 +371,7 @@ export default function PostScreen({ navigation }: any) {
             </>
           )}
 
-          <Text style={styles.label}>Number of Taskers Needed</Text>
+          <Text style={styles.label}>{t('post.slotsRequired')}</Text>
           <Text style={styles.hint}>How many people do you need for this task?</Text>
           <View style={{ flexDirection: 'row', gap: 8, marginTop: 4 }}>
             {[1, 2, 3, 4, 5].map(n => (
@@ -399,7 +401,7 @@ export default function PostScreen({ navigation }: any) {
           </View>
 
           <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit} disabled={submitting}>
-            {submitting ? <ActivityIndicator color="#fff" /> : <Text style={styles.submitBtnText}>Post Task →</Text>}
+            {submitting ? <ActivityIndicator color="#fff" /> : <Text style={styles.submitBtnText}>{t('post.submit')}</Text>}
           </TouchableOpacity>
         </View>
     <View style={{ height: 60 }} />

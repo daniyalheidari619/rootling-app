@@ -1,3 +1,4 @@
+import { useTranslation } from '../../i18n';
 import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
@@ -19,6 +20,7 @@ export default function RegisterScreen({ navigation }: any) {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const { setAuth } = useAuthStore();
+  const { t } = useTranslation();
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     iosClientId: '588978066613-08eafmkaf2uc0jqo39mgtnq0nqgbl9ce.apps.googleusercontent.com',
@@ -78,21 +80,21 @@ export default function RegisterScreen({ navigation }: any) {
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.logo}>root-ling</Text>
-        <Text style={styles.tagline}>Join your local task marketplace</Text>
+        <Text style={styles.tagline}>{t('auth.joinTagline')}</Text>
         <View style={styles.card}>
-          <Text style={styles.title}>Create account</Text>
-          <Text style={styles.label}>I want to</Text>
+          <Text style={styles.title}>{t('auth.createAccount')}</Text>
+          <Text style={styles.label}>{t('auth.iWantTo')}</Text>
           <View style={styles.roleRow}>
             <TouchableOpacity style={[styles.roleBtn, role === 'TASKER' && styles.roleBtnActive]} onPress={() => setRole('TASKER')}>
-              <Text style={[styles.roleText, role === 'TASKER' && styles.roleTextActive]}>🔨 Find Work</Text>
+              <Text style={[styles.roleText, role === 'TASKER' && styles.roleTextActive]}>{t('auth.findWork')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.roleBtn, role === 'CLIENT' && styles.roleBtnActive]} onPress={() => setRole('CLIENT')}>
-              <Text style={[styles.roleText, role === 'CLIENT' && styles.roleTextActive]}>📋 Post Tasks</Text>
+              <Text style={[styles.roleText, role === 'CLIENT' && styles.roleTextActive]}>{t('auth.postTasks')}</Text>
             </TouchableOpacity>
           </View>
           <TouchableOpacity style={styles.googleBtn} onPress={() => promptAsync()} disabled={!request || googleLoading}>
             {googleLoading ? <ActivityIndicator color="#374151" /> : (
-              <><Text style={styles.googleIcon}>G</Text><Text style={styles.googleBtnText}>Continue with Google</Text></>
+              <><Text style={styles.googleIcon}>G</Text><Text style={styles.googleBtnText}>{t('auth.continueGoogle')}</Text></>
             )}
           </TouchableOpacity>
           <View style={styles.dividerRow}>
@@ -110,7 +112,7 @@ export default function RegisterScreen({ navigation }: any) {
             {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.btnText}>Create Account</Text>}
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.link}>
-            <Text style={styles.linkText}>Already have an account? <Text style={styles.linkBold}>Sign In</Text></Text>
+            <Text style={styles.linkText}>{t('auth.hasAccount')} <Text style={styles.linkBold}>{t('auth.login')}</Text></Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

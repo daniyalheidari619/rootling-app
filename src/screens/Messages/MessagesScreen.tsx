@@ -1,3 +1,4 @@
+import { useTranslation } from '../../i18n';
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
@@ -6,6 +7,7 @@ import { useAuthStore } from '../../store/authStore';
 
 export default function MessagesScreen({ navigation }: any) {
   const { user } = useAuthStore();
+  const { t } = useTranslation();
 
   const { data, isLoading } = useQuery({
     queryKey: ['conversations'],
@@ -21,7 +23,7 @@ export default function MessagesScreen({ navigation }: any) {
     return (
       <View style={styles.center}>
         <Text style={styles.emptyIcon}>💬</Text>
-        <Text style={styles.emptyTitle}>Sign in to view messages</Text>
+        <Text style={styles.emptyTitle}>{t('auth.signInMessages')}</Text>
         <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Profile')}>
         <Text style={styles.btnText}>Sign In</Text>
         </TouchableOpacity>
@@ -35,8 +37,8 @@ export default function MessagesScreen({ navigation }: any) {
     return (
       <View style={styles.center}>
         <Text style={styles.emptyIcon}>💬</Text>
-        <Text style={styles.emptyTitle}>No conversations yet</Text>
-        <Text style={styles.emptySub}>Apply to tasks to start chatting.</Text>
+        <Text style={styles.emptyTitle}>{t('messages.noConversations')}</Text>
+        <Text style={styles.emptySub}>{t('messages.applyToStart')}</Text>
       </View>
     );
   }
@@ -63,7 +65,7 @@ export default function MessagesScreen({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}><Text style={styles.headerTitle}>Messages</Text></View>
+      <View style={styles.header}><Text style={styles.headerTitle}>{t('messages.title')}</Text></View>
       <FlatList data={data} keyExtractor={(item) => item.id} renderItem={renderItem} contentContainerStyle={{ paddingBottom: 20 }} />
     </View>
   );
