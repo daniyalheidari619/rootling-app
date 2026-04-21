@@ -49,8 +49,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
     }
     setNegotiating(true);
     try {
-      await client.post('/api/negotiations', {
-        taskId: task.id,
+      await client.post(`/api/tasks/${task.id}/negotiate`, {
         proposedPrice: Number(negotiatePrice),
         message: negotiateNote,
       });
