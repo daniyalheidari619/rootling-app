@@ -7,7 +7,7 @@ import { useStripe, CardField } from '@stripe/stripe-react-native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import client from '../../api/client';
 
-export default function BillingTab({ profile }: { profile: any }) {
+export default function BillingTab({ profile, navigation }: { profile: any; navigation?: any }) {
   const { confirmSetupIntent } = useStripe();
   const queryClient = useQueryClient();
   const [showCardForm, setShowCardForm] = useState(false);
@@ -107,6 +107,14 @@ export default function BillingTab({ profile }: { profile: any }) {
       <View style={s.card}>
         <Text style={s.lbl}>Subscription Plan</Text>
         <Text style={s.bigVal}>{profile?.isSubscriber ? '⭐ Premium Active' : 'Free Plan'}</Text>
+        {!profile?.isSubscriber && navigation && (
+        <TouchableOpacity
+          style={[s.primaryBtn, { marginTop: 12, marginBottom: 0 }]}
+          onPress={() => navigation.navigate('Subscription')}
+        >
+          <Text style={s.primaryBtnTxt}>⭐ Upgrade to Premium</Text>
+        </TouchableOpacity>
+      )}
       </View>
 
       {/* Payment Methods */}
