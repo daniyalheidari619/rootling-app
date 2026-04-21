@@ -244,10 +244,10 @@ export default function PostScreen({ navigation }: any) {
               keyboardType="numeric"
             />
           </View>
-          <Text style={styles.hint}>Add a budget for items to purchase (e.g. groceries). Tasker uploads receipt after completion.</Text>
+          <Text style={styles.hint}>{t('post.itemBudgetHint')}</Text>
           {itemBudget && Number(itemBudget) > 0 && Number(budget) > 0 && (
             <View style={styles.totalRow}>
-              <Text style={styles.totalLabel}>Total upfront:</Text>
+              <Text style={styles.totalLabel}>{t('post.totalUpfront')}</Text>
               <Text style={styles.totalValue}>€{(Number(budget) + Number(itemBudget)).toFixed(2)}</Text>
             </View>
           )}
@@ -274,7 +274,7 @@ export default function PostScreen({ navigation }: any) {
           )}
 
           <Text style={styles.label}>{t('post.dueDate')}</Text>
-          <Text style={styles.hint}>Enter date and time — must be in the future</Text>
+          <Text style={styles.hint}>{t('post.dueDateHint')}</Text>
           <View style={{ flexDirection: 'row', gap: 8 }}>
             <TextInput
               style={[styles.input, { flex: 1 }]}
