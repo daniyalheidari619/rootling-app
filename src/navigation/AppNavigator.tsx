@@ -76,11 +76,22 @@ function AuthStack() {
   );
 }
 
+function MainStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Tabs" component={TabNavigator} />
+      <Stack.Screen name="Subscription" component={SubscriptionScreen} />
+      <Stack.Screen name="TaskDetail" component={require('../screens/TaskDetail/TaskDetailScreen').default} />
+      <Stack.Screen name="ChatScreen" component={require('../screens/Chat/ChatScreen').default} />
+    </Stack.Navigator>
+  );
+}
+
 export default function AppNavigator() {
   const { token } = useAuthStore();
   return (
     <NavigationContainer>
-      {token ? <TabNavigator /> : <AuthStack />}
+      {token ? <MainStack /> : <AuthStack />}
     </NavigationContainer>
   );
 }
