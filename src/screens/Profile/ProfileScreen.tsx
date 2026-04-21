@@ -35,11 +35,11 @@ export default function ProfileScreen({ navigation }: any) {
   const [taskFilter, setTaskFilter] = useState<'ALL' | 'OPEN' | 'ASSIGNED' | 'COMPLETED' | 'CANCELLED'>('ALL');
   const queryClient = useQueryClient();
 
-  const { data: profile, isLoading, refetch } = useQuery({
+  const { data: profile, isLoading, error: profileError, refetch } = useQuery({
     queryKey: ['profile', user?.id],
     queryFn: async () => {
       const { data } = await client.get('/api/auth/users/' + user!.id);
-      return data.user || data.data || data;
+      return data.user || data.data || (data.success !== false ? data : null);
     },
     enabled: !!user,
   });
@@ -47,7 +47,7 @@ export default function ProfileScreen({ navigation }: any) {
   const { data: reviews = [] } = useQuery({
     queryKey: ['reviews', user?.id],
     queryFn: async () => {
-      const { data } = await client.get('/api/users/' + user!.id + '/reviews');
+      const { data } = await client.get('/api/auth/users/' + user!.id + '/reviews');
       return data.reviews || [];
     },
     enabled: !!user,
@@ -163,6 +163,8 @@ export default function ProfileScreen({ navigation }: any) {
   }
 
   if (isLoading) return <View style={s.center}><ActivityIndicator size="large" color="#1FB6AE" /></View>;
+  if (profileError) return <View style={s.center}><Text>{String(profileError)}</Text></View>;
+  if (!profile && !isLoading) return <View style={s.center}><Text>No profile data. User ID: {user?.id}</Text></View>;
 
   const vs = profile?.idVerificationStatus || 'UNVERIFIED';
   const avgRating = reviews.length > 0
