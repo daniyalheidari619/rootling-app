@@ -68,14 +68,14 @@ export default function PostScreen({ navigation }: any) {
           <Text style={styles.headerSub}>{t('post.subtitle')}</Text>
         </View>
         <View style={styles.grid}>
-          {CATEGORIES.map((cat) => (
+          {CATEGORIES_DATA.map((cat) => (
             <TouchableOpacity
               key={cat.value}
               style={styles.categoryCard}
               onPress={() => { setSelectedCategory(cat.value); setSubcategory(''); setStep('form'); }}
             >
               <Text style={styles.categoryIcon}>{cat.icon}</Text>
-              <Text style={styles.categoryLabel}>{cat.label}</Text>
+              <Text style={styles.categoryLabel}>{t(cat.labelKey)}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -84,7 +84,7 @@ export default function PostScreen({ navigation }: any) {
     );
   }
 
-  const selectedCat = CATEGORIES.find(c => c.value === selectedCategory);
+  const selectedCat = CATEGORIES_DATA.find(c => c.value === selectedCategory);
 
   const searchLocation = async (text: string) => {
     setLocation(text);
@@ -172,7 +172,7 @@ export default function PostScreen({ navigation }: any) {
           <TouchableOpacity onPress={() => setStep('category')} style={styles.backBtn}>
             <Text style={styles.backText}>{t('post.back')}</Text>
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>{selectedCat?.icon} {selectedCat?.label}</Text>
+          <Text style={styles.headerTitle}>{selectedCat?.icon} {t(selectedCat?.labelKey || '')}</Text>
           <Text style={styles.headerSub}>{t('post.formSubtitle')}</Text>
         </View>
 
@@ -198,7 +198,7 @@ export default function PostScreen({ navigation }: any) {
             style={styles.input}
             value={title}
             onChangeText={setTitle}
-            placeholder="e.g. Help move furniture to new apartment"
+            placeholder={t('post.taskTitlePlaceholder')}
             placeholderTextColor="#9CA3AF"
             maxLength={100}
           />
@@ -209,7 +209,7 @@ export default function PostScreen({ navigation }: any) {
             style={[styles.input, styles.textarea]}
             value={description}
             onChangeText={setDescription}
-            placeholder="Describe what you need in detail..."
+            placeholder={t('post.descriptionPlaceholder')}
             placeholderTextColor="#9CA3AF"
             multiline
             numberOfLines={5}
@@ -229,10 +229,10 @@ export default function PostScreen({ navigation }: any) {
               keyboardType="numeric"
             />
           </View>
-          <Text style={styles.hint}>Minimum €5. Set a fair price to attract good taskers.</Text>
+          <Text style={styles.hint}>{t('post.budgetHint')}</Text>
 
 
-          <Text style={styles.label}>Item Budget (€) — Optional</Text>
+          <Text style={styles.label}>{t('post.itemBudget')}</Text>
           <View style={styles.budgetRow}>
             <Text style={styles.euroSign}>€</Text>
             <TextInput
@@ -256,7 +256,7 @@ export default function PostScreen({ navigation }: any) {
             style={styles.input}
             value={location}
             onChangeText={searchLocation}
-            placeholder="e.g. Vilnius, Old Town"
+            placeholder={t('post.locationPlaceholder')}
             placeholderTextColor="#9CA3AF"
           />
           {(locationSuggestions || []).length > 0 && (
@@ -338,7 +338,7 @@ export default function PostScreen({ navigation }: any) {
               <TouchableOpacity onPress={handleAddImage}
                 style={{ width: 80, height: 80, borderRadius: 8, borderWidth: 2, borderColor: '#E5E7EB', borderStyle: 'dashed', justifyContent: 'center', alignItems: 'center', backgroundColor: '#F9FAFB' }}>
                 <Text style={{ fontSize: 24, color: '#9CA3AF' }}>+</Text>
-                <Text style={{ fontSize: 10, color: '#9CA3AF' }}>Add Photo</Text>
+                <Text style={{ fontSize: 10, color: '#9CA3AF' }}>{t('post.addPhoto')}</Text>
               </TouchableOpacity>
             )}
           </ScrollView>
@@ -364,7 +364,7 @@ export default function PostScreen({ navigation }: any) {
                 style={[styles.input, { height: 80 }]}
                 value={toolsList}
                 onChangeText={setToolsList}
-                placeholder="e.g. drill, ladder, paint brushes"
+                placeholder={t('post.toolsPlaceholder')}
                 placeholderTextColor="#9CA3AF"
                 multiline
               />
@@ -372,7 +372,7 @@ export default function PostScreen({ navigation }: any) {
           )}
 
           <Text style={styles.label}>{t('post.slotsRequired')}</Text>
-          <Text style={styles.hint}>How many people do you need for this task?</Text>
+          <Text style={styles.hint}>{t('post.slotint')}</Text>
           <View style={{ flexDirection: 'row', gap: 8, marginTop: 4 }}>
             {[1, 2, 3, 4, 5].map(n => (
               <TouchableOpacity
@@ -397,7 +397,7 @@ export default function PostScreen({ navigation }: any) {
           </View>
 
           <View style={styles.trustBox}>}>
-            <Text style={styles.trustText}>🔒 Payment is only released when you confirm the task is complete</Text>
+            <Text style={styles.trustText}>{t('post.paymentNotice')}</Text>
           </View>
 
           <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit} disabled={submitting}>

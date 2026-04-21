@@ -14,12 +14,12 @@ import client from '../../api/client';
 type Tab = 'overview' | 'tasks' | 'reviews' | 'verification' | 'billing' | 'settings';
 
 const TABS = [
-  { key: 'overview', label: 'Overview' },
-  { key: 'tasks', label: 'My Tasks' },
-  { key: 'reviews', label: 'Reviews' },
-  { key: 'verification', label: 'Verification' },
-  { key: 'billing', label: 'Billing' },
-  { key: 'settings', label: 'Settings' },
+  { key: 'overview', label: t('profile.overview') },
+  { key: 'tasks', label: t('profile.myTasks') },
+  { key: 'reviews', label: t('profile.reviews') },
+  { key: 'verification', label: t('profile.verification') },
+  { key: 'billing', label: t('profile.billing') },
+  { key: 'settings', label: t('profile.settings') },
 ] as const;
 
 export default function ProfileScreen() {
@@ -132,16 +132,16 @@ export default function ProfileScreen() {
     }
   };
   const handleLogout = () => {
-    Alert.alert('Logout', 'Are you sure?', [
+    Alert.alert(t('auth.logout'), t('profile.logoutConfirm'), [
       { text: 'Cancel', style: 'cancel' },
-      { text: 'Logout', style: 'destructive', onPress: logout },
+      { text: t('auth.logout'), style: 'destructive', onPress: logout },
     ]);
   };
 
   const getVerificationColor = (st: string) =>
     ({ VERIFIED: '#10B981', EXPIRING: '#F59E0B', EXPIRED: '#EF4444', PENDING: '#3B82F6' } as any)[st] || '#6B7280';
   const getVerificationLabel = (st: string) =>
-    ({ VERIFIED: 'Verified', EXPIRING: 'Expiring Soon', EXPIRED: 'Expired', PENDING: 'Pending Review' } as any)[st] || 'Not Verified';
+    ({ VERIFIED: t('profile.verified'), EXPIRING: t('profile.expiringSoon'), EXPIRED: t('profile.expired'), PENDING: t('profile.pendingReview') } as any)[st] || t('profile.notVerified');
   const getStatusColor = (st: string) =>
     ({ OPEN: '#10B981', ASSIGNED: '#3B82F6', COMPLETED: '#6B7280', CANCELLED: '#EF4444' } as any)[st] || '#6B7280';
 
@@ -198,12 +198,12 @@ export default function ProfileScreen() {
             {!editingProfile ? (
               <>
                 <View style={s.card}>
-                  <Row label="Name" val={profile?.name} />
-                  <Row label="Email" val={profile?.email} />
-                  <Row label="Phone" val={profile?.phone || 'Not set'} />
-                  <Row label="Bio" val={profile?.bio || 'Not set'} />
-                  <Row label="Role" val={profile?.role} />
-                  <Row label="Member since" val={profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString() : '-'} />
+                  <Row label=t('profile.name') val={profile?.name} />
+                  <Row label=t('profile.email') val={profile?.email} />
+                  <Row label=t('profile.phone') val={profile?.phone || t('profile.notSet')} />
+                  <Row label=t('profile.bio') val={profile?.bio || t('profile.notSet')} />
+                  <Row label=t('profile.role') val={profile?.role} />
+                  <Row label=t('profile.memberSince') val={profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString() : '-'} />
                 </View>
                 <TouchableOpacity style={s.secondaryBtn} onPress={() => {
                   setEditName(profile?.name || '');
@@ -211,7 +211,7 @@ export default function ProfileScreen() {
                   setEditBio(profile?.bio || '');
                   setEditingProfile(true);
                 }}>
-                  <Text style={s.secondaryBtnTxt}>Edit Profile</Text>
+                  <Text style={s.secondaryBtnTxt}>{t('profile.editProfile')}</Text>
                 </TouchableOpacity>
               </>
             ) : (
@@ -223,10 +223,10 @@ export default function ProfileScreen() {
                 <Text style={s.lbl}>Bio</Text>
                 <TextInput style={[s.input, { height: 80 }]} value={editBio} onChangeText={setEditBio} multiline />
                 <TouchableOpacity style={s.primaryBtn} onPress={handleSaveProfile}>
-                  <Text style={s.primaryBtnTxt}>Save Changes</Text>
+                  <Text style={s.primaryBtnTxt}>{t('profile.saveChanges')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={s.secondaryBtn} onPress={() => setEditingProfile(false)}>
-                  <Text style={s.secondaryBtnTxt}>Cancel</Text>
+                  <Text style={s.secondaryBtnTxt}>{t('common.cancel')}</Text>
                 </TouchableOpacity>
               </View>
             )}
@@ -270,7 +270,7 @@ export default function ProfileScreen() {
             {avgRating && (
               <View style={[s.card, { alignItems: 'center' }]}>
                 <Text style={{ fontSize: 36, fontWeight: '800', color: '#1FB6AE' }}>STAR {avgRating}</Text>
-                <Text style={s.meta}>Average Rating</Text>
+                <Text style={s.meta}>{t('profile.averageRating')}</Text>
               </View>
             )}
             {reviews.length === 0
@@ -290,7 +290,7 @@ export default function ProfileScreen() {
 
         {tab === 'verification' && (
           <View style={s.section}>
-            <Text style={s.sectionTitle}>ID Verification</Text>
+            <Text style={s.sectionTitle}>{t('profile.idVerification')}</Text>
             <View style={[s.card, { borderColor: getVerificationColor(vs), borderWidth: 2 }]}>
               <Text style={[s.verTitle, { color: getVerificationColor(vs) }]}>{getVerificationLabel(vs)}</Text>
               {vs === 'EXPIRING' && <Text style={s.warnTxt}>Your ID is expiring soon. Upload a new document to avoid restrictions.</Text>}
@@ -311,7 +311,7 @@ export default function ProfileScreen() {
         {tab === 'billing' && <BillingTab profile={profile} />}
         {tab === 'settings' && (
           <View style={s.section}>
-            <Text style={s.sectionTitle}>Settings</Text>
+            <Text style={s.sectionTitle}>{t('profile.settings')}</Text>
             <View style={s.card}>
               <Row label="Account Type" val={profile?.role || '-'} />
               <Row label="Verified" val={vs} />
@@ -337,7 +337,7 @@ export default function ProfileScreen() {
               </View>
             </View>
             <TouchableOpacity style={[s.primaryBtn, { backgroundColor: '#EF4444' }]} onPress={handleLogout}>
-              <Text style={s.primaryBtnTxt}>Logout</Text>
+              <Text style={s.primaryBtnTxt}>{t('auth.logout')}</Text>
             </TouchableOpacity>
           </View>
         )}
