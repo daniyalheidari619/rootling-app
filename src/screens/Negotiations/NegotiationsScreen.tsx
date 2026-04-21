@@ -50,7 +50,8 @@ export default function NegotiationsScreen({ navigation }: any) {
                 <Text style={s.taskTitle} numberOfLines={1}>{item.task?.title}</Text>
                 <View style={[s.statusBadge, { backgroundColor: getStatusColor(item.status) + '20' }]}>
                   <Text style={[s.statusText, { color: getStatusColor(item.status) }]}>{getStatusLabel(item.status)}</Text>
-                </Vi         </View>
+                </View>
+              </View>
               <View style={s.priceRow}>
                 <View><Text style={s.priceLabel}>{lang === 'lt' ? 'Pradinė' : 'Original'}</Text><Text style={s.priceOld}>€{item.originalPrice}</Text></View>
                 <Text style={s.arrow}>→</Text>
