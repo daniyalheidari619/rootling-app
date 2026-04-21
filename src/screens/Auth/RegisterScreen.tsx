@@ -22,10 +22,11 @@ export default function RegisterScreen({ navigation }: any) {
   const { setAuth } = useAuthStore();
   const { t } = useTranslation();
 
-  const [request, response, promptAsync] = Google.useAuthRequest({
+  const googleAuth = Google.useAuthRequest({
     iosClientId: '588978066613-08eafmkaf2uc0jqo39mgtnq0nqgbl9ce.apps.googleusercontent.com',
     webClientId: '588978066613-6njigohb22ke0tt3fmormd4n2vgr6d1k.apps.googleusercontent.com',
   });
+  const [request, response, promptAsync] = Array.isArray(googleAuth) ? googleAuth : [null, null, () => {}];
 
   React.useEffect(() => {
     if (response?.type === 'success') {
