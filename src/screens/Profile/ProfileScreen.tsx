@@ -175,7 +175,7 @@ export default function ProfileScreen({ navigation }: any) {
         <View style={s.avatarRow}>
           <TouchableOpacity onPress={handlePhotoUpload}>
             {profile?.profilePhoto
-              ? <Image source={{ uri: profile.profileImage }} style={s.avatar} />
+              ? <Image source={{ uri: profile.profilePhoto }} style={s.avatar} />
               : <View style={[s.avatar, s.avatarFallback]}><Text style={s.avatarTxt}>{profile?.name?.[0] || '?'}</Text></View>}
             <View style={s.photoBadge}><Text style={{ fontSize: 12 }}>📷</Text></View>
           </TouchableOpacity>
