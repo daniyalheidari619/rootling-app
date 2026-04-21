@@ -4,7 +4,12 @@ import {
   StyleSheet, ActivityIndicator, KeyboardAvoidingView,
   Platform, ScrollView, Alert,
 } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
+import { useAuthStore } from '../../store/authStore';
 import client from '../../api/client';
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function RegisterScreen({ navigation }: any) {
   const [name, setName] = useState('');
@@ -12,6 +17,43 @@ export default function RegisterScreen({ navigation }: any) {
   const [password, setPassword] = useState('');
   const [role, setRole] = useState<'CLIENT' | 'TASKER'>('TASKER');
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const { setAuth } = useAuthStore();
+
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    iosClientId: '588978066613-08eafmkaf2uc0jqo39mgtnq0nqgbl9ce.apps.googleusercontent.com',
+    webClientId: '588978066613-6njigohb22ke0tt3fmormd4n2vgr6d1k.apps.googleusercontent.com',
+  });
+
+  React.useEffect(() => {
+    if (response?.type === 'success') {
+      const { authentication } = response;
+      if (authentication?.accessToken) {
+        handleGoogleToken(authentication.accessToken, role);
+      }
+    } else if (response?.type === 'error') {
+      Alert.alert('Error', 'Google sign up failed');
+    }
+  }, [response]);
+
+  const handleGoogleToken = async (accessToken: string, selectedRole: string) => {
+    setGoogleLoading(true);
+    try {
+      const { data } = await client.post('/api/auth/google/mobile', {
+        accessToken,
+        role: selectedRole,
+      });
+      if (data.success) {
+        await setAuth(data.data.user, data.data.token);
+      } else {
+        Alert.alert('Error', data.message || 'Google sign up failed');
+      }
+    } catch (e: any) {
+      Alert.alert('Error', e?.response?.data?.message || 'Google sign up failed');
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
 
   const handleRegister = async () => {
     if (!name || !email || !password) return Alert.alert('Error', 'Please fill in all fields');
@@ -48,12 +90,22 @@ export default function RegisterScreen({ navigation }: any) {
               <Text style={[styles.roleText, role === 'CLIENT' && styles.roleTextActive]}>📋 Post Tasks</Text>
             </TouchableOpacity>
           </View>
+          <TouchableOpacity style={styles.googleBtn} onPress={() => promptAsync()} disabled={!request || googleLoading}>
+            {googleLoading ? <ActivityIndicator color="#374151" /> : (
+              <><Tstyle={styles.googleIcon}>G</Text><Text style={styles.googleBtnText}>Continue with Google</Text></>
+            )}
+          </TouchableOpacity>
+          <View style={styles.dividerRow}>
+            <View style={styles.dividerLine} />
+            <Text style={styles.dividerText}>or sign up with email</Text>
+            <View style={styles.dividerLine} />
+          </View>
           <Text style={styles.label}>Full Name</Text>
           <TextInput style={styles.input} value={name} onChangeText={setName} placeholder="John Smith" placeholderTextColor="#9CA3AF" />
           <Text style={styles.label}>Email</Text>
           <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder="you@example.com" autoCapitalize="none" keyboardType="email-address" placeholderTextColor="#9CA3AF" />
           <Text style={styles.label}>Password</Text>
-          <TextInput style={styles.input} value={password} onChangeText={setPassword} placeholder="••••••••" secureTextEntry placeholderTextColor="#9CA3AF" />
+          <TextInput style={styles.input} value={password} onChangeText={setPassword} placeholder="••••••••" secureTextEntry placeholderTextC>
           <TouchableOpacity style={styles.btn} onPress={handleRegister} disabled={loading}>
             {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.btnText}>Create Account</Text>}
           </TouchableOpacity>
@@ -78,6 +130,12 @@ const styles = StyleSheet.create({
   roleBtnActive: { borderColor: '#1FB6AE', backgroundColor: '#F0FAFA' },
   roleText: { color: '#6B7280', fontWeight: '600', fontSize: 14 },
   roleTextActive: { color: '#1FB6AE' },
+  googleBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderWidth: 1.5, borderColor: '#E5E7EB', borderRadius: 12, padding: 14, gap: 10, backgroundColor: '#fff', marginBottom: 8 },
+  googleIcon: { fontSize: 16, fontWeight: '800', color: '#1FB6AE' },
+  googleBtnText: { fontSize: 15, fontWeight: '600', color: '#374151' },
+  dividerRow: { flexDirection: 'row', alignItems: 'center', marginVertical: 16 },
+  dividerLine: { flex: 1, height: 1, backgroundColor: '#E5E7EB' },
+  dividerText: { marginHorizontal: 12, color: '#9CA3AF', fontSize: 13 },
   input: { borderWidth: 1, borderColor: '#E5E7EB', borderRadius: 12, padding: 14, fontSize: 15, color: '#111827', marginBottom: 16, backgroundColor: '#F9FAFB' },
   btn: { backgroundColor: '#1FB6AE', borderRadius: 12, padding: 16, alignItems: 'center', marginTop: 8 },
   btnText: { color: '#fff', fontWeight: '700', fontSize: 16 },

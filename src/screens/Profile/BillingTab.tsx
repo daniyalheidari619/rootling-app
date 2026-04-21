@@ -1,0 +1,192 @@
+import React, { useState } from 'react';
+import {
+  View, Text, StyleSheet, ScrollView, TouchableOpacity,
+  Alert, ActivityIndicator, Linking,
+} from 'react-native';
+import { useStripe, CardField } from '@stripe/stripe-react-native';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import client from '../../api/client';
+
+export default function BillingTab({ profile }: { profile: any }) {
+  const { confirmSetupIntent } = useStripe();
+  const queryClient = useQueryClient();
+  const [showCardForm, setShowCardForm] = useState(false);
+  const [cardComplete, setCardComplete] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [connectLoading, setConnectLoading] = useState(false);
+
+  const { data: paymentMethods = [], refetch: refetchPM } = useQuery({
+    queryKey: ['paymentMethods'],
+    queryFn: async () => {
+      const { data } = await client.get('/api/payments/payment-methods');
+      return data.paymentMethods || [];
+    },
+  });
+
+  const { data: connectStatus, refetch: refetchConnect } = useQuery({
+    queryKey: ['connectStatus'],
+    queryFn: async () => {
+      const { data } = await client.get('/api/payments/connect/status');
+      return data;
+    },
+  });
+
+  const { data: earnings } = useQuery({
+    queryKey: ['earnings'],
+    queryFn: async () => {
+      const { data } = await client.get('/api/payments/balance');
+      return data;
+    },
+  });
+
+  const handleAddCard = async () => {
+    if (!cardComplete) return Alert.alert('Error', 'Please enter complete card details');
+    setSaving(true);
+    try {
+      const { data } = await client.post('/api/payments/setup-intent');
+      const { setupIntent, error } = await confirmSetupIntent(data.clientSecret, {
+        paymentMethodType: 'Card',
+      });
+      if (error) {
+        Alert.alert('Error', error.message);
+      } else if (setupIntent) {
+        await refetchPM();
+        setShowCardForm(false);
+        Alert.alert('Success', 'Card saved successfully!');
+      }
+    } catch (e: any) {
+      Alert.alert('Error', e.response?.data?.error || 'Failed to save card');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleConnectStripe = async () => {
+    setConnectLoading(true);
+    try {
+      const { data } = await client.post('/api/payments/connect/onboard', {
+        returnUrl: 'rootling://profile',
+      });
+      if (data.url) {
+        await Linking.openURL(data.url);
+      }
+    } catch (e: any) {
+      Alert.alert('Error', e.response?.data?.error || 'Failed to start Stripe onboarding');
+    } finally {
+      setConnectLoading(false);
+    }
+  };
+
+  const getConnectColor = () => {
+    if (connectStatus?.chargesEnabled) return '#10B981';
+    if (connectStatus?.accountId) return '#F59E0B';
+    return '#EF4444';
+  };
+
+  const getConnectLabel = () => {
+    if (connectStatus?.chargesEnabled) return '✓ Payouts Active';
+    if (connectStatus?.accountId) return '⏳ Setup Incomplete';
+    return '✗ Not Connected';
+  };
+
+  return (
+    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 16 }}>
+      {/* Balance */}
+      {earnings && (
+        <View style={[s.card, { borderColor: '#86EFAC', borderWidth: 2 }]}>
+          <Text style={s.lbl}>Available Balance</Text>
+          <Text style={[s.bigVal, { color: '#10B981', fontSize: 28 }]}>
+            €{((earnings?.available || 0) / 100).toFixed(2)}
+          </Text>
+          <Text style={[s.lbl, { marginTop: 8 }]}>Pending</Text>
+          <Text style={s.bigVal}>€{((earnings?.pending || 0) / 100).toFixed(2)}</Text>
+        </View>
+      )}
+
+      {/* Subscription */}
+      <View style={s.card}>
+        <Text style={s.lbl}>Subscription Plan</Text>
+        <Text style={s.bigVal}>{profile?.isSubscriber ? '⭐ Premium Active' : 'Free Plan'}</Text>
+      </View>
+
+      {/* Payment Methods */}
+      <Text style={s.sectionTitle}>Payment Methods</Text>
+      {paymentMethods.map((pm: any) => (
+        <View key={pm.id} style={s.card}>
+          <View style={s.row}>
+            <Text style={s.bigVal}>{pm.card?.brand?.toUpperCase()} ••••{pm.card?.last4}</Text>
+            <Text style={s.mutedTxt}>Exp: {pm.card?.exp_month}/{pm.card?.exp_year}</Text>
+          </View>
+        </View>
+      ))}
+
+      {!showCardForm ? (
+        <TouchableOpacity style={s.secondaryBtn} onPress={() => setShowCardForm(true)}>
+          <Text style={s.secondaryBtnTxt}>+ Add New Card</Text>
+        </TouchableOpacity>
+      ) : (
+        <View style={s.card}>
+          <Text style={s.lbl}>Card Details</Text>
+          <CardField
+            postalCodeEnabled={false}
+            style={{ height: 50, marginVertical: 8 }}
+            cardStyle={{ backgroundColor: '#F9FAFB', textColor: '#111827', borderRadius: 8 }}
+            onCardChange={(cardDetails) => setCardComplete(cardDetails.complete)}
+          />
+          <TouchableOpacity style={s.primaryBtn} onPress={handleAddCard} disabled={saving || !cardComplete}>
+            {saving ? <ActivityIndicator color="white" /> : <Text style={s.primaryBtnTxt}>Save Card</Text>}
+          </TouchableOpacity>
+          <TouchableOpacity style={s.secondaryBtn} onPress={() => setShowCardForm(false)}>
+            <Text style={s.secondaryBtnTxt}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/* Stripe Connect */}
+      <Text style={s.sectionTitle}>Payout Account</Text>
+      <View style={[s.card, { borderColor: getConnectColor(), borderWidth: 2 }]}>
+        <Text style={[s.bigVal, { color: getConnectColor() }]}>{getConnectLabel()}</Text>
+        {connectStatus?.chargesEnabled && (
+          <Text style={s.mutedTxt}>Payments go directly to your bank account after task completion.</Text>
+        )}
+        {connectStatus?.accountId && !connectStatus?.chargesEnabled && (
+          <Text style={s.mutedTxt}>Your Stripe account needs additional information to activate payouts.</Text>
+        )}
+        {!connectStatus?.accountId && (
+          <Text style={s.mutedTxt}>Connect your bank account to receive payouts from completed tasks.</Text>
+        )}
+      </View>
+
+      <TouchableOpacity
+        style={connectStatus?.chargesEnabled ? s.secondaryBtn : s.primaryBtn}
+        onPress={handleConnectStripe}
+        disabled={connectLoading}
+      >
+        {connectLoading
+          ? <ActivityIndicator color="#1FB6AE" />
+          : <Text style={connectStatus?.chargesEnabled ? s.secondaryBtnTxt : s.primaryBtnTxt}>
+              {connectStatus?.chargesEnabled
+                ? 'Manage / Change Payout Account'
+                : connectStatus?.accountId
+                  ? 'Complete Stripe Setup'
+                  : 'Connect Bank Account'}
+            </Text>}
+      </TouchableOpacity>
+
+      <View style={{ height: 40 }} />
+    </ScrollView>
+  );
+}
+
+const s = StyleSheet.create({
+  card: { backgroundColor: 'white', borderRadius: 12, padding: 16, marginBottom: 12, borderWidth: 1, borderColor: '#E5E7EB' },
+  sectionTitle: { fontSize: 18, fontWeight: '700', color: '#111827', marginBottom: 12, marginTop: 4 },
+  lbl: { fontSize: 13, color: '#6B7280', marginBottom: 4 },
+  bigVal: { fontSize: 18, fontWeight: '700', color: '#111827' },
+  mutedTxt: { fontSize: 14, color: '#6B7280', lineHeight: 20, marginTop: 4 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  primaryBtn: { backgroundColor: '#1FB6AE', borderRadius: 12, padding: 16, alignItems: 'center', marginBottom: 12 },
+  primaryBtnTxt: { color: 'white', fontWeight: '700', fontSize: 16 },
+  secondaryBtn: { backgroundColor: 'white', borderRadius: 12, padding: 16, alignItems: 'center', marginBottom: 12, borderWidth: 2, borderColor: '#1FB6AE' },
+  secondaryBtnTxt: { color: '#1FB6AE', fontWeight: '700', fontSize: 16 },
+});

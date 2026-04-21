@@ -70,7 +70,7 @@ export default function MessagesScreen({ navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F9FB' },
+  container: { flex: 1, backgroundColor: '#F7F9FB' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 24 },
   header: { paddingTop: 60, paddingHorizontal: 20, paddingBottom: 16 },
   headerTitle: { fontSize: 28, fontWeight: '800', color: '#111827' },

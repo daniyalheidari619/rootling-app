@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   header: { flexDirection: 'row', alignItems: 'center', paddingTop: 60, paddingHorizontal: 16, paddingBottom: 12, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#E5E7EB', gap: 12 },
   backBtn: { padding: 4 },
-  backText: { fontSize: 24, color: '#B6AE' },
+  backText: { fontSize: 24, color: '#1FB6AE' },
   headerInfo: { flex: 1 },
   headerName: { fontSize: 16, fontWeight: '700', color: '#111827' },
   headerSub: { fontSize: 12, color: '#6B7280' },
