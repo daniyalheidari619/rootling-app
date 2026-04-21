@@ -14,6 +14,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
   const { task: initialTask } = route.params;
   const { user } = useAuthStore();
   const [applying, setApplying] = useState(false);
+  const { t, lang } = useTranslation();
   const { t } = useTranslation();
   const [showNegotiate, setShowNegotiate] = useState(false);
   const [negotiatePrice, setNegotiatePrice] = useState('');
@@ -89,7 +90,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
         </View>
         <View style={styles.heroSection}>
           <View style={styles.categoryBadge}>
-            <Text style={styles.categoryText}>{safeTask.category?.replace(/-/g, ' ').toUpperCase()}</Text>
+            <Text style={styles.categoryText}>{t('cat.' + (safeTask.category || '').replace(/-([a-z])/g, (_: any, l: string) => l.toUpperCase())).toUpperCase()}</Text>
           </View>
           <Text style={styles.price}>€{safeTask.budget || 0}</Text>
           <Text style={styles.title}>{safeTask.title}</Text>
