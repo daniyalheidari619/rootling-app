@@ -43,6 +43,10 @@ export default function PostScreen({ navigation }: any) {
   const [locationSuggestions, setLocationSuggestions] = useState<any[]>([]);
   const [searchingLocation, setSearchingLocation] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [requiresCar, setRequiresCar] = useState(false);
+  const [requiresTools, setRequiresTools] = useState(false);
+  const [toolsList, setToolsList] = useState('');
+  const [slotsRequired, setSlotsRequired] = useState(1);
 
   if (!user) {
     return (
@@ -137,6 +141,10 @@ export default function PostScreen({ navigation }: any) {
         location,
         dueDate: dueDate || undefined,
         priority: priority ? 'HIGH' : 'NORMAL',
+        requiresCar,
+        requiresTools,
+        toolsList: requiresTools ? toolsList : '',
+        slotsRequired,
       });
       Alert.alert('Task Posted!', 'Your task is now live and taskers can find it.', [
         { text: 'OK', onPress: () => {
@@ -329,7 +337,61 @@ export default function PostScreen({ navigation }: any) {
               </TouchableOpacity>
             )}
           </ScrollView>
-          <View style={styles.trustBox}>
+          <View style={styles.priorityRow}>
+            <View style={styles.priorityInfo}>
+              <Text style={styles.label}>Requires a Car</Text>
+              <Text style={styles.hint}>Tasker must have a vehicle</Text>
+            </View>
+            <Switch value={requiresCar} onValueChange={setRequiresCar} trackColor={{ false: '#E5E7EB', true: '#1FB6AE' }} thumbColor="#fff" />
+          </View>
+
+          <View style={styles.priorityRow}>
+            <View style={styles.priorityInfo}>
+              <Text style={styles.label}>Requires Tools</Text>
+              <Text style={styles.hint}>Tasker must bring specific tools</Text>
+            </View>
+            <Switch value={requiresTools} onValueChange={setRequiresTools} trackColor={{ false: '#E5E7EB', true: '#1FB6AE' }} thumbColor="#fff" />
+          </View>
+          {requiresTools && (
+            <>
+              <Text style={styles.label}>List Required Tools</Text>
+              <TextInput
+                style={[styles.input, { height: 80 }]}
+                value={toolsList}
+                onChangeText={setToolsList}
+                placeholder="e.g. drill, ladder, paint brushes"
+                placeholderTextColor="#9CA3AF"
+                multiline
+              />
+            </>
+          )}
+
+          <Text style={styles.label}>Number of Taskers Needed</Text>
+          <Text style={styles.hint}>How many people do you need for this task?</Text>
+          <View style={{ flexDirection: 'row', gap: 8, marginTop: 4 }}>
+            {[1, 2, 3, 4, 5].map(n => (
+              <TouchableOpacity
+                key={n}
+                onPress={() => setSlotsRequired(n)}
+                style={{
+                  width: 44, height: 44, borderRadius: 22,
+                  backgroundColor: slotsRequired === n ? '#1FB6AE' : '#fff',
+                  borderWidth: 2, borderColor: slotsRequired === n ? '#1FB6AE' : '#E5E7EB',
+                  justifyContent: 'center', alignItems: 'center',
+                }}
+              >
+                <Text style={{ color: slotsRequired === n ? '#fff' : '#374151', fontWeight: '700' }}>{n}</Text>
+              </TouchableOpacity>
+            ))}
+            <TouchableOpacity
+              onPress={() => setSlotsRequired(slotsRequired < 10 ? slotsRequired + 1 : slotsRequired)}
+              style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: '#F3F4F6', justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#E5E7EB' }}
+            >
+              <Text style={{ color: '#374151', fontWeight: '700' }}>{slotsRequired > 5 ? slotsRequired : '+'}</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.trustBox}>}>
             <Text style={styles.trustText}>🔒 Payment is only released when you confirm the task is complete</Text>
           </View>
 

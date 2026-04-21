@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity,
-  ActivityIndicator, Alert,
+  ActivityIndicator, Alert, TextInput, Modal,
 } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import client from '../../api/client';
@@ -11,6 +11,10 @@ export default function TaskDetailScreen({ route, navigation }: any) {
   const { task: initialTask } = route.params;
   const { user } = useAuthStore();
   const [applying, setApplying] = useState(false);
+  const [showNegotiate, setShowNegotiate] = useState(false);
+  const [negotiatePrice, setNegotiatePrice] = useState('');
+  const [negotiateNote, setNegotiateNote] = useState('');
+  const [negotiating, setNegotiating] = useState(false);
 
   const { data: task = initialTask } = useQuery({
     queryKey: ['task', initialTask.id],
@@ -37,6 +41,28 @@ export default function TaskDetailScreen({ route, navigation }: any) {
   const handleMessage = () => {
     if (!user) return navigation.navigate('Login');
     navigation.navigate('ChatScreen', { taskId: task.id, otherUser: task.client });
+  };
+
+  const handleNegotiate = async () => {
+    if (!negotiatePrice || isNaN(Number(negotiatePrice)) || Number(negotiatePrice) < 1) {
+      return Alert.alert('Error', 'Enter a valid price');
+    }
+    setNegotiating(true);
+    try {
+      await client.post('/api/negotiations', {
+        taskId: task.id,
+        proposedPrice: Number(negotiatePrice),
+        message: negotiateNote,
+      });
+      Alert.alert('Offer Sent!', 'The client will review your price offer.');
+      setShowNegotiate(false);
+      setNegotiatePrice('');
+      setNegotiateNote('');
+    } catch (e: any) {
+      Alert.alert('Error', e?.response?.data?.message || 'Failed to send offer');
+    } finally {
+      setNegotiating(false);
+    }
   };
 
   const formatDate = (d: string) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -93,6 +119,62 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           <View style={styles.trustItem}><Text style={styles.trustIcon}>✓</Text><Text style={styles.trustText}>Secure Platform</Text></View>
           <View style={styles.trustItem}><Text style={styles.trustIcon}>⭐</Text><Text style={styles.trustText}>Rated Service</Text></View>
         </View>
+        {(task.requiresCar || task.requiresTools) && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Requirements</Text>
+            <View style={styles.requirementsBox}>
+              {task.requiresCar && (
+                <View style={styles.requirementItem}>
+                  <Text style={styles.requirementIcon}>🚗</Text>
+                  <Text style={styles.requirementText}>Car required</Text>
+                </View>
+              )}
+              {task.requiresTools && (
+                <View style={styles.requirementItem}>
+                  <Text style={styles.requirementIcon}>🔧</Text>
+                  <Text style={styles.requirementText}>Tools required{task.toolsList ? ': ' + task.toolsList : ''}<t>
+                </View>
+              )}
+            </View>
+          </View>
+        )}
+        {task.slotsRequired > 1 && (
+          <View style={styles.section}>
+            <View style={styles.slotsBox}>
+              <Text style={styles.slotsText}>👥 {task.slotsRequired} taskers needed ({task.slotsFilled || 0} filled)</Text>
+            </View>
+          </View>
+        )}
+        <Modal visible={showNegotiate} transparent animationType="slide">
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalCard}>
+              <Text style={styles.modalTitle}>Propose Your Price</Text>
+              <Text style={styles.modalSub}>Client's budget: €{task.budget}</Text>
+              <TextInput
+                style={styles.modalInput}
+                value={negotiatePrice}
+                onChangeText={setNegotiatePrice}
+                placeholder="Your price (€)"
+                placeholderTextColor="#9CA3AF"
+                keyboardType="numeric"
+              />
+              <TextInput
+                style={[styles.modalInput, { height: 80 }]}
+                value={negotiateNote}
+                onChangeText={setNegotiateNote}
+                placeholder="Why this price? (optional)"
+                placeholderTextColor="#9CA3AF"
+                multiline
+              />
+              <TouchableOpacity style={styles.modalBtn} onPress={handleNegotiate} disabled={negotiating}>
+                {negotiating ? <ActivityIndicator color="#fff" /> : <Text style={styles.modalBtnText}>Send Offer</Text>}
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setShowNegotiate(false)} style={styles.modalCancel}>
+                <Text style={styles.modalCancelText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
         <View style={{ height: 120 }} />
       </ScrollView>
       <View style={styles.actionBar}>
@@ -138,9 +220,26 @@ const styles = StyleSheet.create({
   trustItem: { alignItems: 'center', gap: 4 },
   trustIcon: { fontSize: 22 },
   trustText: { fontSize: 11, color: '#6B7280', textAlign: 'center' },
-  actionBar: { position: 'absolute', bottom: 0, left: 0, right: 0, flexDirection: 'row', gap: 12, padding: 16, paddingBottom: 32, backgroundColor: '#fff', borderTopWidth: 1, borderTopColor: '#E5E7EB' },
+  actionBar: { position: 'absolute', bottom: 0, left: 0, right: 0, flexDirection: 'row', gap: 8, padding: 12, paddingBottom: 28, backgroundColor: '#fff', borderTopWidth: 1, borderTopColor: '#E5E7EB' },
   messageBtn: { flex: 1, borderWidth: 2, borderColor: '#1FB6AE', borderRadius: 12, padding: 14, alignItems: 'center' },
   messageBtnText: { color: '#1FB6AE', fontWeight: '700', fontSize: 15 },
   applyBtn: { flex: 2, backgroundColor: '#1FB6AE', borderRadius: 12, padding: 14, alignItems: 'center' },
   applyBtnText: { color: '#fff', fontWeight: '700', fontSize: 15 },
+  negotiateBtn: { flex: 1, borderWidth: 2, borderColor: '#F59E0B', borderRadius: 12, padding: 14, alignItems: 'center' },
+  negotiateBtnText: { color: '#F59E0B', fontWeight: '700', fontSize: 14 },
+  requirementsBox: { backgroundColor: '#fff', borderRadius: 12, padding: 14, borderWidth: 1, borderColor: '#E5E7EB', gap: 10 },
+  requirementItem: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  requirementIcon: { fontSize: 20 },
+  requirementText: { fontSize: 14, color: '#374151', flex: 1 },
+  slotsBox: { backgroundColor: '#EFF6FF', borderRadius: 12, padding: 14, borderWidth: 1, borderColor: '#BFDBFE' },
+  slotsText: { fontSize: 14, color: '#1D4ED8', fontWeight: '600' },
+  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
+  modalCard: { backgroundColor: '#fff', borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 24, paddingBottom: 40 },
+  modalTitle: { fontSize: 20, fontWeight: '800', color: '#111827', marginBottom: 4 },
+  modalSub: { fontSize: 14, color: '#6B7280', marginBottom: 20 },
+  modalInput: { borderWidth: 1, borderColor: '#E5E7EB', borderRadius: 12, padding: 14, fontSize: 15, color: '#111827', marginBottom: 12, backgroundColor: '#F9FAFB' },
+  modalBtn: { backgroundColor: '#1FB6AE', borderRadius: 12, padding: 16, alignItems: 'center', marginTop: 8 },
+  modalBtnText: { color: '#fff', fontWeight: '700', fontSize: 16 },
+  modalCancel: { alignItems: 'center', marginTop: 12 },
+  modalCancelText: { color: '#6B7280', fontSize: 14 },
 });
