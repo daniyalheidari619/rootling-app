@@ -1,3 +1,4 @@
+import { loadLanguage } from './src/i18n';
 import React, { useEffect } from 'react';
 import { StripeProvider } from '@stripe/stripe-react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -11,7 +12,7 @@ function AppContent() {
   const { loadFromStorage } = useAuthStore();
   useLocation();
 
-  useEffect(() => {
+  useEffect(() => { loadLanguage();
     loadFromStorage();
   }, []);
 

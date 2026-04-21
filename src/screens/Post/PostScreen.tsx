@@ -12,7 +12,7 @@ import client from '../../api/client';
 const CATEGORIES = [
   { value: 'home-services', label: 'Home Services', icon: '🏠', subcategories: ['General Cleaning','Deep Cleaning','Window Cleaning','Laundry & Ironing','Carpet Cleaning','Oven Cleaning','Fridge Cleaning','Bathroom Deep Clean','Kitchen Deep Clean','Post-Construction Cleaning','Move-In/Out Cleaning'] },
   { value: 'moving-delivery', label: 'Moving & Delivery', icon: '🚚', subcategories: ['Furniture Moving','Full House Move','Single Item Delivery','Multiple Item Delivery','Grocery Delivery','Package Pickup','Store Pickup','Junk Removal'] },
-  { value: 'handyman', label: 'Handyman', icon: '🔧', egories: ['Furniture Assembly','Shelf Mounting','TV Mounting','Picture Hanging','Minor Repairs','Door Repairs','Light Fixture Install','Painting','Plumbing Help','Electrical Help'] },
+  { value: 'handyman', label: 'Handyman', icon: '🔧', subcategories: ['Furniture Assembly','Shelf Mounting','TV Mounting','Picture Hanging','Minor Repairs','Door Repairs','Light Fixture Install','Painting','Plumbing Help','Electrical Help'] },
   { value: 'gardening-outdoor', label: 'Gardening & Outdoor', icon: '🌿', subcategories: ['Lawn Mowing','Garden Maintenance','Planting','Leaf Removal','Snow Removal','Gutter Cleaning','Pressure Washing','Fence Repair'] },
   { value: 'pet-care', label: 'Pet Care', icon: '🐾', subcategories: ['Dog Walking','Pet Sitting Home','Pet Sitting Tasker','Pet Drop-In','Pet Feeding','Pet Transportation','Pet Grooming Basic','Litter Box Cleaning','Fish Tank Maintenance'] },
   { value: 'personal-assistance', label: 'Personal Assistance', icon: '🤝', subcategories: ['Grocery Shopping','General Errands','Waiting in Line','Gift Shopping','Returns & Exchanges','Prescription Pickup','Dry Cleaning Pickup','Bill Payment','Document Delivery','Car Wash'] },
@@ -89,7 +89,10 @@ export default function PostScreen({ navigation }: any) {
     if (text.length < 3) { setLocationSuggestions([]); return; }
     setSearchingLocation(true);
     try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(text)}&format=json&limit=5&countrycodes=lt,de,lv,ee,pl`);
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(text)}&format=json&limit=8&countrycodes=lt,lv,ee,pl,de&addressdetails=1&accept-language=en`,
+        { headers: { 'User-Agent': 'RootlingApp/1.0' } }
+      );
       const data = await res.json();
       setLocationSuggestions(data);
     } catch (e) {
@@ -107,7 +110,7 @@ export default function PostScreen({ navigation }: any) {
       return;
     }
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ImagePicker.MediaType.Images,
       allowsMultipleSelection: true,
       quality: 0.7,
       base64: true,

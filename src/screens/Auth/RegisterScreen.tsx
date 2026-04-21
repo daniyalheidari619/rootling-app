@@ -92,7 +92,7 @@ export default function RegisterScreen({ navigation }: any) {
           </View>
           <TouchableOpacity style={styles.googleBtn} onPress={() => promptAsync()} disabled={!request || googleLoading}>
             {googleLoading ? <ActivityIndicator color="#374151" /> : (
-              <><Tstyle={styles.googleIcon}>G</Text><Text style={styles.googleBtnText}>Continue with Google</Text></>
+              <><Text style={styles.googleIcon}>G</Text><Text style={styles.googleBtnText}>Continue with Google</Text></>
             )}
           </TouchableOpacity>
           <View style={styles.dividerRow}>
@@ -105,7 +105,7 @@ export default function RegisterScreen({ navigation }: any) {
           <Text style={styles.label}>Email</Text>
           <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder="you@example.com" autoCapitalize="none" keyboardType="email-address" placeholderTextColor="#9CA3AF" />
           <Text style={styles.label}>Password</Text>
-          <TextInput style={styles.input} value={password} onChangeText={setPassword} placeholder="••••••••" secureTextEntry placeholderTextC>
+          <TextInput style={styles.input} value={password} onChangeText={setPassword} placeholder="••••••••" secureTextEntry placeholderTextColor="#9CA3AF" />
           <TouchableOpacity style={styles.btn} onPress={handleRegister} disabled={loading}>
             {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.btnText}>Create Account</Text>}
           </TouchableOpacity>
