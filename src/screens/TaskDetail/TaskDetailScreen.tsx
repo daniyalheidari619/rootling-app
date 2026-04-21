@@ -1,3 +1,4 @@
+import { anonName, anonAvatar } from '../../utils/anonName';
 import { useTranslation } from '../../i18n';
 import React, { useState } from 'react';
 import {
@@ -106,10 +107,10 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           <Text style={styles.sectionTitle}>{t('task.aboutClient')}</Text>
           <View style={styles.clientCard}>
             <View style={styles.clientAvatar}>
-              <Text style={styles.clientAvatarText}>{task.client?.name?.[0]?.toUpperCase() || '?'}</Text>
+              <Text style={styles.clientAvatarText}>{anonAvatar(task.client?.name)}</Text>
             </View>
             <View style={styles.clientInfo}>
-              <Text style={styles.clientName}>{task.client?.name || 'Anonymous'}</Text>
+              <Text style={styles.clientName}>{anonName(task.client?.name, 'client')}</Text>
               {task.client?.clientRating > 0 && <Text style={styles.clientRating}>★ {task.client.clientRating.toFixed(1)}</Text>}
               {task.client?.idVerificationStatus === 'VERIFIED' && <Text style={styles.verifiedBadge}>✓ ID Verified</Text>}
             </View>

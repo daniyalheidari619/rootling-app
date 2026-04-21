@@ -1,3 +1,4 @@
+import { anonName } from '../../utils/anonName';
 import { useTranslation, setLanguage, LANGUAGES } from '../../i18n';
 import React, { useState } from 'react';
 import {
@@ -282,7 +283,7 @@ export default function ProfileScreen() {
                     <Text style={s.meta}>{new Date(r.createdAt).toLocaleDateString()}</Text>
                   </View>
                   {r.comment && <Text style={s.reviewTxt}>{r.comment}</Text>}
-                  <Text style={s.meta}>-- {r.reviewer?.name?.[0] || '?'}.</Text>
+                  <Text style={s.meta}>-- {anonName(r.reviewer?.name, 'client')}</Text>
                 </View>
               ))}
           </View>

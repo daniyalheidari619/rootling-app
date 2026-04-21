@@ -1,3 +1,4 @@
+import { anonName } from '../../utils/anonName';
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -55,7 +56,7 @@ export default function ChatScreen({ route, navigation }: any) {
           <Text style={styles.backText}>←</Text>
         </TouchableOpacity>
         <View style={styles.headerInfo}>
-          <Text style={styles.headerName}>{otherUser?.name || 'Chat'}</Text>
+          <Text style={styles.headerName}>{anonName(otherUser?.name, 'tasker')}</Text>
           <Text style={styles.headerSub}>Task conversation</Text>
         </View>
       </View>

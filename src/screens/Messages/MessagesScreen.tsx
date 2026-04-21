@@ -1,3 +1,4 @@
+import { anonName, anonAvatar } from '../../utils/anonName';
 import { useTranslation } from '../../i18n';
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
@@ -49,10 +50,10 @@ export default function MessagesScreen({ navigation }: any) {
     const timeAgo = mins < 60 ? `${mins}m` : mins < 1440 ? `${Math.floor(mins/60)}h` : `${Math.floor(mins/1440)}d`;
     return (
       <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('ChatScreen', { taskId: item.taskId, otherUser })}>
-        <View style={styles.avatar}><Text style={styles.avatarText}>{otherUser?.name?.[0]?.toUpperCase() || '?'}</Text></View>
+        <View style={styles.avatar}><Text style={styles.avatarText}>{anonAvatar(otherUser?.name)}</Text></View>
         <View style={styles.itemContent}>
           <View style={styles.itemHeader}>
-            <Text style={styles.itemName}>{otherUser?.name || 'Unknown'}</Text>
+            <Text style={styles.itemName}>{anonName(otherUser?.name, 'tasker')}</Text>
             <Text style={styles.itemTime}>{timeAgo}</Text>
           </View>
           <Text style={styles.itemTask} numberOfLines={1}>📋 {item.task?.title || 'Task'}</Text>
