@@ -11,17 +11,17 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import client from '../../api/client';
 
 const CATEGORIES_DATA = [
-  { value: 'home-services', label: 'Home Services', icon: '🏠', subcategories: ['General Cleaning','Deep Cleaning','Window Cleaning','Laundry & Ironing','Carpet Cleaning','Oven Cleaning','Fridge Cleaning','Bathroom Deep Clean','Kitchen Deep Clean','Post-Construction Cleaning','Move-In/Out Cleaning'] },
-  { value: 'moving-delivery', label: 'Moving & Delivery', icon: '🚚', subcategories: ['Furniture Moving','Full House Move','Single Item Delivery','Multiple Item Delivery','Grocery Delivery','Package Pickup','Store Pickup','Junk Removal'] },
-  { value: 'handyman', label: 'Handyman', icon: '🔧', subcategories: ['Furniture Assembly','Shelf Mounting','TV Mounting','Picture Hanging','Minor Repairs','Door Repairs','Light Fixture Install','Painting','Plumbing Help','Electrical Help'] },
-  { value: 'gardening-outdoor', label: 'Gardening & Outdoor', icon: '🌿', subcategories: ['Lawn Mowing','Garden Maintenance','Planting','Leaf Removal','Snow Removal','Gutter Cleaning','Pressure Washing','Fence Repair'] },
-  { value: 'pet-care', label: 'Pet Care', icon: '🐾', subcategories: ['Dog Walking','Pet Sitting Home','Pet Sitting Tasker','Pet Drop-In','Pet Feeding','Pet Transportation','Pet Grooming Basic','Litter Box Cleaning','Fish Tank Maintenance'] },
-  { value: 'personal-assistance', label: 'Personal Assistance', icon: '🤝', subcategories: ['Grocery Shopping','General Errands','Waiting in Line','Gift Shopping','Returns & Exchanges','Prescription Pickup','Dry Cleaning Pickup','Bill Payment','Document Delivery','Car Wash'] },
-  { value: 'elderly-special-care', label: 'Elderly & Special Care', icon: '❤️', subcategories: ['Companionship','Grocery Help Elderly','Meal Preparation','Light Housekeeping','Appointment Transport','Technology Help','Walking Assistance','Social Outing'] },
-  { value: 'events-hospitality', label: 'Events & Hospitality', icon: '🎉', subcategories: ['Party Setup','Party Cleanup','Serving Help','Event Decoration','BBQ Help','Holiday Decoration','Holiday Decoration Removal'] },
-  { value: 'administrative-digital', label: 'Administrative & Digital', icon: '💻', subcategories: ['Filing','Scanning','Photo Organization','Translation Help','Data Entry','Research','Social Media Help'] },
-  { value: 'seasonal-special', label: 'Seasonal & Special', icon: '❄️', subcategories: ['Christmas Tree Setup','Spring Cleaning','Back to School Prep','Holiday Shopping','Garage Sale Help','Donation Dropoff','Storage Organization','Vacation Prep','Return from Vacation','New Baby Prep'] },
-  { value: 'other', label: 'Other', icon: '📋', subcategories: ['Custom Task','Quick Favor','Creative Help','Learning Help'] },
+  { value: 'home-services', labelKey: 'cat.homeServices', icon: '🏠', subcategories: ['General Cleaning','Deep Cleaning','Window Cleaning','Laundry & Ironing','Carpet Cleaning','Oven Cleaning','Fridge Cleaning','Bathroom Deep Clean','Kitchen Deep Clean','Post-Construction Cleaning','Move-In/Out Cleaning'] },
+  { value: 'moving-delivery', labelKey: 'cat.movingDelivery', icon: '🚚', subcategories: ['Furniture Moving','Full House Move','Single Item Delivery','Multiple Item Delivery','Grocery Delivery','Package Pickup','Store Pickup','Junk Removal'] },
+  { value: 'handyman', labelKey: 'cat.handyman', icon: '🔧', subcategories: ['Furniture Assembly','Shelf Mounting','TV Mounting','Picture Hanging','Minor Repairs','Door Repairs','Light Fixture Install','Painting','Plumbing Help','Electrical Help'] },
+  { value: 'gardening-outdoor', labelKey: 'cat.gardeningOutdoor', icon: '🌿', subcategories: ['Lawn Mowing','Garden Maintenance','Planting','Leaf Removal','Snow Removal','Gutter Cleaning','Pressure Washing','Fence Repair'] },
+  { value: 'pet-care', labelKey: 'cat.petCare', icon: '🐾', subcategories: ['Dog Walking','Pet Sitting Home','Pet Sitting Tasker','Pet Drop-In','Pet Feeding','Pet Transportation','Pet Grooming Basic','Litter Box Cleaning','Fish Tank Maintenance'] },
+  { value: 'personal-assistance', labelKey: 'cat.perso'🤝', subcategories: ['Grocery Shopping','General Errands','Waiting in Line','Gift Shopping','Returns & Exchanges','Prescription Pickup','Dry Cleaning Pickup','Bill Payment','Document Delivery','Car Wash'] },
+  { value: 'elderly-special-care', labelKey: 'cat.elderlySpecialCare', icon: '❤️', subcategories: ['Companionship','Grocery Help Elderly','Meal Preparation','Light Housekeeping','Appointment Transport','Technology Help','Walking Assistance','Social Outing'] },
+  { value: 'events-hospitality', labelKey: 'cat.eventsHospitality', icon: '🎉', subcategories: ['Party Setup','Party Cleanup','Serving Help','Event Decoration','BBQ Help','Holiday Decoration','Holiday Decoration Removal'] },
+  { value: 'administrative-digital', labelKey: 'cat.administrativeDigital', icon: '💻', subcategories: ['Filing','Scanning','Photo Organization','Translation Help','Data Entry','Research','Social Media Help'] },
+  { value: 'seasonal-special', labelKey: 'cat.seasonalSpecial', icon: '❄️', subcategories: ['Christmas Tree Setup','Spring Cleaning','Back to School Prep','Holiday Shopping','Garage Sale Help','Donation Dropoff','Storage Organization','Vacation Prep','Return from Vacation','New Baby Prep'] },
+  { value: 'other', labelKey: 'cat.other', icon: '📋', subcategories: ['Custom Task','Quick Favor','Creative Help','Learning Help'] },
 ];
 
 export default function PostScreen({ navigation }: any) {
