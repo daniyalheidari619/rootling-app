@@ -10,7 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import client from '../../api/client';
 
-const CATEGORIES = [
+const CATEGORIES_DATA = [
   { value: 'home-services', label: 'Home Services', icon: '🏠', subcategories: ['General Cleaning','Deep Cleaning','Window Cleaning','Laundry & Ironing','Carpet Cleaning','Oven Cleaning','Fridge Cleaning','Bathroom Deep Clean','Kitchen Deep Clean','Post-Construction Cleaning','Move-In/Out Cleaning'] },
   { value: 'moving-delivery', label: 'Moving & Delivery', icon: '🚚', subcategories: ['Furniture Moving','Full House Move','Single Item Delivery','Multiple Item Delivery','Grocery Delivery','Package Pickup','Store Pickup','Junk Removal'] },
   { value: 'handyman', label: 'Handyman', icon: '🔧', subcategories: ['Furniture Assembly','Shelf Mounting','TV Mounting','Picture Hanging','Minor Repairs','Door Repairs','Light Fixture Install','Painting','Plumbing Help','Electrical Help'] },
