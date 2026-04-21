@@ -137,7 +137,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
               {task.requiresTools && (
                 <View style={styles.requirementItem}>
                   <Text style={styles.requirementIcon}>🔧</Text>
-                  <Text style={styles.requirementText}>Tools required{task.toolsList ? ': ' + task.toolsList : ''}<t>
+                  <Text style={styles.requirementText}>Tools required{task.toolsList ? ': ' + task.toolsList : ''}</Text>
                 </View>
               )}
             </View>
