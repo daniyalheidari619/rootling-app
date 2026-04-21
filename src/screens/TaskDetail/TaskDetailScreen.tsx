@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { translations } from '../../i18n/translations';
 import TranslateButton from '../../components/TranslateButton';
 import { anonName, anonAvatar } from '../../utils/anonName';
@@ -15,7 +16,12 @@ export default function TaskDetailScreen({ route, navigation }: any) {
   const { task: initialTask } = route.params;
   const { user } = useAuthStore();
   const [applying, setApplying] = useState(false);
-  const { t, lang } = useTranslation();
+  const { t } = useTranslation();
+  const [localLang, setLocalLang] = React.useState('en');
+  React.useEffect(() => {
+    AsyncStorage.getItem('app_language').then(l => { if (l) setLocalLang(l); });
+  }, []);
+  const lang = localLang;
   const [showNegotiate, setShowNegotiate] = useState(false);
   const [negotiatePrice, setNegotiatePrice] = useState('');
   const [negotiateNote, setNegotiateNote] = useState('');
