@@ -57,7 +57,7 @@ export default function ProfileScreen({ navigation }: any) {
     queryKey: ['myTasks'],
     queryFn: async () => {
       const { data } = await client.get('/api/tasks/my-tasks?includeApplied=true&includeClient=true');
-      return data.data || data.tasks || [];
+      return data.data || data.tasks || data || [];
     },
     enabled: !!user,
   });

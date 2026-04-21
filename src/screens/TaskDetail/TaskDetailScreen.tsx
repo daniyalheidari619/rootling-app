@@ -85,7 +85,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           <View style={styles.categoryBadge}>
             <Text style={styles.categoryText}>{task.category?.replace(/-/g, ' ').toUpperCase()}</Text>
           </View>
-          <Text style={styles.price}>€{task.budget}</Text>
+          <Text style={styles.price}>€{task.budget || 0}</Text>
           <Text style={styles.title}>{task.title}</Text>
           {task.priority === 'HIGH' && (
             <View style={styles.priorityBadge}>
@@ -94,8 +94,8 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           )}
         </View>
         <View style={styles.metaRow}>
-          {task.distance && <View style={styles.metaItem}><Text style={styles.metaText}>📍 {task.distance.toFixed(1)} km away</Text></View>}
-          <View style={styles.metaItem}><Text style={styles.metaText}>📅 {formatDate(task.createdAt)}</Text></View>
+          {task.distance != null && <View style={styles.metaItem}><Text style={styles.metaText}>📍 {task.distance.toFixed(1)} km away</Text></View>}
+          {task.createdAt && <View style={styles.metaItem}><Text style={styles.metaText}>📅 {formatDate(task.createdAt)}</Text></View>}
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>{t('task.description')}</Text>
