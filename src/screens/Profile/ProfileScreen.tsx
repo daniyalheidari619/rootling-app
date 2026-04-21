@@ -209,7 +209,7 @@ export default function ProfileScreen({ navigation }: any) {
                   <Row label={t('profile.email')} val={profile?.email} />
                   <Row label={t('profile.phone')} val={profile?.phone || t('profile.notSet')} />
                   <Row label={t('profile.bio')} val={profile?.bio || t('profile.notSet')} />
-                  <Row label={t('profile.role')} val={profile?.role === "BOTH" ? (lang === "lt" ? "Abu (Klientas ir Vykdytojas)" : "Both") : profile?.role === "CLIENT" ? (lang === "lt" ? "Klientas" : "Client") : (lang === "lt" ? "Vykdytojas" : "Tasker")} />
+                  <Row label={t('profile.role')} val={profile?.role === "BOTH" ? t("profile.clientTasker") : profile?.role === "CLIENT" ? t("profile.client") : t("profile.tasker")} />
                   <Row label={t('profile.memberSince')} val={profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString() : '-'} />
                 </View>
                 <TouchableOpacity style={s.secondaryBtn} onPress={() => {
