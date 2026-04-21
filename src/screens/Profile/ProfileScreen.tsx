@@ -12,7 +12,7 @@ import BillingTab from './BillingTab';
 import { useAuthStore } from '../../store/authStore';
 import client from '../../api/client';
 
-type Tab = 'overview' | 'tasks' | 'reviews' | 'verification' | 'billing' | 'settings';
+type Tab = 'overview' | 'tasks' | 'reviews' | 'verification' | 'billing' | 'preferences' | 'settings';
 
 const TABS = [
   { key: 'overview', labelKey: 'profile.overview' },
@@ -20,6 +20,7 @@ const TABS = [
   { key: 'reviews', labelKey: 'profile.reviews' },
   { key: 'verification', labelKey: 'profile.verification' },
   { key: 'billing', labelKey: 'profile.billing' },
+  { key: 'preferences', labelKey: 'profile.preferences' },
   { key: 'settings', labelKey: 'profile.settings' },
 ] as const;
 
@@ -90,6 +91,55 @@ export default function ProfileScreen({ navigation }: any) {
     },
     enabled: !!user,
   });
+
+  const { data: preferences = [], refetch: refetchPrefs } = useQuery({
+    queryKey: ['preferences'],
+    queryFn: async () => {
+      const { data } = await client.get('/api/auth/preferences');
+      return data.data || [];
+    },
+    enabled: !!user,
+  });
+
+  const [savingPrefs, setSavingPrefs] = useState(false);
+  const [selectedPrefs, setSelectedPrefs] = useState<string[]>([]);
+
+  React.useEffect(() => {
+    setSelectedPrefs(preferences);
+  }, [preferences]);
+
+  const handleSavePreferences = async () => {
+    setSavingPrefs(true);
+    try {
+      await client.put('/api/auth/preferences', { preferredCategories: selectedPrefs });
+      await refetchPrefs();
+      Alert.alert(lang === 'lt' ? 'Išsaugota' : 'Saved', lang === 'lt' ? 'Jūsų nuostatos išsaugotos.' : 'Your preferences have been saved.');
+    } catch (e: any) {
+      Alert.alert(t('common.error'), e?.response?.data?.message || 'Failed to save');
+    } finally {
+      setSavingPrefs(false);
+    }
+  };
+
+  const togglePref = (cat: string) => {
+    setSelectedPrefs(prev =>
+      prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
+    );
+  };
+
+  const CATEGORY_OPTIONS = [
+    { value: 'home-services', labelKey: 'cat.homeServices', icon: '🏠' },
+    { value: 'moving-delivery', labelKey: 'cat.movingDelivery', icon: '🚚' },
+    { value: 'handyman', labelKey: 'cat.handyman', icon: '🔧' },
+    { value: 'gardening-outdoor', labelKey: 'cat.gardeningOutdoor', icon: '🌿' },
+    { value: 'pet-care', labelKey: 'cat.petCare', icon: '🐾' },
+    { value: 'personal-assistance', labelKey: 'cat.personalAssistance', icon: '🤝' },
+    { value: 'elderly-special-care', labelKey: 'cat.elderlySpecialCare', icon: '❤️' },
+    { value: 'events-hospitality', labelKey: 'cat.eventsHospitality', icon: '🎉' },
+    { value: 'administrative-digital', labelKey: 'cat.administrativeDigital', icon: '💻' },
+    { value: 'seasonal-special', labelKey: 'cat.seasonalSpecial', icon: '❄️' },
+    { value: 'other', labelKey: 'cat.other', icon: '📋' },
+  ];
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -319,6 +369,39 @@ export default function ProfileScreen({ navigation }: any) {
         )}
 
         {tab === 'billing' && <BillingTab profile={profile} navigation={navigation} />}
+        {tab === 'preferences' && (
+          <View style={s.section}>
+            <Text style={s.sectionTitle}>{lang === 'lt' ? 'Mano nuostatos' : 'My Preferences'}</Text>
+            <Text style={[s.mutedTxt, { marginBottom: 16 }]}>
+              {lang === 'lt' ? 'Pasirinkite kategorijas, kurios jus domina. Užduotys iš šių kategorijų bus rodomos pirmiau.' : 'Select categories you are interested in. Tasks from these categories will appear first in your feed.'}
+            </Text>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 20 }}>
+              {CATEGORY_OPTIONS.map(cat => {
+                const isSelected = selectedPrefs.includes(cat.value);
+                return (
+                  <TouchableOpacity
+                    key={cat.value}
+                    onPress={() => togglePref(cat.value)}
+                    style={{
+                      flexDirection: 'row', alignItems: 'center', gap: 6,
+                      paddingHorizontal: 14, paddingVertical: 10, borderRadius: 20,
+                      backgroundColor: isSelected ? '#1FB6AE' : '#F3F4F6',
+                      borderWidth: 2, borderColor: isSelected ? '#1FB6AE' : '#E5E7EB',
+                    }}
+                  >
+                    <Text style={{ fontSize: 16 }}>{cat.icon}</Text>
+                    <Text style={{ fontSize: 13, fontWeight: '600', color: isSelected ? '#fff' : '#374151' }}>
+                      {t(cat.labelKey)}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+            <TouchableOpacity style={s.primaryBtn} onPress={handleSavePreferences} disabled={savingPrefs}>
+              {savingPrefs ? <ActivityIndicator color="white" /> : <Text style={s.primaryBtnTxt}>{lang === 'lt' ? 'Išsaugoti nuostatas' : 'Save Preferences'}</Text>}
+            </TouchableOpacity>
+          </View>
+        )}
         {tab === 'settings' && (
           <View style={s.section}>
             <Text style={s.sectionTitle}>{t('profile.settings')}</Text>
