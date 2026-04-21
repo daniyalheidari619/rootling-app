@@ -105,8 +105,10 @@ export default function ProfileScreen({ navigation }: any) {
   const [selectedPrefs, setSelectedPrefs] = useState<string[]>([]);
 
   React.useEffect(() => {
-    setSelectedPrefs(preferences);
-  }, [preferences]);
+    if (JSON.stringify(preferences) !== JSON.stringify(selectedPrefs)) {
+      setSelectedPrefs(preferences);
+    }
+  }, [JSON.stringify(preferences)]);
 
   const handleSavePreferences = async () => {
     setSavingPrefs(true);
