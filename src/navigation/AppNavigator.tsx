@@ -1,3 +1,4 @@
+import { useTranslation } from '../i18n';
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -20,6 +21,7 @@ const TabIcon = ({ icon, focused }: { icon: string; focused: boolean }) => (
 );
 
 function TabNavigator() {
+  const { t } = useTranslation();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -38,7 +40,7 @@ function TabNavigator() {
       }}
     >
       <Tab.Screen name="Home" component={HomeScreen}
-        options={{ tabBarIcon: ({ focused }) => <TabIcon icon="🏠" focused={focused} />, tabBarLabel: 'Home' }} />
+        options={{ tabBarIcon: ({ focused }) => <TabIcon icon="🏠" focused={focused} />, tabBarLabel: t('nav.home') }} />
       <Tab.Screen name="Swipe" component={SwipeScreen}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -51,14 +53,14 @@ function TabNavigator() {
               <Text style={{ fontSize: 24 }}>⚡</Text>
             </View>
           ),
-          tabBarLabel: 'Find Tasks',
+          tabBarLabel: t('nav.findTasks'),
         }} />
       <Tab.Screen name="Post" component={PostScreen}
-        options={{ tabBarIcon: ({ focused }) => <TabIcon icon="➕" focused={focused} />, tabBarLabel: 'Post' }} />
+        options={{ tabBarIcon: ({ focused }) => <TabIcon icon="➕" focused={focused} />, tabBarLabel: t('nav.post') }} />
       <Tab.Screen name="Messages" component={MessagesScreen}
-        options={{ tabBarIcon: ({ focused }) => <TabIcon icon="💬" focused={focused} />, tabBarLabel: 'Messages' }} />
+        options={{ tabBarIcon: ({ focused }) => <TabIcon icon="💬" focused={focused} />, tabBarLabel: t('nav.messages') }} />
       <Tab.Screen name="Profile" component={ProfileScreen}
-        options={{ tabBarIcon: ({ focused }) => <TabIcon icon="👤" focused={focused} />, tabBarLabel: 'Profile' }} />
+        options={{ tabBarIcon: ({ focused }) => <TabIcon icon="👤" focused={focused} />, tabBarLabel: t('nav.profile') }} />
     </Tab.Navigator>
   );
 }

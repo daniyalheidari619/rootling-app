@@ -337,3 +337,8 @@ export const lt: Record<string, string> = {
 };
 
 export const translations: Record<LanguageCode, Record<string, string>> = { en, lt };
+
+export const LANGUAGES = [
+  { code: 'en', name: 'English', nativeName: 'English', flag: '🇬🇧' },
+  { code: 'lt', name: 'Lithuanian', nativeName: 'Lietuvių', flag: '🇱🇹' },
+];
