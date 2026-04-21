@@ -25,6 +25,7 @@ const TABS = [
 export default function ProfileScreen() {
   const { user, logout, setAuth } = useAuthStore();
   const { t, lang } = useTranslation();
+  const { t, lang } = useTranslation();
   const [tab, setTab] = useState<Tab>('overview');
   const [refreshing, setRefreshing] = useState(false);
   const [editingProfile, setEditingProfile] = useState(false);
@@ -315,6 +316,25 @@ export default function ProfileScreen() {
             <View style={s.card}>
               <Row label="Account Type" val={profile?.role || '-'} />
               <Row label="Verified" val={vs} />
+            </View>
+            <View style={s.card}>
+              <Text style={s.lbl}>Language / Kalba</Text>
+              <View style={{ flexDirection: 'row', gap: 8, marginTop: 8 }}>
+                {LANGUAGES.map(l => (
+                  <TouchableOpacity
+                    key={l.code}
+                    onPress={() => setLanguage(l.code as any)}
+                    style={{
+                      flex: 1, padding: 12, borderRadius: 10, alignItems: 'center',
+                      backgroundColor: lang === l.code ? '#1FB6AE' : '#F3F4F6',
+                      borderWidth: 2, borderColor: lang === l.code ? '#1FB6AE' : '#E5E7EB',
+                    }}
+                  >
+                    <Text style={{ fontSize: 20 }}>{l.flag}</Text>
+                    <Text style={{ fontSize: 12, fontWeight: '600', color: lang === l.code ? '#fff' : '#374151', marginTop: 4 }}>{l.nativeName}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
             </View>
             <View style={s.card}>
               <Text style={s.lbl}>Language / Kalba</Text>
