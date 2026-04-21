@@ -11,17 +11,54 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import client from '../../api/client';
 
 const CATEGORIES_DATA = [
-  { value: 'home-services', labelKey: 'cat.homeServices', icon: '🏠', subcategories: ['General Cleaning','Deep Cleaning','Window Cleaning','Laundry & Ironing','Carpet Cleaning','Oven Cleaning','Fridge Cleaning','Bathroom Deep Clean','Kitchen Deep Clean','Post-Construction Cleaning','Move-In/Out Cleaning'] },
-  { value: 'moving-delivery', labelKey: 'cat.movingDelivery', icon: '🚚', subcategories: ['Furniture Moving','Full House Move','Single Item Delivery','Multiple Item Delivery','Grocery Delivery','Package Pickup','Store Pickup','Junk Removal'] },
-  { value: 'handyman', labelKey: 'cat.handyman', icon: '🔧', subcategories: ['Furniture Assembly','Shelf Mounting','TV Mounting','Picture Hanging','Minor Repairs','Door Repairs','Light Fixture Install','Painting','Plumbing Help','Electrical Help'] },
-  { value: 'gardening-outdoor', labelKey: 'cat.gardeningOutdoor', icon: '🌿', subcategories: ['Lawn Mowing','Garden Maintenance','Planting','Leaf Removal','Snow Removal','Gutter Cleaning','Pressure Washing','Fence Repair'] },
-  { value: 'pet-care', labelKey: 'cat.petCare', icon: '🐾', subcategories: ['Dog Walking','Pet Sitting Home','Pet Sitting Tasker','Pet Drop-In','Pet Feeding','Pet Transportation','Pet Grooming Basic','Litter Box Cleaning','Fish Tank Maintenance'] },
-  { value: 'personal-assistance', labelKey: 'cat.personalAssistance', icon: '🤝', subcategories: ['Grocery Shopping','General Errands','Waiting in Line','Gift Shopping','Returns & Exchanges','Prescription Pickup','Dry Cleaning Pickup','Bill Payment','Document Delivery','Car Wash'] },
-  { value: 'elderly-special-care', labelKey: 'cat.elderlySpecialCare', icon: '❤️', subcategories: ['Companionship','Grocery Help Elderly','Meal Preparation','Light Housekeeping','Appointment Transport','Technology Help','Walking Assistance','Social Outing'] },
-  { value: 'events-hospitality', labelKey: 'cat.eventsHospitality', icon: '🎉', subcategories: ['Party Setup','Party Cleanup','Serving Help','Event Decoration','BBQ Help','Holiday Decoration','Holiday Decoration Removal'] },
-  { value: 'administrative-digital', labelKey: 'cat.administrativeDigital', icon: '💻', subcategories: ['Filing','Scanning','Photo Organization','Translation Help','Data Entry','Research','Social Media Help'] },
-  { value: 'seasonal-special', labelKey: 'cat.seasonalSpecial', icon: '❄️', subcategories: ['Christmas Tree Setup','Spring Cleaning','Back to School Prep','Holiday Shopping','Garage Sale Help','Donation Dropoff','Storage Organization','Vacation Prep','Return from Vacation','New Baby Prep'] },
-  { value: 'other', labelKey: 'cat.other', icon: '📋', subcategories: ['Custom Task','Quick Favor','Creative Help','Learning Help'] },
+  { value: 'home-services', labelKey: 'cat.homeServices', icon: '🏠', subcategories: [
+    'General Cleaning', 'Deep Cleaning', 'Window Cleaning', 'Laundry & Ironing',
+    'Dish Washing', 'Organizing', 'Carpet Cleaning', 'Post-Event Cleanup',
+    'Move-In/Out Cleaning',
+  ]},
+  { value: 'moving-delivery', labelKey: 'cat.movingDelivery', icon: '🚚', subcategories: [
+    'Furniture Moving', 'Full House Move', 'Single Item Delivery', 'Multiple Item Delivery',
+    'Grocery Delivery', 'Package Pickup', 'Store Pickup', 'Junk Removal',
+    'Loading/Unloading', 'Packing Help',
+  ]},
+  { value: 'handyman', labelKey: 'cat.handyman', icon: '🔧', subcategories: [
+    'Furniture Assembly', 'Shelf Mounting', 'TV Mounting', 'Picture Hanging',
+    'Minor Repairs', 'Door Repairs', 'Baby Proofing',
+  ]},
+  { value: 'gardening-outdoor', labelKey: 'cat.gardeningOutdoor', icon: '🌿', subcategories: [
+    'Lawn Mowing', 'Garden Maintenanceting', 'Leaf Removal',
+    'Snow Removal', 'Gutter Cleaning', 'Pressure Washing', 'Fence Repair',
+    'Patio Furniture Setup',
+  ]},
+  { value: 'pet-care', labelKey: 'cat.petCare', icon: '🐾', subcategories: [
+    'Dog Walking', 'Pet Sitting Home', 'Pet Drop-In', 'Pet Feeding',
+    'Pet Transportation', 'Pet Grooming Basic', 'Litter Box Cleaning',
+    'Fish Tank Maintenance', 'Bird Cage Cleaning',
+  ]},
+  { value: 'personal-assistance', labelKey: 'cat.personalAssistance', icon: '🤝', subcategories: [
+    'Grocery Shopping', 'General Errands', 'Waiting in Line', 'Gift Shopping',
+    'Returns & Exchanges', 'Prescription Pickup', 'Dry Cleaning Pickup',
+    'Bill Payment', 'Document Delivery', 'Car Wash',
+  ]},
+  { value: 'elderly-special-care', labelKey: 'cat.elderlySpecialCare', icon: '❤️', subcategories: [
+    'Companionship', 'Grocery Help Elderly', 'Meal Preparation',
+    'Light Housekeeping', 'Technology Help', 'Walking Assistance',
+  ]},
+  { value: 'events-hospitality', labelKey: 'cat.eventsHty', icon: '🎉', subcategories: [
+    'Party Setup', 'Party Cleanup', 'Serving Help', 'Event Decoration',
+    'BBQ Help', 'Holiday Decoration', 'Holiday Decoration Removal',
+  ]},
+  { value: 'administrative-digital', labelKey: 'cat.administrativeDigital', icon: '💻', subcategories: [
+    'Filing', 'Scanning', 'Photo Organization', 'Translation Help',
+  ]},
+  { value: 'seasonal-special', labelKey: 'cat.seasonalSpecial', icon: '❄️', subcategories: [
+    'Christmas Tree Setup', 'Spring Cleaning', 'Back to School Prep',
+    'Holiday Shopping', 'Garage Sale Help', 'Donation Dropoff',
+    'Storage Organization', 'Vacation Prep', 'Return from Vacation',
+  ]},
+  { value: 'other', labelKey: 'cat.other', icon: '📋', subcategories: [
+    'Custom Task', 'Quick Favor', 'Creative Help', 'Learning Help',
+  ]},
 ];
 
 export default function PostScreen({ navigation }: any) {
@@ -186,7 +223,7 @@ export default function PostScreen({ navigation }: any) {
             <ScrollView style={styles.dropdownList} nestedScrollEnabled={true} keyboardShouldPersistTaps="handled">
               {selectedCat?.subcategories.map((sub) => (
                 <TouchableOpacity key={sub} style={[styles.dropdownItem, subcategory === sub && styles.dropdownItemActive]} onPress={() => { setSubcategory(sub); setShowSubDropdown(false); }}>
-                  <Text style={[styles.dropdownItemText, subcategory === sub && styles.dropdownItemTextActive]}>{sub}</Text>
+                  <Text style={[styles.dropdownItemText, subcategory === sub && styles.dropdownItemTextActive]}>{t("sub." + sub) !== "sub." + sub ? t("sub." + sub) : sub}</Text>
                   {subcategory === sub && <Text style={styles.dropdownCheck}>✓</Text>}
                 </TouchableOpacity>
               ))}
