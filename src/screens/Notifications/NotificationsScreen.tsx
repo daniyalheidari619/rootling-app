@@ -57,7 +57,7 @@ export default function NotificationsScreen({ navigation }: any) {
           renderItem={({ item }: any) => (
             <TouchableOpacity
               style={[s.item, !item.read && s.itemUnread]}
-              onPress={() => { if (!item.read) markRead.mutate(item.id); if (item.data?.taskId) navigation.navigata.taskId } }); }}
+              onPress={() => { if (!item.read) markRead.mutate(item.id); if (item.data?.taskId) navigation.navigate('TaskDetail', { task: { id: item.data.taskId } }); }}
             >
               <Text style={s.itemIcon}>{getIcon(item.type)}</Text>
               <View style={s.itemContent}>
