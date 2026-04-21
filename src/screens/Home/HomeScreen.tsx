@@ -5,13 +5,20 @@ import { useAuthStore } from '../../store/authStore';
 
 export default function HomeScreen({ navigation }: any) {
   const { user } = useAuthStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.header}>
-        <Text style={styles.greeting}>{t('home.greeting')} {user?.name?.split(' ')[0] || 'there'} 👋</Text>
-        <Text style={styles.subtitle}>{t('home.subtitle')}</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <View>
+            <Text style={styles.greeting}>{t('home.greeting')} {user?.name?.split(' ')[0] || 'there'} 👋</Text>
+            <Text style={styles.subtitle}>{t('home.subtitle')}</Text>
+          </View>
+          <TouchableOpacity onPress={() => navigation.navigate('Notifications')} style={{ padding: 8, marginTop: 4 }}>
+            <Text style={{ fontSize: 24 }}>🔔</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <TouchableOpacity style={styles.swipeCTA} onPress={() => navigation.navigate('Swipe')}>
@@ -33,9 +40,14 @@ export default function HomeScreen({ navigation }: any) {
         ))}
       </View>
 
-      <TouchableOpacity style={styles.postBtn} onPress={() => navigation.navigate('Post')}>
-        <Text style={styles.postBtnText}>{t('home.postTask')}</Text>
-      </TouchableOpacity>
+      <View style={{ flexDirection: 'row', gap: 12 }}>
+        <TouchableOpacity style={[styles.postBtn, { flex: 1 }]} onPress={() => navigation.navigate('Post')}>
+          <Text style={styles.postBtnText}>{t('home.postTask')}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.postBtn, { flex: 1, borderColor: '#F59E0B' }]} onPress={() => navigation.navigate('Negotiations')}>
+          <Text style={[styles.postBtnText, { color: '#F59E0B' }]}>💬 {lang === 'lt' ? 'Pasiūlymai' : 'My Offers'}</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }

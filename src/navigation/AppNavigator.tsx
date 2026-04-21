@@ -1,3 +1,5 @@
+import NegotiationsScreen from '../screens/Negotiations/NegotiationsScreen';
+import NotificationsScreen from '../screens/Notifications/NotificationsScreen';
 import SubscriptionScreen from '../screens/Subscription/SubscriptionScreen';
 import { useTranslation } from '../i18n';
 import React from 'react';
@@ -72,6 +74,8 @@ function AuthStack() {
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="Subscription" component={SubscriptionScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Notifications" component={NotificationsScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Negotiations" component={NegotiationsScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
