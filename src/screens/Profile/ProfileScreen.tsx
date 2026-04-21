@@ -56,7 +56,7 @@ export default function ProfileScreen({ navigation }: any) {
   const { data: myTasks = [] } = useQuery({
     queryKey: ['myTasks'],
     queryFn: async () => {
-      const { data } = await client.get('/api/tasks/my-tasks?includeApplied=true');
+      const { data } = await client.get('/api/tasks/my-tasks?includeApplied=true&includeClient=true');
       return data.data || data.tasks || [];
     },
     enabled: !!user,
@@ -254,7 +254,7 @@ export default function ProfileScreen({ navigation }: any) {
             {(myTasks || []).filter((t: any) => taskFilter === lang === 'lt' ? 'VISI' : 'ALL' || t.status === taskFilter).length === 0
               ? <Empty icon="CLIPBOARD" text={t("profile.noTasks")} />
               : (myTasks || []).filter((t: any) => taskFilter === 'ALL' || t.status === taskFilter).map((task: any) => (
-                <TouchableOpacity key={task.id} style={s.card} onPress={() => navigation.navigate('TaskDetail', { task })}>
+                <TouchableOpacity key={task.id} style={s.card} onPress={() => navigation.navigate('TaskDetail', { task: { id: task.id, title: task.title, budget: task.budget, description: task.description || '', category: task.category, subcategory: task.subcategory, location: task.location || '', status: task.status, priority: task.priority, createdAt: task.createdAt, dueDate: task.dueDate, client: task.client || { id: task.clientId, name: '' }, distance: null, requiresCar: task.requiresCar, requiresTools: task.requiresTools, toolsList: task.toolsList, slotsRequired: task.slotsRequired, slotsFilled: task.slotsFilled } })}>
                   <View style={s.row}>
                     <Text style={s.taskTitle} numberOfLines={2}>{task.title}</Text>
                     <View style={[s.statusBadge, { backgroundColor: getStatusColor(task.status) + '20' }]}>
