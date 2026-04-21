@@ -114,7 +114,7 @@ export default function BillingTab({ profile, navigation }: { profile: any; navi
           style={[s.primaryBtn, { marginTop: 12, marginBottom: 0 }]}
           onPress={() => navigation.navigate('Subscription')}
         >
-          <Text style={s.primaryBtnTxt}>⭐ Upgrade to Premium</Text>
+          <Text style={s.primaryBtnTxt}>⭐ {t('billing.upgrade')}</Text>
         </TouchableOpacity>
       )}
       </View>
