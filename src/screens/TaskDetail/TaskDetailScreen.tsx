@@ -32,10 +32,13 @@ export default function TaskDetailScreen({ route, navigation }: any) {
     if (!user) return navigation.navigate('Login');
     setApplying(true);
     try {
-      await client.post(`/api/tasks/${task.id}/interest`);
+      await client.post(`/api/tasks/${task.id}/apply`, {
+        coverLetter: 'Interested in this task.',
+        proposedBudget: task.budget,
+      });
       Alert.alert(t('task.interestSent'), t('task.interestSentDesc'));
     } catch (e: any) {
-      Alert.alert('Error', e?.response?.data?.message || 'Failed to send interest');
+      Alert.alert(t('common.error'), e?.response?.data?.message || 'Failed to apply');
     } finally {
       setApplying(false);
     }

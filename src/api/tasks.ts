@@ -12,7 +12,10 @@ export const fetchSwipeTasks = async (lat?: number, lng?: number, page = 1): Pro
 };
 
 export const expressInterest = async (taskId: string): Promise<void> => {
-  await client.post(`/api/tasks/${taskId}/interest`);
+  await client.post(`/api/tasks/${taskId}/apply`, {
+    coverLetter: 'Interested in this task.',
+    proposedBudget: 0,
+  });
 };
 
 export const applyToTask = async (taskId: string, message: string, proposedPrice: number): Promise<void> => {

@@ -1,6 +1,6 @@
 import { useTranslation } from '../../i18n';
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import SwipeCard from '../../components/swipe/SwipeCard';
 import { fetchSwipeTasks, expressInterest } from '../../api/tasks';
@@ -36,11 +36,18 @@ export default function SwipeScreen({ navigation }: any) {
   const handleSwipeRight = useCallback(async (id: string) => {
     try {
       await expressInterest(id);
-    } catch (e) {
-      console.log('Interest noted locally');
+      Alert.alert(t('task.applySuccess'), '');
+    } catch (e: any) {
+      const msg = e?.response?.data?.message || '';
+      if (msg.includes('active task') || msg.includes('aktyvią')) {
+        Alert.alert(t('common.error'), t('task.alreadyActive'));
+        return;
+      }
+      Alert.alert(t('common.error'), msg || 'Failed to apply');
+      return;
     }
-    setCards(prev => prev.filter(t => t.id !== id));
-  }, []);
+    setCards(prev => prev.filter(task => task.id !== id));
+  }, [t]);
 
   const handlePress = useCallback((task: Task) => {
     navigation.navigate('TaskDetail', { task });

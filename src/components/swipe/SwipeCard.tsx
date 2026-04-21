@@ -1,3 +1,4 @@
+import { useTranslation } from '../../i18n';
 import { anonName, anonAvatar } from '../../utils/anonName';
 import React, { useRef } from 'react';
 import {
@@ -19,6 +20,7 @@ interface SwipeCardProps {
 }
 
 export default function SwipeCard({ task, onSwipeLeft, onSwipeRight, onPress, isTop, index }: SwipeCardProps) {
+  const { t } = useTranslation();
   const translateX = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(0)).current;
 
@@ -89,17 +91,17 @@ export default function SwipeCard({ task, onSwipeLeft, onSwipeRight, onPress, is
       {...(isTop ? panResponder.panHandlers : {})}
     >
       <Animated.View style={[styles.overlay, styles.rightOverlay, { opacity: rightOpacity }]}>
-        <Text style={styles.overlayText}>✓ Interested</Text>
+        <Text style={styles.overlayText}>{t('task.interested')}</Text>
       </Animated.View>
       <Animated.View style={[styles.overlay, styles.leftOverlay, { opacity: leftOpacity }]}>
-        <Text style={styles.overlayText}>✕ Skip</Text>
+        <Text style={styles.overlayText}>{t('swikip') || '✕ Skip'}</Text>
       </Animated.View>
       <View style={styles.priceBadge}>
-        <Text style={styles.prixt}>€{task.budget}</Text>
+        <Text style={styles.priceText}>€{task.budget}</Text>
       </View>
       {task.priority === 'HIGH' && (
         <View style={styles.priorityBadge}>
-          <Text style={styles.priorityText}>⭐ Priority</Text>
+          <Text style={styles.priorityText}>{t('swipe.priority') || '⭐ Priority'}</Text>
         </View>
       )}
       <View style={styles.content}>
@@ -118,8 +120,8 @@ export default function SwipeCard({ task, onSwipeLeft, onSwipeRight, onPress, is
         </View>
         <View style={styles.trustRow}>
           {task.client.idVerificationStatus === 'VERIFIED' && (
-            <View style={stytBadge}>
-              <Text style={styles.trustText}>✓ Verified client</Text>
+            <View style={styles.trustBadge}>
+              <Text style={styles.trustText}>{t('swipe.verifiedClient') || '✓ Verified client'}</Text>
             </View>
           )}
           {task.client.clientRating > 0 && (
@@ -128,14 +130,14 @@ export default function SwipeCard({ task, onSwipeLeft, onSwipeRight, onPress, is
             </View>
           )}
           <View style={styles.trustBadge}>
-            <Text style={styles.trustText}>🔒 Payment protected</Text>
+            <Text style={styles.trustText}>{t('task.paymentProtected')}</Text>
           </View>
         </View>
       </View>
       {isTop && (
         <View style={styles.hints}>
-          <Text style={styles.hintLeft}>← Skip</Text>
-          <Text style={styles.hintRight}>Interested →</Text>
+          <Text style={styles.hintLeft}>{t('swipe.hintSkip') || '← Skip'}</Text>
+          <Text style={styles.hintRight}>{t('swipe.hintInterested') || 'Interested →'}</Text>
         </View>
       )}
     </Animated.View>
@@ -153,7 +155,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 12,
-ion: 5,
+elevation: 5,
     overflow: 'hidden',
   },
   overlay: {
