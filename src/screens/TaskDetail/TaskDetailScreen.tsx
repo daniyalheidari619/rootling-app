@@ -110,7 +110,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
             <Text style={styles.categoryText}>{categoryLabel}</Text>
           </View>
           <Text style={styles.price}>€{safeTask.budget || 0}</Text>
-          <Text style={styles.title}>{safeTask.title}</Text>
+          <TranslateButton text={safeTask.title || ''} textStyle={styles.title} />
           {safeTask.priority === 'HIGH' && (
             <View style={styles.priorityBadge}>
               <Text style={styles.priorityText}>{t('task.priorityTask')}</Text>
