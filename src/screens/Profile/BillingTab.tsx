@@ -125,7 +125,7 @@ export default function BillingTab({ profile, navigation }: { profile: any; navi
         <View key={pm.id} style={s.card}>
           <View style={s.row}>
             <Text style={s.bigVal}>{pm.card?.brand?.toUpperCase()} ••••{pm.card?.last4}</Text>
-            <Text style={s.mutedTxt}>Exp: {pm.card?.exp_month}/{pm.card?.exp_year}</Text>
+            <Text style={s.mutedTxt}>{t('billing.exp')}: {pm.card?.exp_month}/{pm.card?.exp_year}</Text>
           </View>
         </View>
       ))}
