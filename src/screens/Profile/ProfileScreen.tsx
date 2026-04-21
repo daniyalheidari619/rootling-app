@@ -262,7 +262,7 @@ export default function ProfileScreen({ navigation }: any) {
                     </View>
                   </View>
                   <Text style={s.budget}>EUR {task.budget}</Text>
-                  {task.dueDate && <Text style={s.meta}>Due: {new Date(task.dueDate).toLocaleDateString()}</Text>}
+                  {task.dueDate && <Text style={s.meta}>{t('profile.due')}: {new Date(task.dueDate).toLocaleDateString()}</Text>}
                   {task.boostType && task.boostedUntil && new Date(task.boostedUntil) > new Date() && (
                     <Text style={s.boostTxt}>{task.boostType === 'SPOTLIGHT' ? 'STAR Spotlight Active' : 'BOLT Boost Active'}</Text>
                   )}

@@ -132,7 +132,7 @@ export default function BillingTab({ profile, navigation }: { profile: any; navi
 
       {!showCardForm ? (
         <TouchableOpacity style={s.secondaryBtn} onPress={() => setShowCardForm(true)}>
-          <Text style={s.secondaryBtnTxt}>+ Add New Card</Text>
+          <Text style={s.secondaryBtnTxt}>{t('billing.addCard')}</Text>
         </TouchableOpacity>
       ) : (
         <View style={s.card}>
