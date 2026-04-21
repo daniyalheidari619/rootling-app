@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { translations } from '../../i18n/translations';
 import TranslateButton from '../../components/TranslateButton';
 import { anonName, anonAvatar } from '../../utils/anonName';
-import { useTranslation } from '../../i18n';
+import { useTranslation, getLanguage } from '../../i18n';
 import React, { useState, useMemo } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity,
@@ -46,8 +46,11 @@ export default function TaskDetailScreen({ route, navigation }: any) {
     'other': 'cat.other',
   };
   const categoryLabel = useMemo(() => {
+    const currentLang = getLanguage();
     const key = catMap[safeTask?.category || ''];
-    return key ? t(key).toUpperCase() : (safeTask?.category || '').replace(/-/g, ' ').toUpperCase();
+    if (!key) return (safeTask?.category || '').replace(/-/g, ' ').toUpperCase();
+    const { translations } = require('../../i18n/translations');
+    return (translations[currentLang]?.[key] || translations['en']?.[key] || '').toUpperCase();
   }, [safeTask?.category, lang]);
 
   const handleApply = async () => {
