@@ -198,12 +198,12 @@ export default function ProfileScreen() {
             {!editingProfile ? (
               <>
                 <View style={s.card}>
-                  <Row label=t('profile.name') val={profile?.name} />
-                  <Row label=t('profile.email') val={profile?.email} />
-                  <Row label=t('profile.phone') val={profile?.phone || t('profile.notSet')} />
-                  <Row label=t('profile.bio') val={profile?.bio || t('profile.notSet')} />
-                  <Row label=t('profile.role') val={profile?.role} />
-                  <Row label=t('profile.memberSince') val={profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString() : '-'} />
+                  <Row label={t('profile.name')} val={profile?.name} />
+                  <Row label={t('profile.email')} val={profile?.email} />
+                  <Row label={t('profile.phone')} val={profile?.phone || t('profile.notSet')} />
+                  <Row label={t('profile.bio')} val={profile?.bio || t('profile.notSet')} />
+                  <Row label={t('profile.role')} val={profile?.role} />
+                  <Row label={t('profile.memberSince')} val={profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString() : '-'} />
                 </View>
                 <TouchableOpacity style={s.secondaryBtn} onPress={() => {
                   setEditName(profile?.name || '');
