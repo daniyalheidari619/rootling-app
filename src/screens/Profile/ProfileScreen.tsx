@@ -14,12 +14,12 @@ import client from '../../api/client';
 type Tab = 'overview' | 'tasks' | 'reviews' | 'verification' | 'billing' | 'settings';
 
 const TABS = [
-  { key: 'overview', label: t('profile.overview') },
-  { key: 'tasks', label: t('profile.myTasks') },
-  { key: 'reviews', label: t('profile.reviews') },
-  { key: 'verification', label: t('profile.verification') },
-  { key: 'billing', label: t('profile.billing') },
-  { key: 'settings', label: t('profile.settings') },
+  { key: 'overview', labelKey: 'profile.overview' },
+  { key: 'tasks', labelKey: 'profile.myTasks' },
+  { key: 'reviews', labelKey: 'profile.reviews' },
+  { key: 'verification', labelKey: 'profile.verification' },
+  { key: 'billing', labelKey: 'profile.billing' },
+  { key: 'settings', labelKey: 'profile.settings' },
 ] as const;
 
 export default function ProfileScreen() {
@@ -184,9 +184,9 @@ export default function ProfileScreen() {
       </View>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} bounces={false} style={s.tabBar} contentContainerStyle={{ flexGrow: 1 }}>
-          {TABS.map(t => (
-            <TouchableOpacity key={t.key} onPress={() => setTab(t.key as Tab)} style={[s.tabBtn, tab === t.key && s.tabActive]}>
-              <Text style={[s.tabTxt, tab === t.key && s.tabActiveTxt]}>{t.label}</Text>
+          {TABS.map(tab => (
+            <TouchableOpacity key={tab.key} onPress={() => setTab(tab.key as Tab)} style={[s.tabBtn, tab === tab.key && s.tabActive]}>
+              <Text style={[s.tabTxt, tab === tab.key && s.tabActiveTxt]}>{t(tab.labelKey)}</Text>
             </TouchableOpacity>
           ))}
       </ScrollView>
