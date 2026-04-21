@@ -34,7 +34,7 @@ export default function NegotiationsScreen({ navigation }: any) {
     <View style={s.container}>
       <View style={s.header}><Text style={s.title}>{lang === 'lt' ? 'Mano pasiūlymai' : 'My Offers'}</Text></View>
       {negotiations.length === 0 ? (
-        <View st.center}>
+        <View style={s.center}>
           <Text style={s.emptyIcon}>💬</Text>
           <Text style={s.emptyTitle}>{lang === 'lt' ? 'Nėra pasiūlymų' : 'No offers yet'}</Text>
           <Text style={s.emptySub}>{lang === 'lt' ? 'Čia pasirodys jūsų kainos pasiūlymai' : 'Your price offers will appear here'}</Text>
