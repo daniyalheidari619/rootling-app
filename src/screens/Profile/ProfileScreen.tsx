@@ -320,7 +320,7 @@ export default function ProfileScreen({ navigation }: any) {
           <View style={s.section}>
             <Text style={s.sectionTitle}>{t('profile.settings')}</Text>
             <View style={s.card}>
-              <Row label={t("profile.accountType")} val={profile?.role || '-'} />
+              <Row label={t("profile.accountType")} val={profile?.role === "BOTH" ? t("profile.clientTasker") : profile?.role === "CLIENT" ? t("profile.client") : t("profile.tasker")} />
               <Row label={t("profile.verified")} val={getVerificationLabel(vs)} />
             </View>
 
