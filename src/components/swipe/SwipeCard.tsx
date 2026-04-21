@@ -1,3 +1,4 @@
+import TranslateButton from '../TranslateButton';
 import { useTranslation } from '../../i18n';
 import { anonName, anonAvatar } from '../../utils/anonName';
 import React, { useRef } from 'react';
@@ -107,7 +108,7 @@ export default function SwipeCard({ task, onSwipeLeft, onSwipeRight, onPress, is
       <View style={styles.content}>
         <Text style={styles.category}>{task.category?.replace(/-/g, ' ')}</Text>
         <Text style={styles.title} numberOfLines={2}>{task.title}</Text>
-        <Text style={styles.description} numberOfLines={3}>{task.description}</Text>
+        <TranslateButton text={task.description} textStyle={styles.description} />
         <View style={styles.meta}>
           {task.distance && (
             <View style={styles.metaItem}>

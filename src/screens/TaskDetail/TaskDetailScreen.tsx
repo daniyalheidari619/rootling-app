@@ -1,3 +1,4 @@
+import TranslateButton from '../../components/TranslateButton';
 import { anonName, anonAvatar } from '../../utils/anonName';
 import { useTranslation } from '../../i18n';
 import React, { useState } from 'react';
@@ -98,7 +99,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>{t('task.description')}</Text>
-          <Text style={styles.description}>{task.description}</Text>
+          <TranslateButton text={task.description} textStyle={styles.description} />
         </View>
         {task.location && (
           <View style={styles.section}>
