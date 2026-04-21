@@ -320,8 +320,8 @@ export default function ProfileScreen({ navigation }: any) {
           <View style={s.section}>
             <Text style={s.sectionTitle}>{t('profile.settings')}</Text>
             <View style={s.card}>
-              <Row label=t("profile.accountType") val={profile?.role || '-'} />
-              <Row label=t("profile.verified") val={getVerificationLabel(vs)} />
+              <Row label={t("profile.accountType")} val={profile?.role || '-'} />
+              <Row label={t("profile.verified")} val={getVerificationLabel(vs)} />
             </View>
 
             <View style={s.card}>
