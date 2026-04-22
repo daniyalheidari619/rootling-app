@@ -321,6 +321,14 @@ export default function ProfileScreen({ navigation }: any) {
                   {task.boostType && task.boostedUntil && new Date(task.boostedUntil) > new Date() && (
                     <Text style={s.boostTxt}>{task.boostType === 'SPOTLIGHT' ? 'STAR Spotlight Active' : 'BOLT Boost Active'}</Text>
                   )}
+                  {task.status === 'OPEN' && task.clientId === user?.id && (
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('Applications', { task })}
+                      style={{ marginTop: 8, backgroundColor: '#6366F1' + '15', borderRadius: 8, padding: 8, alignItems: 'center' }}
+                    >
+                      <Text style={{ color: '#6366F1', fontWeight: '700', fontSize: 12 }}>👥 {lang === 'lt' ? 'Peržiūrėti paraiškas' : 'View Applications'}</Text>
+                    </TouchableOpacity>
+                  )}
                 </TouchableOpacity>
               ))}
           </View>
