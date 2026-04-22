@@ -465,7 +465,7 @@ export default function PostScreen({ navigation }: any) {
               <View style={styles.priorityRow}>
                 <View style={styles.priorityInfo}>
                   <Text style={styles.label}>🔄 {lang === 'lt' ? 'Pasikartojanti užduotis' : 'Recurring Task'}</Text>
-                  <Textyle={styles.hint}>{lang === 'lt' ? 'Užduotis kartosis automatiškai' : 'Task repeats automatically'}</Text>
+                  <Text style={styles.hint}>{lang === 'lt' ? 'Užduotis kartosis automatiškai' : 'Task repeats automatically'}</Text>
                 </View>
                 <Switch value={isRecurring} onValueChange={setIsRecurring} trackColor={{ false: '#E5E7EB', true: '#1FB6AE' }} thumbColor="#fff" />
               </View>
