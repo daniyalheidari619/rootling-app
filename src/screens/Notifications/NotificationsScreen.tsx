@@ -14,19 +14,19 @@ export default function NotificationsScreen({ navigation }: any) {
     queryKey: ['notifications'],
     queryFn: async () => {
       const { data } = await client.get('/api/notifications');
-      return data.notifications || data.data || [];
+      return data.notifications || data.data || data || [];
     },
     enabled: !!user,
     refetchInterval: 30000,
   });
 
   const markRead = useMutation({
-    mutationFn: async (id: string) => { await client.patch(`/api/notifications/${id}/read`); },
+    mutationFn: async (id: string) => { await client.put(`/api/notifications/${id}/read`); },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notifications'] }),
   });
 
   const markAllRead = useMutation({
-    mutationFn: async () => { await client.patch('/api/notifications/read-all'); },
+    mutationFn: async () => { await client.put('/api/notifications/mark-all-read'); },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notifications'] }),
   });
 
