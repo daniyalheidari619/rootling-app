@@ -63,6 +63,15 @@ const CATEGORIES_DATA = [
 
 export default function PostScreen({ navigation }: any) {
   const { user } = useAuthStore();
+  const { data: profile } = useQuery({
+    queryKey: ['profile', user?.id],
+    queryFn: async () => {
+      const { data } = await client.get('/api/auth/users/' + user?.id);
+      return data.user || data.data || data;
+    },
+    enabled: !!user,
+    staleTime: 5 * 60 * 1000,
+  });
   const { t, lang } = useTranslation();
   const [step, setStep] = useState<'category' | 'form'>('category');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -86,6 +95,9 @@ export default function PostScreen({ navigation }: any) {
   const [requiresTools, setRequiresTools] = useState(false);
   const [toolsList, setToolsList] = useState('');
   const [slotsRequired, setSlotsRequired] = useState(1);
+  const [isRecurring, setIsRecurring] = useState(false);
+  const [frequency, setFrequency] = useState<'weekly' | 'biweekly' | 'monthly'>('weekly');
+  const [occurrences, setOccurrences] = useState(4);
   const [promoCode, setPromoCode] = useState('');
 
   if (!user) {
@@ -189,6 +201,9 @@ export default function PostScreen({ navigation }: any) {
         toolsList: requiresTools ? toolsList : '',
         slotsRequired,
         promoCode: promoCode || undefined,
+        isRecurring,
+        frequency: isRecurring ? frequency : undefined,
+        occurrences: isRecurring ? occurrences : undefined,
       });
       Alert.alert(t('post.success'), t('post.successDesc'), [
         { text: 'OK', onPress: () => {
@@ -445,6 +460,41 @@ export default function PostScreen({ navigation }: any) {
             autoCapitalize="characters"
           />
 
+          {profile?.isSubscriber && (profile?.subscriptionRole === 'task_maker' || profile?.subscriptionRole === 'both') && (
+            <>
+              <View style={styles.priorityRow}>
+                <View style={styles.priorityInfo}>
+                  <Text style={styles.label}>🔄 {lang === 'lt' ? 'Pasikartojanti užduotis' : 'Recurring Task'}</Text>
+                  <Textyle={styles.hint}>{lang === 'lt' ? 'Užduotis kartosis automatiškai' : 'Task repeats automatically'}</Text>
+                </View>
+                <Switch value={isRecurring} onValueChange={setIsRecurring} trackColor={{ false: '#E5E7EB', true: '#1FB6AE' }} thumbColor="#fff" />
+              </View>
+              {isRecurring && (
+                <View style={styles.card}>
+                  <Text style={styles.label}>{lang === 'lt' ? 'Dažnumas' : 'Frequency'}</Text>
+                  <View style={{ flexDirection: 'row', gap: 8, marginBottom: 12 }}>
+                    {(['weekly', 'biweekly', 'monthly'] as const).map(f => (
+                      <TouchableOpacity key={f} onPress={() => setFrequency(f)}
+                        style={{ flex: 1, padding: 10, borderRadius: 10, alignItems: 'center', backgroundColor: frequency === f ? '#1FB6AE' : '#F3F4F6', borderWidth: 1, borderColor: frequency === f ? '#1FB6AE' : '#E5E7EB' }}>
+                        <Text style={{ fontSize: 11, fontWeight: '600', color: frequency === f ? '#fff' : '#374151' }}>
+                          {f === 'weekly' ? (lang === 'lt' ? 'Kas savaitę' : 'Weekly') : f === 'biweekly' ? (lang === 'lt' ? 'Kas 2 sav.' : 'Biweekly') : (lang === 'lt' ? 'Kas mėnesį' : 'Monthly')}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+            <Text style={styles.label}>{lang === 'lt' ? 'Kartojimų skaičius' : 'Occurrences'}</Text>
+                  <View style={{ flexDirection: 'row', gap: 8 }}>
+                    {[2, 4, 8, 12].map(n => (
+                      <TouchableOpacity key={n} onPress={() => setOccurrences(n)}
+                        style={{ flex: 1, padding: 10, borderRadius: 10, alignItems: 'center', backgroundColor: occurrences === n ? '#1FB6AE' : '#F3F4F6', borderWidth: 1, borderColor: occurrences === n ? '#1FB6AE' : '#E5E7EB' }}>
+                        <Text style={{ fontSize: 13, fontWeight: '600', color: occurrences === n ? '#fff' : '#374151' }}>{n}x</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+              )}
+            </>
+          )}
           <View style={styles.trustBox}>
             <Text style={styles.trustText}>{t('post.paymentNotice')}</Text>
           </View>
@@ -503,6 +553,7 @@ const styles = StyleSheet.create({
   suggestionList: { borderWidth: 1, borderColor: '#E5E7EB', borderRadius: 12, backgroundColor: '#fff', marginTop: 4 },
   suggestionItem: { padding: 12, borderBottomWidth: 1, borderBottomColor: '#F3F4F6' },
   suggestionText: { fontSize: 13, color: '#374151' },
+  card: { backgroundColor: '#fff', borderRadius: 12, padding: 16, marginBottom: 12, borderWidth: 1, borderColor: '#E5E7EB' },
   submitBtn: { backgroundColor: '#1FB6AE', borderRadius: 14, padding: 18, alignItems: 'center', marginTop: 20 },
   submitBtnText: { color: '#fff', fontWeight: '800', fontSize: 17 },
 });
