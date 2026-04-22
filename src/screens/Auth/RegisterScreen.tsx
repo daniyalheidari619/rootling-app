@@ -44,7 +44,7 @@ export default function RegisterScreen({ navigation }: any) {
     try {
       const { data } = await client.post('/api/auth/google/mobile', {
         accessToken,
-        role: selectedRole,
+        role: 'BOTH',
       });
       if (data.success) {
         await setAuth(data.data.user, data.data.token);
@@ -85,14 +85,6 @@ export default function RegisterScreen({ navigation }: any) {
         <View style={styles.card}>
           <Text style={styles.title}>{t('auth.createAccount')}</Text>
           <Text style={styles.label}>{t('auth.iWantTo')}</Text>
-          <View style={styles.roleRow}>
-            <TouchableOpacity style={[styles.roleBtn, role === 'TASKER' && styles.roleBtnActive]} onPress={() => setRole('TASKER')}>
-              <Text style={[styles.roleText, role === 'TASKER' && styles.roleTextActive]}>{t('auth.findWork')}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.roleBtn, role === 'CLIENT' && styles.roleBtnActive]} onPress={() => setRole('CLIENT')}>
-              <Text style={[styles.roleText, role === 'CLIENT' && styles.roleTextActive]}>{t('auth.postTasks')}</Text>
-            </TouchableOpacity>
-          </View>
           <TouchableOpacity style={styles.googleBtn} onPress={() => promptAsync()} disabled={!request || googleLoading}>
             {googleLoading ? <ActivityIndicator color="#374151" /> : (
               <><Text style={styles.googleIcon}>G</Text><Text style={styles.googleBtnText}>{t('auth.continueGoogle')}</Text></>
