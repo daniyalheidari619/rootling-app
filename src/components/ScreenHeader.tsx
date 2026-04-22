@@ -1,3 +1,4 @@
+import { Bell } from 'lucide-react-native';
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
@@ -31,7 +32,7 @@ export default function ScreenHeader({ title, navigation, rightComponent }: Prop
       <View style={s.right}>
         {rightComponent}
         <TouchableOpacity onPress={() => navigation.navigate('Notifications')} style={s.bell}>
-          <Text style={s.bellIcon}>🔔</Text>
+          <Bell size={24} color='#111827' />
           {unread > 0 && (
             <View style={s.badge}>
               <Text style={s.badgeText}>{unread > 9 ? '9+' : unread}</Text>
@@ -48,7 +49,6 @@ const s = StyleSheet.create({
   title: { fontSize: 28, fontWeight: '800', color: '#111827' },
   right: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   bell: { position: 'relative', padding: 4 },
-  bellIcon: { fontSize: 24 },
   badge: { position: 'absolute', top: 0, right: 0, backgroundColor: '#EF4444', borderRadius: 8, minWidth: 16, height: 16, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 2 },
   badgeText: { color: '#fff', fontSize: 9, fontWeight: '800' },
 });
