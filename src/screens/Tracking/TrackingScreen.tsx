@@ -108,7 +108,7 @@ export default function TrackingScreen({ route, navigation }: Props) {
 
       {isTasker ? (
         <View style={s.section}>
-          <Text style={s.sectionTitle}>{lang === 'lt'Dalinkitės savo vieta' : 'Share Your Location'}</Text>
+          <Text style={s.sectionTitle}>{lang === 'lt' ? 'Dalinkitės savo vieta' : 'Share Your Location'}</Text>
           <Text style={s.sectionDesc}>
             {lang === 'lt'
               ? 'Klientas galės matyti jūsų buvimo vietą realiuoju laiku.'
