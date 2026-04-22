@@ -63,7 +63,7 @@ const CATEGORIES_DATA = [
 
 export default function PostScreen({ navigation }: any) {
   const { user } = useAuthStore();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
   const [step, setStep] = useState<'category' | 'form'>('category');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [subcategory, setSubcategory] = useState('');
@@ -86,6 +86,7 @@ export default function PostScreen({ navigation }: any) {
   const [requiresTools, setRequiresTools] = useState(false);
   const [toolsList, setToolsList] = useState('');
   const [slotsRequired, setSlotsRequired] = useState(1);
+  const [promoCode, setPromoCode] = useState('');
 
   if (!user) {
     return (
@@ -187,6 +188,7 @@ export default function PostScreen({ navigation }: any) {
         requiresTools,
         toolsList: requiresTools ? toolsList : '',
         slotsRequired,
+        promoCode: promoCode || undefined,
       });
       Alert.alert(t('post.success'), t('post.successDesc'), [
         { text: 'OK', onPress: () => {
@@ -432,6 +434,16 @@ export default function PostScreen({ navigation }: any) {
               <Text style={{ color: '#374151', fontWeight: '700' }}>{slotsRequired > 5 ? slotsRequired : '+'}</Text>
             </TouchableOpacity>
           </View>
+
+          <Text style={styles.label}>{lang === 'lt' ? 'Promo kodas (neprivaloma)' : 'Promo code (optional)'}</Text>
+          <TextInput
+            style={styles.input}
+            value={promoCode}
+            onChangeText={setPromoCode}
+            placeholder={lang === 'lt' ? 'Įveskite promo kodą' : 'Enter promo code'}
+            placeholderTextColor="#9CAF"
+            autoCapitalize="characters"
+          />
 
           <View style={styles.trustBox}>
             <Text style={styles.trustText}>{t('post.paymentNotice')}</Text>

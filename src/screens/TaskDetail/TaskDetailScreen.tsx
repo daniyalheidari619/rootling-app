@@ -1,3 +1,4 @@
+import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { translations } from '../../i18n/translations';
 import TranslateButton from '../../components/TranslateButton';
@@ -21,6 +22,11 @@ export default function TaskDetailScreen({ route, navigation }: any) {
   const [negotiatePrice, setNegotiatePrice] = useState('');
   const [negotiateNote, setNegotiateNote] = useState('');
   const [negotiating, setNegotiating] = useState(false);
+  const [uploadingReceipt, setUploadingReceipt] = useState(false);
+  const [showReview, setShowReview] = useState(false);
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviewComment, setReviewComment] = useState('');
+  const [submittingReview, setSubmittingReview] = useState(false);
 
   const { data: task, isLoading: taskLoading } = useQuery({
     queryKey: ['task', initialTask.id],
@@ -92,6 +98,53 @@ export default function TaskDetailScreen({ route, navigation }: any) {
       Alert.alert('Error', e?.response?.data?.message || 'Failed to send offer');
     } finally {
       setNegotiating(false);
+    }
+  };
+
+  const handleCompleteTask = () => {
+    Alert.alert(
+      lang === 'lt' ? 'Patvirtinti atlikimą?' : 'Confirm completion?',
+      lang === 'lt' ? 'Ar patvirtinate, kad užduotis atlikta?' : 'Confirm the task has been completed?',
+      [
+        { text: lang === 'lt' ? 'Ne' : 'No', style: 'cancel' }        { text: lang === 'lt' ? 'Taip' : 'Yes', onPress: async () => {
+          try {
+            await client.post(`/api/tasks/${safeTask.id}/complete`);
+            setShowReview(true);
+          } catch (e: any) {
+            Alert.alert('Error', e?.response?.data?.message || 'Failed to complete task');
+          }
+        }},
+      ]
+    );
+  };
+
+  const handleSubmitReview = async () => {
+    setSubmittingReview(true);
+    try {
+      await client.post(`/api/tasks/${safeTask.id}/review`, { rating: reviewRating, comment: reviewComment });
+      setShowReview(false);
+      Alert.alert(lang === 'lt' ? 'Ačiū!' : 'Thank you!', lang === 'lt' ? 'Jūsų atsiliepimas išsaugotas.' : 'Your review has been submitted.');
+    } catch (e: any) {
+      Alert.alert('Error', e?.response?.data?.message || 'Failed to submit review');
+    } finally { setSubmittingReview(false); }
+  };
+
+  const handleReceiptUpload = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') return Alert.alert('Error', 'Permission needed');
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaType.Images,
+      quality: 0.7, base64: true,
+    });
+    if (!result.canceled && result.assets[0]) {
+      setUploadingReceipt(true);
+      try {
+        const base64 = 'data:image/jpeg;base64,' + result.assets[0].base64;
+        await client.post(`/api/tasks/${safeTask.id}/receipt`, { receiptUrl: base64 });
+        Alert.alert(lang === 'lt' ? 'Kvitas įkeltas' : 'Receipt uploaded', lang === 'lt' ? 'Kvitas sėkmingai įkeltas.' : 'Receipt uploaded successfully.');
+      } catch (e: any) {
+        Alert.alert('Error', e?.response?.data?.message || 'Failed to upload receipt');
+      } finally { setUploadingReceipt(false); }
     }
   };
 
@@ -175,6 +228,35 @@ export default function TaskDetailScreen({ route, navigation }: any) {
             </View>
           </View>
         )}
+        <Modal visible={showReview} transparent animationType="slide">
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalCard}>
+              <Text style={styles.modalTitle}>{lang === 'lt' ? 'Palikite atsiliepimą' : 'Leave a Review'}</Text>
+              <View style={{ flexDirection: 'row', gap: 8, justifyContent: 'center', marginVertical: 16 }}>
+                {[1,2,3,4,5].map(star => (
+                  <TouchableOpacity key={star} onPress={() => setReviewRating(star)}>
+                    <Text style={{ fontSize: 32 }}>{star <= reviewRating ? '⭐' : '☆'}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+              <TextInput
+                style={[styles.modalInput, { height: 80 }]}
+                value={reviewComment}
+                onChangeText={setReviewComment}
+                placeholder={lang === 'lt' ? 'Jūsų komentaras (neprivaloma)' : 'Your comment (optional)'}
+                placeholderTextColor="#9CA3AF"
+                multiline
+              />
+              <TouchableOpacity style={styles.modalBtn} onPress={handleSubmitReview} disabled={submittingReview}>
+                {submittingReview ? <ActivityIndicator color="#fff" /> : <Text style={styles.modalBtnText}>{lang === 'lt' ? 'Pateikti' : 'Submit'}</Text>}
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setShowReview(false)} style={styles.modalCancel}>
+                <Text style={styles.modalCancelText}>{lang === 'lt' ? 'Praleisti' : 'Skip'}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
         <Modal visible={showNegotiate} transparent animationType="slide">
           <View style={styles.modalOverlay}>
             <View style={styles.modalCard}>
@@ -207,6 +289,18 @@ export default function TaskDetailScreen({ route, navigation }: any) {
         </Modal>
         <View style={{ height: 120 }} />
       </ScrollView>
+      {safeTask.status === 'ASSIGNED' && safeTask.itemBudget > 0 && (
+        <View style={[styles.actionBar, { bottom: 80 }]}>
+          <TouchableOpacity style={[styles.applyBtn, { backgroundColor: '#6366F1' }]} onPress={handleReceiptUpload} disabled={uploadingReceipt}>
+            {uploadingReceipt ? <ActivityIndicator color="#fff" /> : <Text style={styles.applyBtnText}>📷 {lang === 'lt' ? 'Įkelti kvitą' : 'Upload Receipt'}</Text>}
+          </TouchableOpacity>
+        </View>
+      )}
+      {safeTask.status === 'ASSIGNED' && (
+        <TouchableOpacity style={[styles.applyBtn, { position: 'absolute', bottom: 96, left: 16, right: 16, borderRadius: 12, backgroundColor: '#10B981' }]} onPress={handleCompleteTask}>
+          <Text style={styles.applyBtnText}>✓ {lang === 'lt' ? 'Patvirtinti atlikimą' : 'Mark as Complete'}</Text>
+        </TouchableOpacity>
+      )}
       <View style={styles.actionBar}>
         <TouchableOpacity style={styles.messageBtn} onPress={handleMessage}>
           <Text style={styles.messageBtnText}>{t('task.message')}</Text>

@@ -18,6 +18,7 @@ export default function LoginScreen({ navigation }: any) {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const { setAuth } = useAuthStore();
+  const { lang } = useTranslation();
   const { t } = useTranslation();
 
   const googleAuth = Google.useAuthRequest({
@@ -94,6 +95,9 @@ export default function LoginScreen({ navigation }: any) {
             {googleLoading ? <ActivityIndicator color="#374151" /> : (
               <><Text style={styles.googleIcon}>G</Text><Text style={styles.googleBtnText}>{t('auth.continueGoogle')}</Text></>
             )}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')} style={styles.link}>
+            <Text style={[styles.linkText, { marginBottom: 8 }]}>{lang === 'lt' ? 'Pamiršote slaptažodį?' : 'Forgot password?'}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Register')} style={styles.link}>
             <Text style={styles.linkText}>{t('auth.noAccount')} <Text style={styles.linkBold}>{t('auth.register')}</Text></Text>

@@ -32,6 +32,10 @@ export default function HomeScreen({ navigation }: any) {
         ))}
       </View>
 
+      <TouchableOpacity style={[styles.postBtn, { marginBottom: 12, borderColor: '#6366F1' }]} onPress={() => navigation.navigate('Browse')}>
+        <Text style={[styles.postBtnText, { color: '#6366F1' }]}>🔍 {lang === 'lt' ? 'Naršyti užduotis' : 'Browse All Tasks'}</Text>
+      </TouchableOpacity>
+
       <View style={{ flexDirection: 'row', gap: 12 }}>
         <TouchableOpacity style={[styles.postBtn, { flex: 1 }]} onPress={() => navigation.navigate('Post')}>
           <Text style={styles.postBtnText}>{t('home.postTask')}</Text>
