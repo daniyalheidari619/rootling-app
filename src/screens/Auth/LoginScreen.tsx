@@ -92,7 +92,7 @@ export default function LoginScreen({ navigation }: any) {
           <View style={{ position: 'relative' }}>
             <TextInput style={[styles.input, { paddingRight: 48 }]} value={password} onChangeText={setPassword} placeholder={lang === 'lt' ? 'slaptažodis' : 'password'} secureTextEntry={!showPassword} placeholderTextColor="#9CA3AF" />
             <TouchableOpacity onPress={() => setShowPassword(p => !p)} style={{ position: 'absolute', right: 14, top: 14 }}>
-              <Text style={{ fontSize: 18 }}>{shoPassword ? '🙈' : '👁'}</Text>
+              <Text style={{ fontSize: 18 }}>{showPassword ? '🙈' : '👁'}</Text>
             </TouchableOpacity>
           </View>
           <TouchableOpacity style={styles.btn} onPress={handleLogin} disabled={loading}>
