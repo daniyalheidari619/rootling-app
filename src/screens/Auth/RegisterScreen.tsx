@@ -20,6 +20,7 @@ export default function RegisterScreen({ navigation }: any) {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const { setAuth } = useAuthStore();
+  const { lang } = useTranslation();
   const { t } = useTranslation();
 
   const googleAuth = Google.useAuthRequest({
@@ -100,17 +101,17 @@ export default function RegisterScreen({ navigation }: any) {
           </TouchableOpacity>
           <View style={styles.dividerRow}>
             <View style={styles.dividerLine} />
-            <Text style={styles.dividerText}>or sign up with email</Text>
+            <Text style={styles.dividerText}>{lang === 'lt' ? 'arba registruokitės el. paštu' : 'or sign up with email'}</Text>
             <View style={styles.dividerLine} />
           </View>
-          <Text style={styles.label}>Full Name</Text>
-          <TextInput style={styles.input} value={name} onChangeText={setName} placeholder="John Smith" placeholderTextColor="#9CA3AF" />
-          <Text style={styles.label}>Email</Text>
-          <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder="you@example.com" autoCapitalize="none" keyboardType="email-address" placeholderTextColor="#9CA3AF" />
-          <Text style={styles.label}>Password</Text>
+          <Text style={styles.label}>{lang === 'lt' ? 'Vardas Pavardė' : 'Full Name'}</Text>
+          <TextInput style={styles.input} value={name} onChangeText={setName} placeholder={lang === "lt" ? "Vardas Pavardė" : "John Smith"} placeholderTextColor="#9CA3AF" />
+          <Text style={styles.label}>{lang === 'lt' ? 'El. paštas' : 'Email'}</Text>
+          <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder={lang === "lt" ? "jusu@pastas.lt" : "you@example.com"} autoCapitalize="none" keyboardType="email-address" placeholderTextColor="#9CA3AF" />
+          <Text style={styles.label}>{lang === 'lt' ? 'Slaptažodis' : 'Password'}</Text>
           <TextInput style={styles.input} value={password} onChangeText={setPassword} placeholder="••••••••" secureTextEntry placeholderTextColor="#9CA3AF" />
           <TouchableOpacity style={styles.btn} onPress={handleRegister} disabled={loading}>
-            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.btnText}>Create Account</Text>}
+            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.btnText}>{lang === 'lt' ? 'Sukurti paskyrą' : 'Create Account'}</Text>}
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.link}>
             <Text style={styles.linkText}>{t('auth.hasAccount')} <Text style={styles.linkBold}>{t('auth.login')}</Text></Text>
