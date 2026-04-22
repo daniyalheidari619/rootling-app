@@ -108,7 +108,7 @@ export default function RegisterScreen({ navigation }: any) {
           <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder={lang === "lt" ? "jusu@pastas.lt" : "you@example.com"} autoCapitalize="none" keyboardType="email-address" placeholderTextColor="#9CA3AF" />
           <Text style={styles.label}>{lang === 'lt' ? 'Slaptažodis' : 'Password'}</Text>
           <View style={{ position: 'relative' }}>
-            <TextInput style={[styles.input, { paddingRight: 48 }]} value={password} onChangeText={setPassword} placeholder="••••••••ceholderTextColor="#9CA3AF" />
+            <TextInput style={[styles.input, { paddingRight: 48 }]} value={password} onChangeText={setPassword} placeholder="••••••••" secureTextEntry={!showPassword} placeholderTextColor="#9CA3AF" />
             <TouchableOpacity onPress={() => setShowPassword(p => !p)} style={{ position: 'absolute', right: 14, top: 14 }}>
               <Text style={{ fontSize: 18 }}>{showPassword ? '🙈' : '👁'}</Text>
             </TouchableOpacity>
