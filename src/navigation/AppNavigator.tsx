@@ -87,6 +87,8 @@ function MainStack() {
       <Stack.Screen name="Subscription" component={SubscriptionScreen} />
       <Stack.Screen name="TaskDetail" component={require('../screens/TaskDetail/TaskDetailScreen').default} />
       <Stack.Screen name="ChatScreen" component={require('../screens/Chat/ChatScreen').default} />
+      <Stack.Screen name="Notifications" component={NotificationsScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Negotiations" component={NegotiationsScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
