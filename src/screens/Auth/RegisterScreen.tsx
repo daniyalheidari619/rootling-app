@@ -17,6 +17,7 @@ export default function RegisterScreen({ navigation }: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const { setAuth } = useAuthStore();
   const { lang } = useTranslation();
@@ -106,7 +107,12 @@ export default function RegisterScreen({ navigation }: any) {
           <Text style={styles.label}>{lang === 'lt' ? 'El. paštas' : 'Email'}</Text>
           <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder={lang === "lt" ? "jusu@pastas.lt" : "you@example.com"} autoCapitalize="none" keyboardType="email-address" placeholderTextColor="#9CA3AF" />
           <Text style={styles.label}>{lang === 'lt' ? 'Slaptažodis' : 'Password'}</Text>
-          <TextInput style={styles.input} value={password} onChangeText={setPassword} placeholder="••••••••" secureTextEntry placeholderTextColor="#9CA3AF" />
+          <View style={{ position: 'relative' }}>
+            <TextInput style={[styles.input, { paddingRight: 48 }]} value={password} onChangeText={setPassword} placeholder="••••••••ceholderTextColor="#9CA3AF" />
+            <TouchableOpacity onPress={() => setShowPassword(p => !p)} style={{ position: 'absolute', right: 14, top: 14 }}>
+              <Text style={{ fontSize: 18 }}>{showPassword ? '🙈' : '👁'}</Text>
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity style={styles.btn} onPress={handleRegister} disabled={loading}>
             {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.btnText}>{lang === 'lt' ? 'Sukurti paskyrą' : 'Create Account'}</Text>}
           </TouchableOpacity>

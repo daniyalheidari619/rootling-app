@@ -7,6 +7,7 @@ export default function ForgotPasswordScreen({ navigation }: any) {
   const { lang } = useTranslation();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [sent, setSent] = useState(false);
 
   const handleSubmit = async () => {
