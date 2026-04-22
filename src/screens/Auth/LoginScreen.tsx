@@ -21,13 +21,13 @@ export default function LoginScreen({ navigation }: any) {
   const { lang } = useTranslation();
   const { t } = useTranslation();
 
-  const redirectUri = AuthSession.makeRedirectUri({ useProxy: true });
   const [request, response, promptAsync] = AuthSession.useAuthRequest(
     {
       clientId: '588978066613-6njigohb22ke0tt3fmormd4n2vgr6d1k.apps.googleusercontent.com',
-      redirectUri,
+      redirectUri: 'https://auth.expo.io/@anonymous/rootling-app',
       scopes: ['openid', 'profile', 'email'],
       responseType: AuthSession.ResponseType.Token,
+      usePKCE: false,
     },
     { authorizationEndpoint: 'https://accounts.google.com/o/oauth2/v2/auth' }
   );
