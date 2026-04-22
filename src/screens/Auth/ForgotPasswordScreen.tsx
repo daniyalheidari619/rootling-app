@@ -40,7 +40,7 @@ export default function ForgotPasswordScreen({ navigation }: any) {
               <Text style={s.title}>{lang === 'lt' ? 'Atstatyti slaptažodį' : 'Reset Password'}</Text>
               <Text style={s.desc}>{lang === 'lt' ? 'Įveskite savo el. paštą ir mes išsiųsime atstatymo nuorodą.' : 'Enter your email and we will send you a reset link.'}</Text>
               <TextInput style={s.input} value={email} onChangeText={setEmail} placeholder="you@example.com" autoCapitalize="none" keyboardType="email-address" placeholderTextColor="#9CA3AF" />
-              <TouchableOpacity ss={handleSubmit} disabled={loading}>
+              <TouchableOpacity style={s.btn} onPress={handleSubmit} disabled={loading}>
                 {loading ? <ActivityIndicator color="#fff" /> : <Text style={s.btnText}>{lang === 'lt' ? 'Siųsti nuorodą' : 'Send Reset Link'}</Text>}
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.goBack()} style={s.link}>
