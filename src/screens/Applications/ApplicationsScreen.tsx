@@ -104,7 +104,7 @@ export default function ApplicationsScreen({ route, navigation }: any) {
               )}
 
               {item.estimatedDuration && (
-                >⏱ {item.estimatedDuration}</Text>
+                <Text style={s.duration}>⏱ {item.estimatedDuration}</Text>
               )}
 
               {item.status === 'PENDING' && (
