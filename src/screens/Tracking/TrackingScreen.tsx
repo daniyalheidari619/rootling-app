@@ -186,7 +186,7 @@ const s = StyleSheet.create({
   sectionTitle: { fontSize: 20, fontWeight: '700', color: '#111827', marginBottom: 8 },
   sectionDesc: { fontSize: 14, color: '#6B7280', marginBottom: 16, lineHeight: 20 },
   locationCard: { backgroundColor: '#F0FAFA', borderRadius: 14, padding: 16, borderWidth: 1, borderColor: '#1FB6AE', marginBottom: 16 },
-  locationLabel: { fontSize: 12, colo#1FB6AE', fontWeight: '700', marginBottom: 4 },
+  locationLabel: { fontSize: 12, color: '#1FB6AE', fontWeight: '700', marginBottom: 4 },
   locationCoords: { fontSize: 16, fontWeight: '600', color: '#111827', marginBottom: 8 },
   lastUpdate: { fontSize: 12, color: '#9CA3AF', marginBottom: 8 },
   waitCard: { backgroundColor: '#fff', borderRadius: 14, padding: 24, borderWidth: 1, borderColor: '#E5E7EB', alignItems: 'center', marginBottom: 16 },
