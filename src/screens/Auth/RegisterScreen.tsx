@@ -6,7 +6,7 @@ import {
   Platform, ScrollView, Alert,
 } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-auth-session/providers/google';
+import * as AuthSession from 'expo-auth-session';
 import { useAuthStore } from '../../store/authStore';
 import client from '../../api/client';
 
@@ -22,17 +22,22 @@ export default function RegisterScreen({ navigation }: any) {
   const { lang } = useTranslation();
   const { t } = useTranslation();
 
-  const googleAuth = Google.useAuthRequest({
-    iosClientId: '588978066613-08eafmkaf2uc0jqo39mgtnq0nqgbl9ce.apps.googleusercontent.com',
-    webClientId: '588978066613-6njigohb22ke0tt3fmormd4n2vgr6d1k.apps.googleusercontent.com',
-    redirectUri: 'https://auth.expo.io/@anonymous/rootling-app',
-  });
-  const [request, response, promptAsync] = Array.isArray(googleAuth) ? googleAuth : [null, null, () => {}];
+  const redirectUri = AuthSession.makeRedirectUri({ useProxy: true });
+  const [request, response, promptAsync] = AuthSession.useAuthRequest(
+    {
+      clientId: '588978066613-6njigohb22ke0tt3fmormd4n2vgr6d1k.apps.googleusercontent.com',
+      redirectUri,
+      scopes: ['openid', 'profile', 'email'],
+      responseType: AuthSession.ResponseType.Token,
+    },
+    { authorizationEndpoint: 'https://accounts.google.com/o/oauth2/v2/auth' }
+  );
 
   React.useEffect(() => {
     if (response?.type === 'success') {
-      const { authentication } = response;
-      if (authentication?.accessToken) {
+      const accessToken = response.params?.access_token || response.authentication?.accessToken;
+      if (accessToken) {
+        const authentication = { accessToken };
         handleGoogleToken(authentication.accessToken, 'BOTH');
       }
     } else if (response?.type === 'error') {
