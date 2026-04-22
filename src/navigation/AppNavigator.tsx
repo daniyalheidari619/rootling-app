@@ -1,3 +1,4 @@
+import TrackingScreen from '../screens/Tracking/TrackingScreen';
 import BrowseScreen from '../screens/Browse/BrowseScreen';
 import ForgotPasswordScreen from '../screens/Auth/ForgotPasswordScreen';
 import NegotiationsScreen from '../screens/Negotiations/NegotiationsScreen';
@@ -77,6 +78,7 @@ function AuthStack() {
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Subscription" component={SubscriptionScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Tracking" component={TrackingScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Browse" component={BrowseScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Notifications" component={NotificationsScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Negotiations" component={NegotiationsScreen} options={{ headerShown: false }} />
@@ -91,6 +93,7 @@ function MainStack() {
       <Stack.Screen name="Subscription" component={SubscriptionScreen} />
       <Stack.Screen name="TaskDetail" component={require('../screens/TaskDetail/TaskDetailScreen').default} />
       <Stack.Screen name="ChatScreen" component={require('../screens/Chat/ChatScreen').default} />
+      <Stack.Screen name="Tracking" component={TrackingScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Browse" component={BrowseScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Notifications" component={NotificationsScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Negotiations" component={NegotiationsScreen} options={{ headerShown: false }} />

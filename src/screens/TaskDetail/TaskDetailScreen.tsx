@@ -297,6 +297,14 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           </TouchableOpacity>
         </View>
       )}
+      {safeTask.status === 'ASSIGNED' && user && (
+        <TouchableOpacity
+          style={{ position: 'absolute', bottom: 170, right: 16, backgroundColor: '#6366F1', borderRadius: 30, width: 56, height: 56, justifyContent: 'center', alignItems: 'center', shadowColor: '#6366F1', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 5 }}
+          onPress={() => navigation.navigate('Tracking', { task: safeTask, isTasker: safeTask.taskerId === user.id })}
+        >
+          <Text style={{ fontSize: 24 }}>📍</Text>
+        </TouchableOpacity>
+      )}
       {safeTask.status === 'ASSIGNED' && (
         <TouchableOpacity style={[styles.applyBtn, { position: 'absolute', bottom: 96, left: 16, right: 16, borderRadius: 12, backgroundColor: '#10B981' }]} onPress={handleCompleteTask}>
           <Text style={styles.applyBtnText}>✓ {lang === 'lt' ? 'Patvirtinti atlikimą' : 'Mark as Complete'}</Text>
