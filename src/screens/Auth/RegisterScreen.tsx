@@ -16,7 +16,6 @@ export default function RegisterScreen({ navigation }: any) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState<'CLIENT' | 'TASKER'>('TASKER');
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const { setAuth } = useAuthStore();
@@ -33,7 +32,7 @@ export default function RegisterScreen({ navigation }: any) {
     if (response?.type === 'success') {
       const { authentication } = response;
       if (authentication?.accessToken) {
-        handleGoogleToken(authentication.accessToken, role);
+        handleGoogleToken(authentication.accessToken, 'BOTH');
       }
     } else if (response?.type === 'error') {
       Alert.alert('Error', 'Google sign up failed');
@@ -63,7 +62,7 @@ export default function RegisterScreen({ navigation }: any) {
     if (!name || !email || !password) return Alert.alert('Error', 'Please fill in all fields');
     setLoading(true);
     try {
-      const { data } = await client.post('/api/auth/register', { name, email, password, role });
+      const { data } = await client.post('/api/auth/register', { name, email, password, role: 'BOTH' });
       if (data.success) {
         Alert.alert('Check your email', 'We sent a verification link to your email.', [
           { text: 'OK', onPress: () => navigation.navigate('Login') },
