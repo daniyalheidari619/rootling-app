@@ -24,9 +24,9 @@ export default function LoginScreen({ navigation }: any) {
   const googleAuth = Google.useAuthRequest({
     iosClientId: '588978066613-08eafmkaf2uc0jqo39mgtnq0nqgbl9ce.apps.googleusercontent.com',
     webClientId: '588978066613-6njigohb22ke0tt3fmormd4n2vgr6d1k.apps.googleusercontent.com',
+    redirectUri: 'https://auth.expo.io/@anonymous/rootling-app',
   });
   const [request, response, promptAsync] = Array.isArray(googleAuth) ? googleAuth : [null, null, () => {}];
-  React.useEffect(() => { if (request) console.log('REDIRECT URI:', (request as any).redirectUri); }, [request]);
 
   React.useEffect(() => {
     if (response?.type === 'success') {
