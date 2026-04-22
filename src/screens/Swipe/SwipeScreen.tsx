@@ -1,3 +1,4 @@
+import ScreenHeader from '../../components/ScreenHeader';
 import { useTranslation } from '../../i18n';
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Dimensions, Alert } from 'react-native';
@@ -77,10 +78,8 @@ export default function SwipeScreen({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>{t('swipe.title')}</Text>
-        <Text style={styles.headerSub}>{cards.length} {t('swipe.nearYou')}</Text>
-      </View>
+      <ScreenHeader title={t('swipe.title')} navigation={navigation} />
+      <Text style={styles.headerSub}>{cards.length} {t('swipe.nearYou')}</Text>
       <View style={styles.cardStack}>
         {cards.slice(0, 3).reverse().map((task, index) => (
           <SwipeCard

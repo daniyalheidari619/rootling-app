@@ -1,3 +1,4 @@
+import ScreenHeader from '../../components/ScreenHeader';
 import { anonName, anonAvatar } from '../../utils/anonName';
 import { useTranslation } from '../../i18n';
 import React from 'react';

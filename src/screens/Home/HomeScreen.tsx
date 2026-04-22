@@ -1,3 +1,4 @@
+import ScreenHeader from '../../components/ScreenHeader';
 import { useTranslation } from '../../i18n';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
@@ -9,17 +10,8 @@ export default function HomeScreen({ navigation }: any) {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <View style={styles.header}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <View>
-            <Text style={styles.greeting}>{t('home.greeting')} {user?.name?.split(' ')[0] || 'there'} 👋</Text>
-            <Text style={styles.subtitle}>{t('home.subtitle')}</Text>
-          </View>
-          <TouchableOpacity onPress={() => navigation.navigate('Notifications')} style={{ padding: 8, marginTop: 4 }}>
-            <Text style={{ fontSize: 24 }}>🔔</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <ScreenHeader title={t('home.greeting') + ' ' + (user?.name?.split(' ')[0] || '') + ' 👋'} navigation={navigation} />
+      <Text style={styles.subtitle}>{t('home.subtitle')}</Text>
 
       <TouchableOpacity style={styles.swipeCTA} onPress={() => navigation.navigate('Swipe')}>
         <Text style={styles.swipeCTATitle}>{t('home.findTasks')}</Text>
