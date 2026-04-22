@@ -26,6 +26,7 @@ export default function LoginScreen({ navigation }: any) {
     webClientId: '588978066613-6njigohb22ke0tt3fmormd4n2vgr6d1k.apps.googleusercontent.com',
   });
   const [request, response, promptAsync] = Array.isArray(googleAuth) ? googleAuth : [null, null, () => {}];
+  React.useEffect(() => { if (request) console.log('REDIRECT URI:', (request as any).redirectUri); }, [request]);
 
   React.useEffect(() => {
     if (response?.type === 'success') {
