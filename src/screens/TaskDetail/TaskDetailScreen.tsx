@@ -106,7 +106,8 @@ export default function TaskDetailScreen({ route, navigation }: any) {
       lang === 'lt' ? 'Patvirtinti atlikimą?' : 'Confirm completion?',
       lang === 'lt' ? 'Ar patvirtinate, kad užduotis atlikta?' : 'Confirm the task has been completed?',
       [
-        { text: lang === 'lt' ? 'Ne' : 'No', style: 'cancel' }        { text: lang === 'lt' ? 'Taip' : 'Yes', onPress: async () => {
+        { text: lang === 'lt' ? 'Ne' : 'No', style: 'cancel' },
+        { text: lang === 'lt' ? 'Taip' : 'Yes', onPress: async () => {
           try {
             await client.post(`/api/tasks/${safeTask.id}/complete`);
             setShowReview(true);
