@@ -18,7 +18,7 @@ const CATS = [
   { value: 'events-hospitality', icon: '🎉' },
   { value: 'administrative-digital', icon: '💻' },
   { value: 'seasonal-special', icon: '❄️' },
- 📋' },
+  { value: 'other', icon: '📋' },
 ];
 
 export default function BrowseScreen({ navigation }: any) {
