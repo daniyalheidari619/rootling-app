@@ -19,6 +19,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
   const { user } = useAuthStore();
   const [applying, setApplying] = useState(false);
   const { t, lang } = useTranslation();
+  const isLt = lang === 'lt';
   const [showNegotiate, setShowNegotiate] = useState(false);
   const [negotiatePrice, setNegotiatePrice] = useState('');
   const [negotiateNote, setNegotiateNote] = useState('');
