@@ -21,7 +21,7 @@ function AppContent() {
 
 export default function App() {
   return (
-    <StripeProvider publishableKey="pk_live_51RPGTSRwz0XZJX0a9Xh5BNJRP9FsJK2JRSmAHnFEw5tqnFBLTwqdNrP3VFOM5TIXIk4OC8DdWW6VBLZE58iBkBZ00VRaFPqpb">
+    <StripeProvider publishableKey="pk_live_51T87tVE3WAA2JLQ2yiIfbgnem2HP1pWuGKfhXSwk4He4wSlzWvgV6Blg2roh8GUmlVbNvYolUhr5DwbbxlaWMge300pxOMrztM">
       <QueryClientProvider client={queryClient}>
         <AppContent />
       </QueryClientProvider>
