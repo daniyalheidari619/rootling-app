@@ -449,8 +449,7 @@ export default function PostScreen({ navigation }: any) {
             >
               <Text style={{ color: '#374151', fontWeight: '700' }}>{slotsRequired > 5 ? slotsRequired : '+'}</Text>
             </TouchableOpacity>
-          </View> thumbColor="#fff" />
-              </View>
+          </View>
 
           <View style={styles.trustBox}>
             <Text style={styles.trustText}>{t('post.paymentNotice')}</Text>
