@@ -64,11 +64,13 @@ export default function TaskDetailScreen({ route, navigation }: any) {
         proposedBudget: task.budget,
       });
 
+  const safeTask = task || initialTask;
+
   if (taskLoading && !task) {
     return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><ActivityIndicator size="large" color="#1FB6AE" /></View>;
   }
 
-  const safeTask = task || initialTask;
+
 
 
       Alert.alert(t('task.interestSent'), t('task.interestSentDesc'));
