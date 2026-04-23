@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   backText: { color: '#1FB6AE', fontSize: 16, fontWeight: '600' },
   title: { fontSize: 18, fontWeight: '700', color: '#111827' },
   content: { flex: 1, padding: 16 },
-  taskCard: { backgroundColor: '#fff', borderRadius: 16, padding: 20, marginBottom: 16, shad00', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 },
+  taskCard: { backgroundColor: '#fff', borderRadius: 16, padding: 20, marginBottom: 16, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 },
   taskTitle: { fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 16 },
   row: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 },
   label: { fontSize: 14, color: '#6B7280' },
