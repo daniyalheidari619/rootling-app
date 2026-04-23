@@ -366,18 +366,7 @@ export default function PostScreen({ navigation }: any) {
             />
           </View>
 
-          <View style={styles.priorityRow}>
-            <View style={styles.priorityInfo}>
-              <Text style={styles.label}>{t('post.priority')}</Text>
-              <Text style={styles.hint}>{t('post.priorityHint')}</Text>
-            </View>
-            <Switch
-              value={priority}
-              onValueChange={setPriority}
-              trackColor={{ false: '#E5E7EB', true: '#1FB6AE' }}
-              thumbColor="#fff"
-            />
-          </View>
+
 
           <Text style={styles.label}>{t('post.photos')}</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 12 }}>
