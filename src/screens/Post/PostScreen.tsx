@@ -452,28 +452,6 @@ export default function PostScreen({ navigation }: any) {
           </View> thumbColor="#fff" />
               </View>
               {isRecurring && (
-                <View style={styles.card}>
-                  <Text style={styles.label}>{lang === 'lt' ? 'Dažnumas' : 'Frequency'}</Text>
-                  <View style={{ flexDirection: 'row', gap: 8, marginBottom: 12 }}>
-                    {(['weekly', 'biweekly', 'monthly'] as const).map(f => (
-                      <TouchableOpacity key={f} onPress={() => setFrequency(f)}
-                        style={{ flex: 1, padding: 10, borderRadius: 10, alignItems: 'center', backgroundColor: frequency === f ? '#1FB6AE' : '#F3F4F6', borderWidth: 1, borderColor: frequency === f ? '#1FB6AE' : '#E5E7EB' }}>
-                        <Text style={{ fontSize: 11, fontWeight: '600', color: frequency === f ? '#fff' : '#374151' }}>
-                          {f === 'weekly' ? (lang === 'lt' ? 'Kas savaitę' : 'Weekly') : f === 'biweekly' ? (lang === 'lt' ? 'Kas 2 sav.' : 'Biweekly') : (lang === 'lt' ? 'Kas mėnesį' : 'Monthly')}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
-            <Text style={styles.label}>{lang === 'lt' ? 'Kartojimų skaičius' : 'Occurrences'}</Text>
-                  <View style={{ flexDirection: 'row', gap: 8 }}>
-                    {[2, 4, 8, 12].map(n => (
-                      <TouchableOpacity key={n} onPress={() => setOccurrences(n)}
-                        style={{ flex: 1, padding: 10, borderRadius: 10, alignItems: 'center', backgroundColor: occurrences === n ? '#1FB6AE' : '#F3F4F6', borderWidth: 1, borderColor: occurrences === n ? '#1FB6AE' : '#E5E7EB' }}>
-                        <Text style={{ fontSize: 13, fontWeight: '600', color: occurrences === n ? '#fff' : '#374151' }}>{n}x</Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
-                </View>
               )}
             </>
           )}
