@@ -124,7 +124,7 @@ export default function PostScreen({ navigation }: any) {
           <TouchableOpacity style={[styles.modeBtn, styles.modeBtnActive]}>
             <Text style={[styles.modeBtnText, styles.modeBtnTextActive]}>⚡ {t('recurring.oneoff')}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.modeBtn, !canRecurring && styles.modeBtnLocked]} onPress={() => { if (!canRecurring) Alert.alert(t('recurring.subscribersOnly'), t('recurring.upgradePrompt')); } else { navigation.navigate('RecurringPost', { category: selectedCategory || 'home-services' }); } }}>
+          <TouchableOpacity style={[styles.modeBtn, !canRecurring && styles.modeBtnLocked]} onPress={() => { if (!canRecurring) { Alert.alert(t('recurring.subscribersOnly'), t('recurring.upgradePrompt')); } else { navigation.navigate('RecurringPost', { category: selectedCategory || 'home-services' }); } }}>
             <Text style={[styles.modeBtnText, !canRecurring && styles.modeBtnTextLocked]}>{canRecurring ? '🔄' : '🔒'} {t('recurring.recurring')}</Text>
           </TouchableOpacity>
         </View>
