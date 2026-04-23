@@ -29,6 +29,7 @@ export default function PaymentScreen({ route, navigation }: any) {
         merchantDisplayName: 'Root-ling',
         paymentIntentClientSecret: clientSecret,
         allowsDelayedPaymentMethods: false,
+        returnURL: 'rootling://payment-complete',
         appearance: { colors: { primary: '#1FB6AE' } },
       });
       if (error) { Alert.alert('Error', error.message); navigation.goBack(); }
