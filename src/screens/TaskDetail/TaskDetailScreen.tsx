@@ -50,7 +50,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
   const categoryLabel = useMemo(() => {
     const currentLang = getLanguage();
     const key = catMap[task?.category || initialTask?.category || ''];
-    if (!key) return (safeTask?.category || '').replace(/-/g, ' ').toUpperCase();
+    if (!key) return (task?.category || initialTask?.category || '').replace(/-/g, ' ').toUpperCase();
     const { translations } = require('../../i18n/translations');
     return (translations[currentLang]?.[key] || translations['en']?.[key] || '').toUpperCase();
   }, [task?.category, initialTask?.category, lang]);
