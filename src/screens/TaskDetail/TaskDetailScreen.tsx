@@ -119,7 +119,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
       setShowBoostModal(false);
       Alert.alert(
         isLt ? 'Užduotis sustiprinta!' : 'Task Boosted!',
-        isLt ? `Jūsų užduotis dabar ${bType === 'SIGHT' ? 'Spotlight' : 'Boost'} režime.` : `Your task is now in ${bType === 'SPOTLIGHT' ? 'Spotlight' : 'Boost'} mode.`
+        isLt ? `Jūsų užduotis dabar ${bType === 'SPOTLIGHT' ? 'Spotlight' : 'Boost'} režime.` : `Your task is now in ${bType === 'SPOTLIGHT' ? 'Spotlight' : 'Boost'} mode.`
       );
     } catch (e: any) {
       Alert.alert(t('common.error'), e?.response?.data?.error || 'Failed to boost task');
@@ -255,11 +255,11 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           </View>
         )}
         {/* Boost Modal */}
-        <Modal visible={showBoostModal} transparent aniationType="slide">
+        <Modal visible={showBoostModal} transparent animationType="slide">
           <View style={styles.modalOverlay}>
             <View style={styles.modalCard}>
               <Text style={styles.modalTitle}>⚡ {isLt ? 'Sustiprinti užduotį' : 'Boost Task'}</Text>
-              <Text style={[styles.modalInput, { borderWidth: 0, color: '#6B7280', fontSize: 13, height: 'auto', marginBottom: 16 }]}>
+              <Text style={[styles.modalInput, { borderWidth: 0, color: '#6B7280', fontSize: 13, marginBottom: 16 }]}>
                 {isLt ? 'Padidinkite savo užduoties matomumą ir gaukite daugiau kandidatų greičiau.' : 'Increase your task visibility and get more applicants faster.'}
               </Text>
 
