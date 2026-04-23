@@ -7,7 +7,8 @@ import {
   Platform, ScrollView, Alert,
 } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
-import * as AuthSession from 'expo-auth-session';
+import * as Google from 'expo-auth-session/providers/google';
+WebBrowser.maybeCompleteAuthSession();
 import { useAuthStore } from '../../store/authStore';
 import client from '../../api/client';
 
