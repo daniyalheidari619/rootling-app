@@ -500,7 +500,7 @@ export default function PostScreen({ navigation }: any) {
           )}
           <View style={styles.inputGroup}>
             <Text style={styles.label}>{lang === 'lt' ? 'Promo kodas (neprivaloma)' : 'Promo code (optional)'}</Text>
-            <Texnput
+            <TextInput
               style={styles.input}
               value={promoCode}
               onChangeText={setPromoCode}
