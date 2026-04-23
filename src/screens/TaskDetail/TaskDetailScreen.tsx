@@ -15,6 +15,7 @@ import { useAuthStore } from '../../store/authStore';
 
 export default function TaskDetailScreen({ route, navigation }: any) {
   const { task: initialTask } = route.params;
+  const safeTask = (route.params?.task) || initialTask;
   const { user } = useAuthStore();
   const [applying, setApplying] = useState(false);
   const { t, lang } = useTranslation();
@@ -64,7 +65,6 @@ export default function TaskDetailScreen({ route, navigation }: any) {
         proposedBudget: task.budget,
       });
 
-  const safeTask = task || initialTask;
 
   if (taskLoading && !task) {
     return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><ActivityIndicator size="large" color="#1FB6AE" /></View>;
