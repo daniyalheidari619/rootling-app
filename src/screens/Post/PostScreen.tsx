@@ -221,7 +221,8 @@ export default function PostScreen({ navigation }: any) {
       setLocation(''); setDueDate(''); setPriority(false); setSubcategory('');
       if (taskId) {
         const { Linking } = require('react-native');
-        Linking.openURL(`https://root-ling.com/pay/${taskId}`);
+        const token = require('../store/authStore').useAuthStore.getState().token;
+        Linking.openURL(`https://root-ling.com/pay/${taskId}?mobileToken=${token}`);
         Alert.alert(
           lang === 'lt' ? 'Užduotis sukurta!' : 'Task Created!',
           lang === 'lt' ? 'Atsidaro mokėjimo puslapis naršyklėje...' : 'Opening payment page in browser...',
