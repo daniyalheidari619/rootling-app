@@ -92,7 +92,7 @@ export default function PaymentScreen({ route, navigation }: any) {
       <View style={styles.content}>
         {taskInfo && (
           <View style={styles.taskCard}>
-            <Text style={styles.taskTit{taskInfo.title}</Text>
+            <Text style={styles.taskTitle}>{taskInfo.title}</Text>
             <View style={styles.row}>
               <Text style={styles.label}>Task budget:</Text>
               <Text style={styles.amount}>€{(taskInfo.budget || 0).toFixed(2)}</Text>
