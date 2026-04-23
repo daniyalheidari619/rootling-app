@@ -53,7 +53,7 @@ export default function RecurringPostScreen({ route, navigation }: Props) {
 
   const handleSubmit = async () => {
     if (!canRecurring) {
-      Alert.alert(t('recurring.subscribersOnly'), t('recurring.upgradePro
+      Alert.alert(t('recurring.subscribersOnly'), t('recurring.upgradePrompt'), [
         { text: t('common.cancel'), style: 'cancel' },
         { text: isLt ? 'Peržiūrėti planus' : 'View Plans', onPress: () => navigation.navigate('Subscription') }
       ]);
