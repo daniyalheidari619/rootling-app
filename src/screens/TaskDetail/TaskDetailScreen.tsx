@@ -269,7 +269,9 @@ export default function TaskDetailScreen({ route, navigation }: any) {
                 <Text style={{ color: '#FEF3C7', fontSize: 12, textAlign: 'center', marginTop: 4 }}>
                   {isLt ? 'Rodoma aukščiau paieškos rezultatuose' : 'Shown higher in search results'}
                 </Text>
-                            <TouchableOpacity
+              </TouchableOpacity>
+
+              <TouchableOpacity
                 style={{ backgroundColor: '#7C3AED', borderRadius: 12, padding: 16, marginBottom: 16 }}
                 onPress={() => handleBoost('SPOTLIGHT')}
                 disabled={boostLoading}
