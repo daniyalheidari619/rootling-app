@@ -451,10 +451,6 @@ export default function PostScreen({ navigation }: any) {
             </TouchableOpacity>
           </View> thumbColor="#fff" />
               </View>
-              {isRecurring && (
-              )}
-            </>
-          )}
 
           <View style={styles.trustBox}>
             <Text style={styles.trustText}>{t('post.paymentNotice')}</Text>
