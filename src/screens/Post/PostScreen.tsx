@@ -207,7 +207,7 @@ export default function PostScreen({ navigation }: any) {
         subcategory,
         location,
         dueDate: dueDate || undefined,
-        priority: 'NORMAL',
+        priority: 'MEDIUM',
         requiresCar,
         requiresTools,
         toolsList: requiresTools ? toolsList : '',
