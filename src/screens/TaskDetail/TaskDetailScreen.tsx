@@ -381,7 +381,8 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           <Text style={{ fontSize: 16 }}>👥</Text>
           <Text style={{ color: '#fff', fontWeight: '700', fontSize: 13 }}>{lang === 'lt' ? 'Paraiškos' : 'Applications'}</Text>
         </TouchableOpacity>
-      )}    {safeTask.status === 'ASSIGNED' && user && (
+      )}
+      {safeTask.status === 'ASSIGNED' && user && (
         <TouchableOpacity
           style={{ position: 'absolute', bottom: 170, right: 16, backgroundColor: '#6366F1', borderRadius: 30, width: 56, height: 56, justifyContent: 'center', alignItems: 'center', shadowColor: '#6366F1', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 5 }}
           onPress={() => navigation.navigate('Tracking', { task: safeTask, isTasker: safeTask.taskerId === user.id })}
