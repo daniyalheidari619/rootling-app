@@ -435,7 +435,7 @@ export const lt: Record<string, string> = {
   'recurring.pricePerOccurrence': 'Kaina už kartą',
   'recurring.paymentNote': 'Mokėjimas autorizuojamas 1 dieną prieš kiekvieną kartą',
   'recurring.summary': 'Apžvalga',
-  'recur'Sukurti pasikartojančią užduotį',
+  'recurring.createBtn': 'Sukurti pasikartojančią užduotį',
   'recurring.modeDesc': 'Užduotis kartosis automatiškai pagal grafiką',
   'recurring.notSubscriber': 'Pasikartojančios užduotys reikalauja prenumeratos',
   'recurring.upgradePrompt': 'Pereikite prie Premium, kad kurtumėte pasikartojančias užduotis',
