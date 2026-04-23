@@ -28,6 +28,17 @@
       "favicon": "./assets/favicon.png"
     },
     "entryPoint": "./index.ts",
-    "scheme": "com.rootling.app"
+    "scheme": "com.rootling.app",
+    "extra": {
+      "eas": {
+        "projectId": "a2972e1d-37e1-42a6-b275-d55237a5ef32"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/a2972e1d-37e1-42a6-b275-d55237a5ef32"
+    }
   }
 }
