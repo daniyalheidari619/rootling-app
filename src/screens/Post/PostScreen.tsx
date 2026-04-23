@@ -111,6 +111,8 @@ export default function PostScreen({ navigation }: any) {
     );
   }
 
+  const canRecurring = profile?.isSubscriber && (profile?.subscriptionRole === 'task_maker' || profile?.subscriptionRole === 'both');
+
   if (step === 'category') {
     return (
       <ScrollView nestedScrollEnabled={true} style={styles.container} showsVerticalScrollIndicator={false}>
@@ -118,6 +120,15 @@ export default function PostScreen({ navigation }: any) {
           <Text style={styles.headerTitle}>{t('post.title')}</Text>
           <Text style={styles.headerSub}>{t('post.subtitle')}</Text>
         </View>
+        <View style={styles.modeToggle}>
+          <TouchableOpacity style={[styles.modeBtn, styles.modeBtnActive]}>
+            <Text style={[styles.modeBtnText, styles.modeBtnTextActive]}>⚡ {t('recurring.oneoff')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.modeBtn, !canRecurring && styles.modeBtnLocked]} onPress={() => { if (!canRecurring) Alert.alert(t('recurring.subscribersOnly'), t('recurring.upgradePrompt')); } else { navigation.navigate('RecurringPost', { category: selectedCategory || 'home-services' }); } }}>
+            <Text style={[styles.modeBtnText, !canRecurring && styles.modeBtnTextLocked]}>{canRecurring ? '🔄' : '🔒'} {t('recurring.recurring')}</Text>
+          </TouchableOpacity>
+        </View>
+
         <View style={styles.grid}>
           {CATEGORIES_DATA.map((cat) => (
             <TouchableOpacity
@@ -442,15 +453,7 @@ export default function PostScreen({ navigation }: any) {
             </TouchableOpacity>
           </View>
 
-          <Text style={styles.label}>{lang === 'lt' ? 'Promo kodas (neprivaloma)' : 'Promo code (optional)'}</Text>
-          <TextInput
-            style={styles.input}
-            value={promoCode}
-            onChangeText={setPromoCode}
-            placeholder={lang === 'lt' ? 'Įveskite promo kodą' : 'Enter promo code'}
-            placeholderTextColor="#9CAF"
-            autoCapitalize="characters"
-          />
+
 
           {profile?.isSubscriber && (profile?.subscriptionRole === 'task_maker' || profile?.subscriptionRole === 'both') && (
             <>
