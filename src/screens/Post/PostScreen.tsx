@@ -186,7 +186,7 @@ export default function PostScreen({ navigation }: any) {
 
     setSubmitting(true);
     try {
-      await client.post('/api/tasks', {
+      const response = await client.post('/api/tasks', {
         title,
         description,
         budget: Number(budget),
@@ -206,13 +206,15 @@ export default function PostScreen({ navigation }: any) {
         frequency: isRecurring ? frequency : undefined,
         occurrences: isRecurring ? occurrences : undefined,
       });
-      Alert.alert(t('post.success'), t('post.successDesc'), [
-        { text: 'OK', onPress: () => {
-          setStep('category');
-          setTitle(''); setDescription(''); setBudget(''); setItemBudget(''); setTaskImages([]);
-          setLocation(''); setDueDate(''); setPriority(false); setSubcategory('');
-        }},
-      ]);
+      const taskId = response?.data?.data?.id || response?.data?.id;
+      setStep('category');
+      setTitle(''); setDescription(''); setBudget(''); setItemBudget(''); setTaskImages([]);
+      setLocation(''); setDueDate(''); setPriority(false); setSubcategory('');
+      if (taskId) {
+        navigation.navigate('TaskDetail', { task: { id: taskId } });
+      } else {
+        Alert.alert(t('post.success'), t('post.successDesc'));
+      }
     } catch (e: any) {
       Alert.alert('Error', e?.response?.data?.message || 'Failed to post task');
     } finally {
@@ -496,6 +498,18 @@ export default function PostScreen({ navigation }: any) {
               )}
             </>
           )}
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>{lang === 'lt' ? 'Promo kodas (neprivaloma)' : 'Promo code (optional)'}</Text>
+            <Texnput
+              style={styles.input}
+              value={promoCode}
+              onChangeText={setPromoCode}
+              placeholder={lang === 'lt' ? 'Įveskite promo kodą' : 'Enter promo code'}
+              placeholderTextColor="#9CA3AF"
+              autoCapitalize="characters"
+            />
+          </View>
+
           <View style={styles.trustBox}>
             <Text style={styles.trustText}>{t('post.paymentNotice')}</Text>
           </View>
