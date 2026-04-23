@@ -15,7 +15,7 @@ import { useAuthStore } from '../../store/authStore';
 
 export default function TaskDetailScreen({ route, navigation }: any) {
   const { task: initialTask } = route.params;
-  const safeTask = (route.params?.task) || initialTask;
+  const safeTask = task || initialTask || route.params?.task || {};
   const { user } = useAuthStore();
   const [applying, setApplying] = useState(false);
   const { t, lang } = useTranslation();
