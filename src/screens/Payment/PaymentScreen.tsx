@@ -52,7 +52,7 @@ export default function PaymentScreen({ route, navigation }: any) {
   );
 }
 
-const styles = Stylheet.create({
+const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   header: { flexDirection: 'row', alignItems: 'center', paddingTop: 56, paddingBottom: 12, paddingHorizontal: 16, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#F3F4F6' },
   backBtn: { marginRight: 16 },
