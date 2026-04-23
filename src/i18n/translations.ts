@@ -304,7 +304,7 @@ export const en: Record<string, string> = {
   'cat.personalAssistance': 'Personal Assistance',
   'cat.elderlySpecialCare': 'Elderly & Special Care',
   'cat.eventsHospitality': 'Events & Hospitality',
-  'cat.administrativeDigital': '💻 Administrative & Digital',
+  'cat.administrativeDigital': 'Administrative & Digital',
   'cat.seasonalSpecial': 'Seasonal & Special',
   'cat.other': 'Other',
 };
