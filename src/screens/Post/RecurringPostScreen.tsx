@@ -18,7 +18,7 @@ interface Props {
 export default function RecurringPostScreen({ route, navigation }: Props) {
   const { category } = route.params;
   const { user } = useAuthStore();
-  const { t, lang= useTranslation();
+  const { t, lang } = useTranslation();
   const isLt = lang === 'lt';
   const DAYS = isLt ? DAYS_LT : DAYS_EN;
 
