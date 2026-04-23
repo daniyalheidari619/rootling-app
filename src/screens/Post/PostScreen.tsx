@@ -225,7 +225,8 @@ export default function PostScreen({ navigation }: any) {
         Alert.alert(t('post.success'), t('post.successDesc'));
       }
     } catch (e: any) {
-      Alert.alert('Error', e?.response?.data?.message || 'Failed to post task');
+      console.error('Task creation error:', JSON.stringify(e?.response?.data), e?.message, e?.response?.status);
+      Alert.alert('Error', e?.response?.data?.message || e?.response?.data?.error || e?.message || 'Failed to post task');
     } finally {
       setSubmitting(false);
     }
