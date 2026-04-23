@@ -14,42 +14,29 @@ export default function PaymentScreen({ route, navigation }: any) {
   const [ready, setReady] = useState(false);
   const [taskInfo, setTaskInfo] = useState<any>(null);
 
-  useEffect(() => {
-    initializePayment();
-  }, []);
+  useEffect(() => { initializePayment(); }, []);
 
   const initializePayment = async () => {
     try {
       const headers = { Authorization: `Bearer ${token}` };
-
       const [paymentRes, taskRes] = await Promise.all([
         axios.post(`${API_URL}/api/payments/create-payment-intent`, { taskId }, { headers }),
         axios.get(`${API_URL}/api/tasks/${taskId}`, { headers }),
       ]);
-
       const { clientSecret } = paymentRes.data;
       setTaskInfo(taskRes.data.task || taskRes.data.data);
-
       const { error } = await initPaymentSheet({
         merchantDisplayName: 'Root-ling',
         paymentIntentClientSecret: clientSecret,
         allowsDelayedPaymentMethods: false,
         appearance: { colors: { primary: '#1FB6AE' } },
       });
-
-      if (error) {
-        Alert.alert('Error', error.message);
-        navigation.goBack();
-      } else {
-        setReady(true);
-      }
+      if (error) { Alert.alert('Error', error.message); navigation.goBack(); }
+      else setReady(true);
     } catch (e: any) {
-      console.error('Payment init error:', e?.response?.data, e?.message);
       Alert.alert('Error', e?.response?.data?.message || e?.message || 'Failed to initialize payment');
       navigation.goBack();
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   };
 
   const handlePay = async () => {
@@ -57,57 +44,47 @@ export default function PaymentScreen({ route, navigation }: any) {
     if (error) {
       if (error.code !== 'Canceled') Alert.alert('Payment failed', error.message);
     } else {
-      Alert.alert(
-        'Payment successful! ✅',
-        'Your task is now live. Taskers will start applying.',
+      Alert.alert('Payment successful!', 'Your task is now live.',
         [{ text: 'View My Tasks', onPress: () => navigation.reset({ index: 0, routes: [{ name: 'Tabs' }] }) }]
       );
     }
   };
 
-  if (loading) {
-    return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color="#1FB6AE" />
-        <Text style={styles.loadingText}>Preparing payment...</Text>
-      </View>
-    );
-  }
+  if (loading) return (
+    <View style={styles.center}>
+      <ActivityIndicator size="large" color="#1FB6AE" />
+      <Text style={styles.loadingText}>Preparing payment...</Text>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <Text style={styles.backText}>← Back</Text>
+          <Text style={styles.backText}>Back</Text>
         </TouchableOpacity>
         <Text style={styles.title}>Complete Payment</Text>
       </View>
       <View style={styles.content}>
         {taskInfo && (
-          <View style={styles.taskC>
+          <View style={styles.taskCard}>
             <Text style={styles.taskTitle}>{taskInfo.title}</Text>
             <View style={styles.row}>
               <Text style={styles.label}>Task budget:</Text>
-              <Text style={styles.amount}>€{(taskInfo.budget || 0).toFixed(2)}</Text>
+              <Text style={styles.amount}>EUR {(taskInfo.budget || 0).toFixed(2)}</Text>
             </View>
-            {taskInfo.itemBudget > 0 && (
-              <View style={styles.row}>
-                <Text style={styles.label}>Item budget:</Text>
-                <Text style={styles.amount}>€{taskInfo.itemBudget.toFixed(2)}</Text>
-              </View>
-            )}
             <View style={[styles.row, styles.totalRow]}>
               <Text style={styles.totalLabel}>Total:</Text>
-              <Text style={styles.totalAmount}>€{((taskInfo.budget || 0) + (taskInfo.itemBudget || 0)).toFixed(2)}</Text>
+              <Text style={styles.totalAmount}>EUR {((taskInfo.budget || 0) + (taskInfo.itemBudget || 0)).toFixed(2)}</Text>
             </View>
           </View>
         )}
         <View style={styles.securityNote}>
-          <Text style={styles.securityText}>🔒 Payment held securely until task completion</Text>
-          <Text style={styles.securitySub}>Powered by Stripe • PCI compliant</Text>
+          <Text style={styles.securityText}>Payment held securely until task completion</Text>
+          <Text style={styles.securitySub}>Powered by Stripe</Text>
         </View>
-        <TouchableOpacity style={[styles.payBtn, !ready && stylesabled]} onPress={handlePay} disabled={!ready}>
-          <Text style={styles.payBtnText}>Pay & Post Task →</Text>
+        <TouchableOpacity style={[styles.payBtn, !ready && styles.payBtnDisabled]} onPress={handlePay} disabled={!ready}>
+          <Text style={styles.payBtnText}>Pay and Post Task</Text>
         </TouchableOpacity>
       </View>
     </View>
