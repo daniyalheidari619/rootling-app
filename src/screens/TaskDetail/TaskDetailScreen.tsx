@@ -58,20 +58,9 @@ export default function TaskDetailScreen({ route, navigation }: any) {
 
   const safeTask = task || initialTask;
 
-  mport * as ImagePicker from 'expo-image-picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { translations } from '../../i18n/translations';
-import TranslateButton from '../../components/TranslateButton';
-import { anonName, anonAvatar } from '../../utils/anonName';
-import { useTranslation, getLanguage } from '../../i18n';
-import React, { useState, useMemo } from 'react';
-import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity,
   ActivityIndicator, Alert, TextInput, Modal,
 } from 'react-native';
-import { useQuery } from '@tanstack/react-query';
-import client from '../../api/client';
-import { useAuthStore } from '../../store/authStore';
 
 export default function TaskDetailScreen({ route, navigation }: any) {
   const { task: initialTask } = route.params;
