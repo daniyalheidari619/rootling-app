@@ -42,6 +42,6 @@ const styles = StyleSheet.create({
   backBtn: { marginRight: 16 },
   backText: { color: '#1FB6AE', fontSize: 16, fontWeight: '600' },
   title: { fontSize: 18, fontWeight: '700', color: '#111827' },
-  webview: { flex: 1 
+  webview: { flex: 1 },
   loading: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' },
 });
