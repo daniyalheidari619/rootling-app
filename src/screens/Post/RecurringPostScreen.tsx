@@ -137,7 +137,7 @@ export default function RecurringPostScreen({ route, navigation }: Props) {
                 </Text>
               </TouchableOpacity>
             ))}
-          </
+          </View>
 
           <Text style={s.label}>{t('recurring.dayOfWeek')}</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 16 }}>
