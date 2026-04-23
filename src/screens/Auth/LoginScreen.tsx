@@ -28,6 +28,7 @@ export default function LoginScreen({ navigation }: any) {
     redirectUri: 'https://auth.expo.io/@dani1380/rootling-app',
   });
 
+  React.useEffect(() => { if (request) console.log('Redirect URI:', request.redirectUri); }, [request]);
   React.useEffect(() => {
     if (response?.type === 'success') {
       const accessToken = response.params?.access_token || response.authentication?.accessToken;
