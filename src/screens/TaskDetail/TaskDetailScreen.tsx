@@ -6,7 +6,6 @@ import { anonName, anonAvatar } from '../../utils/anonName';
 import { useTranslation, getLanguage } from '../../i18n';
 import React, { useState, useMemo } from 'react';
 import {
-import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity,
   ActivityIndicator, Alert, TextInput, Modal,
 } from 'react-native';
@@ -39,68 +38,6 @@ export default function TaskDetailScreen({ route, navigation }: any) {
     },
     initialData: initialTask?.title && initialTask?.client?.name ? initialTask : undefined,
   });
-
-  const catMap: Record<string, string> = {
-    'home-services': 'cat.homeServices', 'moving-delivery': 'cat.movingDelivery',
-    'handyman': 'cat.handyman', 'gardening-outdoor': 'cat.gardeningOutdoor',
-    'pet-care': 'cat.petCare', 'personal-assistance': 'cat.personalAssistance',
-    'elderly-special-care': 'cat.elderlySpecialCare', 'events-hospitality': 'cat.eventsHospitality',
-    'administrative-digital': 'cat.administrativeDigital', 'seasonal-special': 'cat.seasonalSpecial',
-    'other': 'cat.other',
-  };
-  const categoryLabel = useMemo(() => {
-    const key = catMap[task?.category || initialTask?.category || ''];
-    return key ? t(key).toUpperCase() : (task?.category || initialTask?.category || '').replace(/-/g, ' ').toUpperCase();
-  }, [task?.category, initialTask?.category, lang]);
-
-  if (taskLoading && !task) {
-    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><ActivityIndicator size="large" color="#1FB6AE" /></View>;
-  }
-
-  const safeTask = task || initialTask;
-
-  View, Text, StyleSheet, ScrollView, TouchableOpacity,
-  ActivityIndicator, Alert, TextInput, Modal,
-} from 'react-native';
-
-export default function TaskDetailScreen({ route, navigation }: any) {
-  const { task: initialTask } = route.params;
-  const { user } = useAuthStore();
-  const [applying, setApplying] = useState(false);
-  const { t, lang } = useTranslation();
-  const [showNegotiate, setShowNegotiate] = useState(false);
-  const [negotiatePrice, setNegotiatePrice] = useState('');
-  const [negotiateNote, setNegotiateNote] = useState('');
-  const [negotiating, setNegotiating] = useState(false);
-  const [uploadingReceipt, setUploadingReceipt] = useState(false);
-  const [showReview, setShowReview] = useState(false);
-  const [reviewRating, setReviewRating] = useState(5);
-  const [reviewComment, setReviewComment] = useState('');
-  const [submittingReview, setSubmittingReview] = useState(false);
-  const [showBoostModal, setShowBoostModal] = useState(false);
-  const [boostLoading, setBoostLoading] = useState(false);
-
-  const { data: task, isLoading: taskLoading } = useQuery({
-    queryKey: ['task', initialTask.id],
-    queryFn: async () => {
-      const { data } = await client.get(`/api/tasks/${initialTask.id}`);
-      return data.task || data.data || data;
-    },
-    initialData: initialTask?.title && initialTask?.client?.name ? initialTask : undefined,
-  });
-
-  const catMap: Record<string, string> = {
-    'home-services': 'cat.homeServices', 'moving-delivery': 'cat.movingDelivery',
-    'handyman': 'cat.handyman', 'gardening-outdoor': 'cat.gardeningOutdoor',
-    'pet-care': 'cat.petCare', 'personal-assistance': 'cat.personalAssistance',
-    'elderly-special-care': 'cat.elderlySpecialCare', 'events-hospitality': 'cat.eventsHospitality',
-    'administrative-digital': 'cat.administrativeDigital', 'seasonal-special': 'cat.seasonalSpecial',
-    'other': 'cat.other',
-  };
-  const categoryLabel = useMemo(() => {
-    const key = catMap[task?.category || initialTask?.category || ''];
-    return key ? t(key).toUpperCase() : (task?.category || initialTask?.category || '').replace(/-/g, ' ').toUpperCase();
-  }, [task?.category, initialTask?.category, lang]);
 
   if (taskLoading && !task) {
     return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><ActivityIndicator size="large" color="#1FB6AE" /></View>;
