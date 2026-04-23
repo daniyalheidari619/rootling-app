@@ -49,11 +49,11 @@ export default function TaskDetailScreen({ route, navigation }: any) {
   };
   const categoryLabel = useMemo(() => {
     const currentLang = getLanguage();
-    const key = catMap[safeTask?.category || ''];
+    const key = catMap[task?.category || initialTask?.category || ''];
     if (!key) return (safeTask?.category || '').replace(/-/g, ' ').toUpperCase();
     const { translations } = require('../../i18n/translations');
     return (translations[currentLang]?.[key] || translations['en']?.[key] || '').toUpperCase();
-  }, [safeTask?.category, lang]);
+  }, [task?.category, initialTask?.category, lang]);
 
   const handleApply = async () => {
     if (!user) return navigation.navigate('Login');
