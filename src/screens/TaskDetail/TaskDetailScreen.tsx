@@ -39,12 +39,6 @@ export default function TaskDetailScreen({ route, navigation }: any) {
     initialData: initialTask?.title && initialTask?.client?.name ? initialTask : undefined,
   });
 
-  if (taskLoading && !task) {
-    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><ActivityIndicator size="large" color="#1FB6AE" /></View>;
-  }
-
-  const safeTask = task || initialTask;
-
   const catMap: Record<string, string> = {
     'home-services': 'cat.homeServices', 'moving-delivery': 'cat.movingDelivery',
     'handyman': 'cat.handyman', 'gardening-outdoor': 'cat.gardeningOutdoor',
@@ -69,6 +63,14 @@ export default function TaskDetailScreen({ route, navigation }: any) {
         coverLetter: 'Interested in this task.',
         proposedBudget: task.budget,
       });
+
+  if (taskLoading && !task) {
+    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><ActivityIndicator size="large" color="#1FB6AE" /></View>;
+  }
+
+  const safeTask = task || initialTask;
+
+
       Alert.alert(t('task.interestSent'), t('task.interestSentDesc'));
     } catch (e: any) {
       Alert.alert(t('common.error'), e?.response?.data?.message || 'Failed to apply');
