@@ -217,7 +217,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
               <Text style={styles.clientAvatarText}>{anonAvatar(safeTask.client?.name)}</Text>
             </View>
             <View style={styles.clientInfo}>
-              <Text style={styles.clientName}>{anonName(safeTask.client?.name, 'client')}</Text>
+              <Text style={styles.clientName}>{anonName(safeTask.client?.name || safeTask.clientName || '', 'client')}</Text>
               {safeTask.client?.clientRating > 0 && <Text style={styles.clientRating}>★ {safeTask.client.clientRating.toFixed(1)}</Text>}
               {safeTask.client?.idVerificationStatus === 'VERIFIED' && <Text style={styles.verifiedBadge}>✓ ID Verified</Text>}
             </View>

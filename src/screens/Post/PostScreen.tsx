@@ -220,7 +220,13 @@ export default function PostScreen({ navigation }: any) {
       setTitle(''); setDescription(''); setBudget(''); setItemBudget(''); setTaskImages([]);
       setLocation(''); setDueDate(''); setPriority(false); setSubcategory('');
       if (taskId) {
-        navigation.navigate('TaskDetail', { task: { id: taskId } });
+        const { Linking } = require('react-native');
+        Linking.openURL(`https://root-ling.com/pay/${taskId}`);
+        Alert.alert(
+          lang === 'lt' ? 'Užduotis sukurta!' : 'Task Created!',
+          lang === 'lt' ? 'Atsidaro mokėjimo puslapis naršyklėje...' : 'Opening payment page in browser...',
+          [{ text: 'OK', onPress: () => navigation.navigate('MyTasks') }]
+        );
       } else {
         Alert.alert(t('post.success'), t('post.successDesc'));
       }
