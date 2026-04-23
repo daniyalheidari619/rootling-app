@@ -24,9 +24,8 @@ export default function LoginScreen({ navigation }: any) {
   const { t } = useTranslation();
 
   const [request, response, promptAsync] = Google.useAuthRequest({
-    iosClientId: '588978066613-08eafmkaf2uc0jqo39mgtnq0nqgbl9ce.apps.googleusercontent.com',
-    androidClientId: '588978066613-6njigohb22ke0tt3fmormd4n2vgr6d1k.apps.googleusercontent.com',
-    webClientId: '588978066613-6njigohb22ke0tt3fmormd4n2vgr6d1k.apps.googleusercontent.com',
+    clientId: '588978066613-6njigohb22ke0tt3fmormd4n2vgr6d1k.apps.googleusercontent.com',
+    redirectUri: 'https://auth.expo.io/@daniyalheidari619/rootling-app',
   });
 
   React.useEffect(() => {
