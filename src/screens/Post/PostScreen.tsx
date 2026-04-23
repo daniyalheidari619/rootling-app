@@ -220,14 +220,7 @@ export default function PostScreen({ navigation }: any) {
       setTitle(''); setDescription(''); setBudget(''); setItemBudget(''); setTaskImages([]);
       setLocation(''); setDueDate(''); setPriority(false); setSubcategory('');
       if (taskId) {
-        const { Linking } = require('react-native');
-        const token = require('../../store/authStore').useAuthStore.getState().token;
-        Linking.openURL(`https://root-ling.com/pay/${taskId}?mobileToken=${token}`);
-        Alert.alert(
-          lang === 'lt' ? 'Užduotis sukurta!' : 'Task Created!',
-          lang === 'lt' ? 'Atsidaro mokėjimo puslapis naršyklėje...' : 'Opening payment page in browser...',
-          [{ text: 'OK', onPress: () => navigation.navigate('MyTasks') }]
-        );
+        navigation.navigate('Payment', { taskId });
       } else {
         Alert.alert(t('post.success'), t('post.successDesc'));
       }
