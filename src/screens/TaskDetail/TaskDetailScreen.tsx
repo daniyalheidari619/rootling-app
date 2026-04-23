@@ -227,7 +227,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           <View style={styles.trustItem}><Text style={styles.trustIcon}>✓</Text><Text style={styles.trustText}>{t('task.securePlatform')}</Text></View>
           <View style={styles.trustItem}><Text style={styles.trustIcon}>⭐</Text><Text style={styles.trustText}>{t('task.ratedService')}</Text></View>
         </View>
-        {(safeTask.requiresCar || task.requiresTools) && (
+        {(safeTask?.requiresCar || safeTask?.requiresTools) && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>{t('task.requirements')}</Text>
             <View style={styles.requirementsBox}>
