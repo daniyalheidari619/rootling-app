@@ -6,6 +6,7 @@ import { anonName, anonAvatar } from '../../utils/anonName';
 import { useTranslation, getLanguage } from '../../i18n';
 import React, { useState, useMemo } from 'react';
 import {
+import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity,
   ActivityIndicator, Alert, TextInput, Modal,
 } from 'react-native';
