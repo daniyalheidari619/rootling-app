@@ -27,6 +27,8 @@ export default function TaskDetailScreen({ route, navigation }: any) {
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState('');
   const [submittingReview, setSubmittingReview] = useState(false);
+  const [showBoostModal, setShowBoostModal] = useState(false);
+  const [boostLoading, setBoostLoading] = useState(false);
 
   const { data: task, isLoading: taskLoading } = useQuery({
     queryKey: ['task', initialTask.id],
@@ -99,6 +101,24 @@ export default function TaskDetailScreen({ route, navigation }: any) {
     } finally {
       setNegotiating(false);
     }
+  };
+
+  const handleBoost = async (boostType: 'BOOST' | 'SPOTLIGHT') => {
+    setBoostLoading(true);
+    try {
+      const response = await client.post('/api/payments/boost-task', {
+        taskId: safeTask.id,
+        boostType,
+      });
+      const { clientSecret, boostType: bType } = response.data;
+      setShowBoostModal(false);
+      Alert.alert(
+        isLt ? 'Užduotis sustiprinta!' : 'Task Boosted!',
+        isLt ? `Jūsų užduotis dabar ${bType === 'SIGHT' ? 'Spotlight' : 'Boost'} režime.` : `Your task is now in ${bType === 'SPOTLIGHT' ? 'Spotlight' : 'Boost'} mode.`
+      );
+    } catch (e: any) {
+      Alert.alert(t('common.error'), e?.response?.data?.error || 'Failed to boost task');
+    } finally { setBoostLoading(false); }
   };
 
   const handleCompleteTask = () => {
@@ -229,6 +249,46 @@ export default function TaskDetailScreen({ route, navigation }: any) {
             </View>
           </View>
         )}
+        {/* Boost Modal */}
+        <Modal visible={showBoostModal} transparent aniationType="slide">
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalCard}>
+              <Text style={styles.modalTitle}>⚡ {isLt ? 'Sustiprinti užduotį' : 'Boost Task'}</Text>
+              <Text style={[styles.modalInput, { borderWidth: 0, color: '#6B7280', fontSize: 13, height: 'auto', marginBottom: 16 }]}>
+                {isLt ? 'Padidinkite savo užduoties matomumą ir gaukite daugiau kandidatų greičiau.' : 'Increase your task visibility and get more applicants faster.'}
+              </Text>
+
+              <TouchableOpacity
+                style={{ backgroundColor: '#F59E0B', borderRadius: 12, padding: 16, marginBottom: 10 }}
+                onPress={() => handleBoost('BOOST')}
+                disabled={boostLoading}
+              >
+                <Text style={{ color: '#fff', fontWeight: '700', fontSize: 15, textAlign: 'center' }}>
+                  ⚡ {isLt ? 'Boost — €1.50' : 'Boost — €1.50'}
+                </Text>
+                <Text style={{ color: '#FEF3C7', fontSize: 12, textAlign: 'center', marginTop: 4 }}>
+                  {isLt ? 'Rodoma aukščiau paieškos rezultatuose' : 'Shown higher in search results'}
+                </Text>
+                            <TouchableOpacity
+                style={{ backgroundColor: '#7C3AED', borderRadius: 12, padding: 16, marginBottom: 16 }}
+                onPress={() => handleBoost('SPOTLIGHT')}
+                disabled={boostLoading}
+              >
+                <Text style={{ color: '#fff', fontWeight: '700', fontSize: 15, textAlign: 'center' }}>
+                  ⭐ {isLt ? 'Spotlight — €3.00' : 'Spotlight — €3.00'}
+                </Text>
+                <Text style={{ color: '#EDE9FE', fontSize: 12, textAlign: 'center', marginTop: 4 }}>
+                  {isLt ? 'Išskirtinė vieta puslapio viršuje' : 'Featured placement at top of page'}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => setShowBoostModal(false)} style={styles.modalCancel}>
+                <Text style={styles.modalCancelText}>{isLt ? 'Atšaukti' : 'Cancel'}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
         <Modal visible={showReview} transparent animationType="slide">
           <View style={styles.modalOverlay}>
             <View style={styles.modalCard}>
@@ -296,6 +356,15 @@ export default function TaskDetailScreen({ route, navigation }: any) {
             {uploadingReceipt ? <ActivityIndicator color="#fff" /> : <Text style={styles.applyBtnText}>📷 {lang === 'lt' ? 'Įkelti kvitą' : 'Upload Receipt'}</Text>}
           </TouchableOpacity>
         </View>
+      )}
+      {safeTask.clientId === user?.id && safeTask.status === 'OPEN' && !safeTask.boostedUntil && (
+        <TouchableOpacity
+          style={{ position: 'absolute', bottom: 130, right: 16, backgroundColor: '#F59E0B', borderRadius: 30, paddingHorizontal: 16, paddingVertical: 10, flexDirection: 'row', alignItems: 'center', gap: 6, shadowColor: '#F59E0B', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 5 }}
+          onPress={() => setShowBoostModal(true)}
+        >
+          <Text style={{ fontSize: 16 }}>⚡</Text>
+          <Text style={{ color: '#fff', fontWeight: '700', fontSize: 13 }}>{isLt ? 'Boost' : 'Boost'}</Text>
+        </TouchableOpacity>
       )}
       {safeTask.clientId === user?.id && safeTask.status === 'OPEN' && (
         <TouchableOpacity
