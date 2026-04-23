@@ -490,17 +490,6 @@ export default function PostScreen({ navigation }: any) {
               )}
             </>
           )}
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>{lang === 'lt' ? 'Promo kodas (neprivaloma)' : 'Promo code (optional)'}</Text>
-            <TextInput
-              style={styles.input}
-              value={promoCode}
-              onChangeText={setPromoCode}
-              placeholder={lang === 'lt' ? 'Įveskite promo kodą' : 'Enter promo code'}
-              placeholderTextColor="#9CA3AF"
-              autoCapitalize="characters"
-            />
-          </View>
 
           <View style={styles.trustBox}>
             <Text style={styles.trustText}>{t('post.paymentNotice')}</Text>
