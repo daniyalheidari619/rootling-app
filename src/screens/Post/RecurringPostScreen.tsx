@@ -227,7 +227,11 @@ export default function RecurringPostScreen({ route, navigation }: Props) {
         </TouchableOpacity>
         <View style={{ height: 40 }} />
       </ScrollView>
-    </KeyboardAvoidingVie StyleSheet.create({
+    </KeyboardAvoidingView>
+  );
+}
+
+const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F7F9FB' },
   content: { padding: 16 },
   lockContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 32, backgroundColor: '#F7F9FB' },
