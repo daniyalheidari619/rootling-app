@@ -39,6 +39,19 @@ export default function TaskDetailScreen({ route, navigation }: any) {
     initialData: initialTask?.title && initialTask?.client?.name ? initialTask : undefined,
   });
 
+  const catMap: Record<string, string> = {
+    'home-services': 'cat.homeServices', 'moving-delivery': 'cat.movingDelivery',
+    'handyman': 'cat.handyman', 'gardening-outdoor': 'cat.gardeningOutdoor',
+    'pet-care': 'cat.petCare', 'personal-assistance': 'cat.personalAssistance',
+    'elderly-special-care': 'cat.elderlySpecialCare', 'events-hospitality': 'cat.eventsHospitality',
+    'administrative-digital': 'cat.administrativeDigital', 'seasonal-special': 'cat.seasonalSpecial',
+    'other': 'cat.other',
+  };
+  const categoryLabel = useMemo(() => {
+    const key = catMap[task?.category || initialTask?.category || ''];
+    return key ? t(key).toUpperCase() : (task?.category || initialTask?.category || '').replace(/-/g, ' ').toUpperCase();
+  }, [task?.category, initialTask?.category, lang]);
+
   if (taskLoading && !task) {
     return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><ActivityIndicator size="large" color="#1FB6AE" /></View>;
   }
