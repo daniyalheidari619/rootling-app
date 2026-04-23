@@ -207,15 +207,13 @@ export default function PostScreen({ navigation }: any) {
         subcategory,
         location,
         dueDate: dueDate || undefined,
-        priority: priority ? 'HIGH' : 'NORMAL',
+        priority: 'NORMAL',
         requiresCar,
         requiresTools,
         toolsList: requiresTools ? toolsList : '',
         slotsRequired,
         promoCode: promoCode || undefined,
-        isRecurring,
-        frequency: isRecurring ? frequency : undefined,
-        occurrences: isRecurring ? occurrences : undefined,
+
       });
       const taskId = response?.data?.data?.id || response?.data?.id;
       setStep('category');
@@ -451,18 +449,7 @@ export default function PostScreen({ navigation }: any) {
             >
               <Text style={{ color: '#374151', fontWeight: '700' }}>{slotsRequired > 5 ? slotsRequired : '+'}</Text>
             </TouchableOpacity>
-          </View>
-
-
-
-          {profile?.isSubscriber && (profile?.subscriptionRole === 'task_maker' || profile?.subscriptionRole === 'both') && (
-            <>
-              <View style={styles.priorityRow}>
-                <View style={styles.priorityInfo}>
-                  <Text style={styles.label}>🔄 {lang === 'lt' ? 'Pasikartojanti užduotis' : 'Recurring Task'}</Text>
-                  <Text style={styles.hint}>{lang === 'lt' ? 'Užduotis kartosis automatiškai' : 'Task repeats automatically'}</Text>
-                </View>
-                <Switch value={isRecurring} onValueChange={setIsRecurring} trackColor={{ false: '#E5E7EB', true: '#1FB6AE' }} thumbColor="#fff" />
+          </View> thumbColor="#fff" />
               </View>
               {isRecurring && (
                 <View style={styles.card}>
