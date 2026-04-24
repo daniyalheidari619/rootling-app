@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert, ActivityIndicator } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
+import { Share } from 'react-native';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import client from '../../api/client';
 import { useAuthStore } from '../../store/authStore';
@@ -71,7 +71,7 @@ export default function AmbassadorScreen({ navigation }: any) {
           <>
             <View style={s.card}>
               <Text style={s.cardTitle}>{isLt ? 'Jūsų promo kodas' : 'Your Promo Code'}</Text>
-              <TouchableOpacity style={s.codeBox} onPress={() => { Clipboard.setString(data?.code || ''); Alert.alert(isLt ? 'Nukopijuota' : 'Copied'); }}>
+              <TouchableOpacity style={s.codeBox} onPress={() => { Share.share({ message: data?.code || user?.ambassadorCode || '' }); }}>
                 <Text style={s.code}>{data?.code || user?.ambassadorCode}</Text>
                 <Text style={s.copyHint}>{isLt ? 'Palieskite kopijuoti' : 'Tap to copy'}</Text>
               </TouchableOpacity>
