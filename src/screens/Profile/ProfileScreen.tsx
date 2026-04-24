@@ -457,7 +457,7 @@ export default function ProfileScreen({ navigation }: any) {
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('Ambassador')} style={s.navLink}>
                 <Text style={{ fontSize: 16 }}>🤝</Text>
-              t style={s.navLinkText}>{lang === 'lt' ? 'Ambasadorių programa' : 'Ambassador Program'}</Text>
+                <Text style={s.navLinkText}>{lang === 'lt' ? 'Ambasadorių programa' : 'Ambassador Program'}</Text>
                 <Text style={s.navArrow}>›</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('Help')} style={s.navLink}>
