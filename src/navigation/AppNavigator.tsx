@@ -86,7 +86,6 @@ function AuthStack() {
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Payment" component={PaymentScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Subscription" component={SubscriptionScreen} options={{ headerShown: false }} />
       <Stack.Screen name="RecurringPost" component={RecurringPostScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Applications" component={ApplicationsScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Tracking" component={TrackingScreen} options={{ headerShown: false }} />
@@ -102,6 +101,7 @@ function MainStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Tabs" component={TabNavigator} />
       <Stack.Screen name="MyTasks" component={MyTasksScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Subscription" component={SubscriptionScreen} options={{ headerShown: false }} />
       <Stack.Screen name="HowItWorks" component={HowItWorksScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Pricing" component={PricingScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Ambassador" component={AmbassadorScreen} options={{ headerShown: false }} />

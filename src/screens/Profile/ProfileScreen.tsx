@@ -465,7 +465,7 @@ export default function ProfileScreen({ navigation }: any) {
                 <Text style={s.navLinkText}>{lang === 'lt' ? 'Pagalba' : 'Help Center'}</Text>
                 <Text style={s.navArrow}>›</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate('Subscription' as never)} style={s.navLink}>
+              <TouchableOpacity onPress={() => navigation.navigate('Subscription')} style={s.navLink}>
                 <Text style={{ fontSize: 16 }}>⭐</Text>
                 <Text style={s.navLinkText}>Premium</Text>
                 <Text style={s.navArrow}>›</Text>

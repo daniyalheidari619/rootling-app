@@ -46,7 +46,7 @@ export default function PricingScreen({ navigation }: any) {
         <View style={s.card}>
           <Text style={s.cardTitle}>Premium</Text>
           <Text style={s.premDesc}>{isLt ? 'Premium prenumerata suteikia prieigą prie pasikartojančių užduočių ir kitų funkcijų.' : 'Premium subscription unlocks recurring tasks and other advanced features.'}</Text>
-          <TouchableOpacity style={s.premBtn} onPress={() => navigation.navigate('Subscription')}>
+          <TouchableOpacity style={s.premBtn} onPress={() => navigation.getParent()?.navigate('Subscription') || navigation.navigate('Subscription')}>
             <Text style={s.premBtnText}>{isLt ? 'Peržiūrėti planus' : 'View Plans'}</Text>
           </TouchableOpacity>
         </View>
