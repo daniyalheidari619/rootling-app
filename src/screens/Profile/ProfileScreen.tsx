@@ -439,7 +439,39 @@ export default function ProfileScreen({ navigation }: any) {
                 ))}
               </View>
             </View>
-            <TouchableOpacity style={[s.primaryBtn, { backgroundColor: '#EF4444' }]} onPress={handleLogout}>
+            <View style={{ gap: 8, marginBottom: 16 }}>
+              <TouchableOpacity onPress={() => navigation.navigate('MyTasks')} style={s.navLink}>
+                <Text style={{ fontSize: 16 }}>📋</Text>
+                <Text style={s.navLinkText}>{lang === 'lt' ? 'Mano užduotys' : 'My Tasks'}</Text>
+                <Text style={s.navArrow}>›</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('HowItWorks')} style={s.navLink}>
+                <Text style={{ fontSize: 16 }}>ℹ️</Text>
+                <Text style={s.navLinkText}>{lang === 'lt' ? 'Kaip tai veikia' : 'How It Works'}</Text>
+                <Text style={s.navArrow}>›</Text>
+              </Tcity>
+              <TouchableOpacity onPress={() => navigation.navigate('Pricing')} style={s.navLink}>
+                <Text style={{ fontSize: 16 }}>💶</Text>
+                <Text style={s.navLinkText}>{lang === 'lt' ? 'Kainos' : 'Pricing'}</Text>
+                <Text style={s.navArrow}>›</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('Ambassador')} style={s.navLink}>
+                <Text style={{ fontSize: 16 }}>🤝</Text>
+              t style={s.navLinkText}>{lang === 'lt' ? 'Ambasadorių programa' : 'Ambassador Program'}</Text>
+                <Text style={s.navArrow}>›</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('Help')} style={s.navLink}>
+                <Text style={{ fontSize: 16 }}>❓</Text>
+                <Text style={s.navLinkText}>{lang === 'lt' ? 'Pagalba' : 'Help Center'}</Text>
+                <Text style={s.navArrow}>›</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('Subscription')} style={s.navLink}>
+                <Text style={{ fontSize: 16 }}>⭐</Text>
+                <Text style={s.navLinkText}>Premium</Text>
+                <Text style={s.navArrow}>›</Text>
+              </TouchableOpacity>
+            </View>
+            <TouchableOe={[s.primaryBtn, { backgroundColor: '#EF4444' }]} onPress={handleLogout}>
               <Text style={s.primaryBtnTxt}>{t('auth.logout')}</Text>
             </TouchableOpacity>
           </View>
@@ -522,6 +554,9 @@ const s = StyleSheet.create({
   filterTxtActive: { color: 'white' },
   emptyTxt: { fontSize: 16, color: '#9CA3AF' },
   primaryBtn: { backgroundColor: '#1FB6AE', borderRadius: 12, padding: 16, alignItems: 'center', marginBottom: 12 },
+  navLink: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14, backgroundColor: '#F9FAFB', borderRadius: 12, borderWidth: 1, borderColor: '#F3F4F6' },
+  navLinkText: { flex: 1, fontSize: 14, fontWeight: '600', color: '#111827' },
+  navArrow: { fontSize: 18, color: '#9CA3AF' },
   primaryBtnTxt: { color: 'white', fontWeight: '700', fontSize: 16 },
   secondaryBtn: { backgroundColor: 'white', borderRadius: 12, padding: 16, alignItems: 'center', marginBottom: 12, borderWidth: 2, borderColor: '#1FB6AE' },
   secondaryBtnTxt: { color: '#1FB6AE', fontWeight: '700', fontSize: 16 },
