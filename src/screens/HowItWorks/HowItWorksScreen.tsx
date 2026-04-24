@@ -77,7 +77,7 @@ const s = StyleSheet.create({
   stepDesc: { fontSize: 13, color: '#6B7280', lineHeight: 18 },
   security: { backgroundColor: '#EFF6FF', borderRadius: 16, padding: 16, marginBottom: 16 },
   securityTitle: { fontSize: 15, fontWeight: '700', color: '#1E40AF', marginBottom: 8 },
-  securityDesc: { fontSize: #3B82F6', lineHeight: 18 },
+  securityDesc: { fontSize: 13, color: '#3B82F6', lineHeight: 18 },
   postBtn: { backgroundColor: '#1FB6AE', borderRadius: 14, padding: 18, alignItems: 'center', marginBottom: 32 },
   postBtnText: { color: '#fff', fontWeight: '800', fontSize: 16 },
 });
