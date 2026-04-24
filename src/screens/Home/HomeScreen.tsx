@@ -40,6 +40,9 @@ export default function HomeScreen({ navigation }: any) {
         <TouchableOpacity style={[styles.postBtn, { flex: 1 }]} onPress={() => navigation.navigate('Post')}>
           <Text style={styles.postBtnText}>{t('home.postTask')}</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={[styles.postBtn, { flex: 1, borderColor: '#6366F1' }]} onPress={() => navigation.navigate('MyTasks')}>
+          <Text style={styles.postBtnText}>📋 {isLt ? 'Mano užduotys' : 'My Tasks'}</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={[styles.postBtn, { flex: 1, borderColor: '#F59E0B' }]} onPress={() => navigation.navigate('Negotiations')}>
           <Text style={[styles.postBtnText, { color: '#F59E0B' }]}>💬 {lang === 'lt' ? 'Pasiūlymai' : 'My Offers'}</Text>
         </TouchableOpacity>

@@ -67,8 +67,6 @@ function TabNavigator() {
         }} />
       <Tab.Screen name="Post" component={PostScreen}
         options={{ tabBarIcon: ({ focused }) => <TabIcon icon="➕" focused={focused} />, tabBarLabel: t('nav.post') }} />
-      <Tab.Screen name="MyTasks" component={MyTasksScreen}
-        options={{ tabBarLabel: 'My Tasks', tabBarIcon: ({ color, size }: any) => <Text style={{ fontSize: size - 4 }}>📋</Text> }} />
       <Tab.Screen name="Messages" component={MessagesScreen}
         options={{ tabBarIcon: ({ focused }) => <TabIcon icon="💬" focused={focused} />, tabBarLabel: t('nav.messages') }} />
       <Tab.Screen name="Profile" component={ProfileScreen}
@@ -99,15 +97,11 @@ function MainStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Tabs" component={TabNavigator} />
+      <Stack.Screen name="MyTasks" component={MyTasksScreen} options={{ headerShown: false }} />
 
       <Stack.Screen name="TaskDetail" component={require('../screens/TaskDetail/TaskDetailScreen').default} />
       <Stack.Screen name="ChatScreen" component={require('../screens/Chat/ChatScreen').default} />
-      <Stack.Screen name="RecurringPost" component={RecurringPostScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Applications" component={ApplicationsScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Tracking" component={TrackingScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Browse" component={BrowseScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Notifications" component={NotificationsScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Negotiations" component={NegotiationsScreen} options={{ headerShown: false }} />
+
     </Stack.Navigator>
   );
 }
