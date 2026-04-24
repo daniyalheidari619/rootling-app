@@ -55,7 +55,8 @@ export default function AmbassadorScreen({ navigation }: any) {
             <TouchableOpacity style={s.btn} onPress={() => register.mutate()} disabled={!code || register.isPending}>
               <Text style={s.btnText}>{register.isPending ? '...' : (isLt ? 'Registruotis' : 'Register')}</Text>
             </TouchableOpacity>
-          <    ) : (
+          </View>
+        ) : (
           <>
             <View style={s.card}>
               <Text style={s.cardTitle}>{isLt ? 'Jūsų promo kodas' : 'Your Promo Code'}</Text>
