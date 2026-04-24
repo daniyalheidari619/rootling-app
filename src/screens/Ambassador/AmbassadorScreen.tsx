@@ -11,6 +11,8 @@ export default function AmbassadorScreen({ navigation }: any) {
   const { lang } = useTranslation();
   const isLt = lang === 'lt';
   const [code, setCode] = useState('');
+  const [editing, setEditing] = useState(false);
+  const [newCode, setNewCode] = useState('');
   const [password, setPassword] = useState('');
 
   const { data, isLoading, refetch } = useQuery({
@@ -19,6 +21,15 @@ export default function AmbassadorScreen({ navigation }: any) {
       const { data } = await client.get('/api/ambassador/dashboard');
       return data.data || data;
     },
+  });
+
+  const updateCode = useMutation({
+    mutationFn: async () => {
+      const { data } = await client.patch('/api/ambassador/promo-code', { code: newCode.toUpperCase() });
+      return data;
+    },
+    onSuccess: () => { refetch(); setEditing(false); Alert.alert(isLt ? 'Atnaujinta' : 'Updated', isLt ? 'Kodas atnaujintas!' : 'Code updated successfully!'); },
+    onError: (e: any) => Alert.alert('Error', e?.response?.data?.message || 'Failed to update'),
   });
 
   const register = useMutation({
