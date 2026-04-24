@@ -7,6 +7,7 @@ import { useAuthStore } from '../../store/authStore';
 export default function HomeScreen({ navigation }: any) {
   const { user } = useAuthStore();
   const { t, lang } = useTranslation();
+  const isLt = lang === 'lt';
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
