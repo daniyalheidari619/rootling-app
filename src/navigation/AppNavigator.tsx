@@ -1,3 +1,5 @@
+import AmbassadorScreen from '../screens/Ambassador/AmbassadorScreen';
+import HelpScreen from '../screens/Help/HelpScreen';
 import HowItWorksScreen from '../screens/HowItWorks/HowItWorksScreen';
 import PricingScreen from '../screens/Pricing/PricingScreen';
 import MyTasksScreen from '../screens/MyTasks/MyTasksScreen';
@@ -102,6 +104,8 @@ function MainStack() {
       <Stack.Screen name="MyTasks" component={MyTasksScreen} options={{ headerShown: false }} />
       <Stack.Screen name="HowItWorks" component={HowItWorksScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Pricing" component={PricingScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Ambassador" component={AmbassadorScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Help" component={HelpScreen} options={{ headerShown: false }} />
 
       <Stack.Screen name="TaskDetail" component={require('../screens/TaskDetail/TaskDetailScreen').default} />
       <Stack.Screen name="ChatScreen" component={require('../screens/Chat/ChatScreen').default} />
