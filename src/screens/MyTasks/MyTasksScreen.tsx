@@ -63,7 +63,7 @@ export default function MyTasksScreen({ navigation }: any) {
       <Text style={s.category}>{item.category?.replace(/-/g, ' ').toUpperCase()}</Text>
       <View style={s.cardFooter}>
         <Text style={s.budget}>€{item.budget?.toFixed(2)}</Text>
-        <Text style={s.role}>{item.clientId === user?.id ? (isLt ? '👤 Mano užduotis' : '👤 My task') : (isLt ? '🔧 Prisk '🔧 Assigned to me')}</Text>
+        <Text style={s.role}>{item.clientId === user?.id ? (isLt ? 'Mano užduotis' : 'My task') : (isLt ? 'Priskirta man' : 'Assigned to me')}</Text>
       </View>
       {item.status === 'PENDING_PAYMENT' && (
         <TouchableOpacity style={s.payBtn} onPress={() => navigation.navigate('Payment', { taskId: item.id })}>
