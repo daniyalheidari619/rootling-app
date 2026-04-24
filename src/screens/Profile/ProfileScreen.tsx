@@ -449,7 +449,7 @@ export default function ProfileScreen({ navigation }: any) {
                 <Text style={{ fontSize: 16 }}>ℹ️</Text>
                 <Text style={s.navLinkText}>{lang === 'lt' ? 'Kaip tai veikia' : 'How It Works'}</Text>
                 <Text style={s.navArrow}>›</Text>
-              </Tcity>
+              </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('Pricing')} style={s.navLink}>
                 <Text style={{ fontSize: 16 }}>💶</Text>
                 <Text style={s.navLinkText}>{lang === 'lt' ? 'Kainos' : 'Pricing'}</Text>
