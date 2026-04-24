@@ -1,3 +1,5 @@
+import HowItWorksScreen from '../screens/HowItWorks/HowItWorksScreen';
+import PricingScreen from '../screens/Pricing/PricingScreen';
 import MyTasksScreen from '../screens/MyTasks/MyTasksScreen';
 import PaymentScreen from '../screens/Payment/PaymentScreen';
 import RecurringPostScreen from '../screens/Post/RecurringPostScreen';
@@ -98,6 +100,8 @@ function MainStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Tabs" component={TabNavigator} />
       <Stack.Screen name="MyTasks" component={MyTasksScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="HowItWorks" component={HowItWorksScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Pricing" component={PricingScreen} options={{ headerShown: false }} />
 
       <Stack.Screen name="TaskDetail" component={require('../screens/TaskDetail/TaskDetailScreen').default} />
       <Stack.Screen name="ChatScreen" component={require('../screens/Chat/ChatScreen').default} />
