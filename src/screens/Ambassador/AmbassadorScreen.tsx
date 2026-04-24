@@ -17,7 +17,7 @@ export default function AmbassadorScreen({ navigation }: any) {
     queryKey: ['ambassador'],
     queryFn: async () => {
       const { data } = await client.get('/api/ambassador/dashboard');
-      return data;
+      return data.data || data;
     },
   });
 
@@ -71,8 +71,8 @@ export default function AmbassadorScreen({ navigation }: any) {
           <>
             <View style={s.card}>
               <Text style={s.cardTitle}>{isLt ? 'Jūsų promo kodas' : 'Your Promo Code'}</Text>
-              <TouchableOpacity style={s.codeBox} onPress={() => { Alert.alert(isLt ? 'Jūsų kodas' : 'Your Code', data?.code || user?.ambassadorCode || '', [{text: 'OK'}]); }}>
-                <Text style={s.code}>{data?.code || user?.ambassadorCode}</Text>
+              <TouchableOpacity style={s.codeBox} onPress={() => { Alert.alert(isLt ? 'Jūsų kodas' : 'Your Code', data?.ambassadorCode || user?.ambassadorCode || '', [{text: 'OK'}]); }}>
+                <Text style={s.code}>{data?.ambassadorCode || user?.ambassadorCode}</Text>
                 <Text style={s.copyHint}>{isLt ? 'Palieskite kopijuoti' : 'Tap to copy'}</Text>
               </TouchableOpacity>
             </View>
@@ -80,11 +80,11 @@ export default function AmbassadorScreen({ navigation }: any) {
               <Text style={s.cardTitle}>{isLt ? 'Pajamos' : 'Earnings'}</Text>
               <View style={s.statRow}>
                 <View style={s.stat}>
-                  <Text style={s.statValue}>€{(data?.totalEarnings || 0).toFixed(2)}</Text>
+                  <Text style={s.statValue}>€{(data?.totalEarned || 0).toFixed(2)}</Text>
                   <Text style={s.statLabel}>{isLt ? 'Viso uždirbta' : 'Total earned'}</Text>
                 </View>
                 <View style={s.stat}>
-                  <Text style={s.statValue}>{data?.totalUses || 0}</Text>
+                  <Text style={s.statValue}>{data?.promoCodeUses || 0}</Text>
                   <Text style={s.statLabel}>{isLt ? 'Kodo naudojimai' : 'Code uses'}</Text>
                 </View>
               </View>
