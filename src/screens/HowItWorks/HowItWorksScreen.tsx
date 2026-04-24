@@ -31,7 +31,8 @@ export default function HowItWorksScreen({ navigation }: any) {
           <Text style={s.sectionTitle}>{isLt ? '👤 Klientams' : '👤 For Clients'}</Text>
           {steps.map((step, i) => (
             <View key={i} style={s.step}>
-              <View style={s.stepIcon}><Text style={{ fontSiziew style={s.stepContent}>
+              <View style={s.stepIcon}><Text style={{ fontSize: 24 }}>{step.icon}</Text></View>
+              <View style={s.stepContent}>
                 <Text style={s.stepTitle}>{isLt ? step.titleLt : step.titleEn}</Text>
                 <Text style={s.stepDesc}>{isLt ? step.descLt : step.descEn}</Text>
               </View>
