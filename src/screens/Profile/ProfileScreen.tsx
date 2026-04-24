@@ -471,7 +471,7 @@ export default function ProfileScreen({ navigation }: any) {
                 <Text style={s.navArrow}>›</Text>
               </TouchableOpacity>
             </View>
-            <TouchableOe={[s.primaryBtn, { backgroundColor: '#EF4444' }]} onPress={handleLogout}>
+            <TouchableOpacity style={[s.primaryBtn, { backgroundColor: '#EF4444' }]} onPress={handleLogout}>
               <Text style={s.primaryBtnTxt}>{t('auth.logout')}</Text>
             </TouchableOpacity>
           </View>
