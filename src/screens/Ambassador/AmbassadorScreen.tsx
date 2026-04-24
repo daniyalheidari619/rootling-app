@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert, ActivityIndicator, Clipboard } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert, ActivityIndicator } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import client from '../../api/client';
 import { useAuthStore } from '../../store/authStore';
@@ -10,6 +11,7 @@ export default function AmbassadorScreen({ navigation }: any) {
   const { lang } = useTranslation();
   const isLt = lang === 'lt';
   const [code, setCode] = useState('');
+  const [password, setPassword] = useState('');
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['ambassador'],
@@ -21,7 +23,7 @@ export default function AmbassadorScreen({ navigation }: any) {
 
   const register = useMutation({
     mutationFn: async () => {
-      const { data } = await client.post('/api/ambassador/register', { code: code.toUpperCase() });
+      const { data } = await client.post('/api/ambassador/upgrade', { email: user?.email, password, inviteCode: code.toUpperCase() });
       return data;
     },
     onSuccess: () => { refetch(); Alert.alert(isLt ? 'Sėkmė' : 'Success', isLt ? 'Tapote ambasadoriumi!' : 'You are now an ambassador!'); },
@@ -48,11 +50,20 @@ export default function AmbassadorScreen({ navigation }: any) {
               style={s.input}
               value={code}
               onChangeText={setCode}
-              placeholder={isLt ? 'pvz. JONAS2024' : 'e.g. JOHN2024'}
+              placeholder={isLt ? 'Įveskite pakvietimo kodą' : 'Enter invite code'}
               autoCapitalize="characters"
               placeholderTextColor="#9CA3AF"
             />
-            <TouchableOpacity style={s.btn} onPress={() => register.mutate()} disabled={!code || register.isPending}>
+            <Text style={s.label}>{isLt ? 'Slaptažodis' : 'Password'}</Text>
+            <TextInput
+              style={s.input}
+              value={password}
+             onChangeText={setPassword}
+              placeholder={isLt ? 'Jūsų slaptažodis' : 'Your password'}
+              secureTextEntry
+              placeholderTextColor="#9CA3AF"
+            />
+            <TouchableOpacity style={s.btn} onPress={() => register.mutate()} disabled={!code || !password || register.isPending}>
               <Text style={s.btnText}>{register.isPending ? '...' : (isLt ? 'Registruotis' : 'Register')}</Text>
             </TouchableOpacity>
           </View>
