@@ -471,6 +471,26 @@ export default function ProfileScreen({ navigation }: any) {
                 <Text style={s.navArrow}>›</Text>
               </TouchableOpacity>
             </View>
+                        <TouchableOpacity onPress={() => navigation.navigate('Safety')} style={s.navLink}>
+              <Text style={{ fontSize: 16 }}>🛡️</Text>
+              <Text style={s.navLinkText}>{lang === 'lt' ? 'Saugumas' : 'Safety'}</Text>
+              <Text style={s.navArrow}>›</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('NGO')} style={s.navLink}>
+              <Text style={{ fontSize: 16 }}>🤝</Text>
+              <Text style={s.navLinkText}>{lang === 'lt' ? 'NVO palaikymas' : 'NGO Support'}</Text>
+              <Text style={s.navArrow}>›</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() =on.navigate('Terms')} style={s.navLink}>
+              <Text style={{ fontSize: 16 }}>📄</Text>
+              <Text style={s.navLinkText}>{lang === 'lt' ? 'Naudojimo sąlygos' : 'Terms of Service'}</Text>
+              <Text style={s.navArrow}>›</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Privacy')} style={s.navLink}>
+              <Text style={{ fontSize: 16 }}>🔐</Text>
+              <Text style={s.navLinkText}>{lang === 'lt' ? 'Privatumo politika' : 'Privacy Policy'}</Text>
+              <Text style={s.navArrow}>›</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={[s.primaryBtn, { backgroundColor: '#EF4444' }]} onPress={handleLogout}>
               <Text style={s.primaryBtnTxt}>{t('auth.logout')}</Text>
             </TouchableOpacity>

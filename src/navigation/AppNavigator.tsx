@@ -1,3 +1,7 @@
+import SafetyScreen from '../screens/Safety/SafetyScreen';
+import NgoScreen from '../screens/NGO/NgoScreen';
+import TermsScreen from '../screens/Legal/TermsScreen';
+import PrivacyScreen from '../screens/Legal/PrivacyScreen';
 import AmbassadorScreen from '../screens/Ambassador/AmbassadorScreen';
 import HelpScreen from '../screens/Help/HelpScreen';
 import HowItWorksScreen from '../screens/HowItWorks/HowItWorksScreen';
@@ -106,6 +110,10 @@ function MainStack() {
       <Stack.Screen name="Pricing" component={PricingScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Ambassador" component={AmbassadorScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Help" component={HelpScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Safety" component={SafetyScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="NGO" component={NgoScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Terms" component={TermsScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Privacy" component={PrivacyScreen} options={{ headerShown: false }} />
 
       <Stack.Screen name="TaskDetail" component={require('../screens/TaskDetail/TaskDetailScreen').default} />
       <Stack.Screen name="ChatScreen" component={require('../screens/Chat/ChatScreen').default} />
