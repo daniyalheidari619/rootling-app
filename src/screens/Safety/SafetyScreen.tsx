@@ -17,7 +17,7 @@ export default function SafetyScreen({ navigation }: any) {
     { icon: '🔒', title: 'Verify Identity', desc: 'Always check if a tasker is verified. Verified profiles show a green checkmark.' },
     { icon: '💳', title: 'Pay Through the Platform', desc: 'Never pay with cash or directly. All payments must go through Root-ling to protect your money.' },
     { icon: '📍', title: 'Meet in Public Places', desc: 'When meeting a new tasker for the first time, choose public locations.' },
-    { icon: '🚫', title: 'Do Not Share Personal Info', destails, passwords, or other personal information.' },
+    { icon: '🚫', title: 'Do Not Share Personal Info', de
     { icon: '⭐', title: 'Leave Reviews', desc: 'After each task, leave a review. This helps other users make informed decisions.' },
     { icon: '🚨', title: 'Report Problems', desc: 'If you feel unsafe or experienced fraud, contact us immediately: support@root-ling.com' },
   ];
