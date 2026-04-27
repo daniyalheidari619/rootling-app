@@ -16,7 +16,7 @@ import { useAuthStore } from '../../store/authStore';
 export default function TaskDetailScreen({ route, navigation }: any) {
   const { task: initialTask } = route.params;
   const safeTask = task || initialTask || route.params?.task || {};
-  console.log('TaskDetail - clientId:', safeTask.clientId, 'userId:', user?.id, 'match:', safeTask.clientId === user?.id);
+  const isOwner = !!(user?.id && safeTask?.clientId && user.id === safeTask.clientId);
   const { user } = useAuthStore();
   const [applying, setApplying] = useState(false);
   const { t, lang } = useTranslation();
@@ -348,7 +348,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
                 multiline
               />
               <TouchableOpacity style={styles.modalBtn} onPress={handleNegotiate}
-          disabled={safeTask.clientId === user?.id || negotiating}>
+          disabled={isOwner || negotiating}>
                 {negotiating ? <ActivityIndicator color="#fff" /> : <Text style={styles.modalBtnText}>{t('task.sendOffer')}</Text>}
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setShowNegotiate(false)} style={styles.modalCancel}>
@@ -366,7 +366,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           </TouchableOpacity>
         </View>
       )}
-      {safeTask.clientId === user?.id && safeTask.status === 'PENDING_PAYMENT' && (
+      {isOwner && safeTask.status === 'PENDING_PAYMENT' && (
         <TouchableOpacity
           style={{ position: 'absolute', bottom: 20, left: 16, right: 16, backgroundColor: '#1FB6AE', borderRadius: 14, padding: 16, alignItems: 'center' }}
           onPress={() => navigation.navigate('Payment', { taskId: safeTask.id })}
@@ -374,7 +374,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           <Text style={{ color: '#fff', fontWeight: '800', fontSize: 15 }}>{isLt ? 'Moketi uz uzduoti' : 'Complete Payment'}</Text>
         </TouchableOpacity>
       )}
-      {safeTask.clientId === user?.id && safeTask.status === 'AWAITING_ADDITIONAL_PAYMENT' && (
+      {isOwner && safeTask.status === 'AWAITING_ADDITIONAL_PAYMENT' && (
         <TouchableOpacity
           style={{ position: 'absolute', bottom: 20, left: 16, right: 16, backgroundColor: '#F59E0B', borderRadius: 14, padding: 16, alignItems: 'center' }}
           onPress={() => navigation.navigate('SupplementPayment', { taskId: safeTask.id })}
@@ -382,7 +382,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           <Text style={{ color: '#fff', fontWeight: '800', fontSize: 15 }}>Pay Price Difference</Text>
         </TouchableOpacity>
       )}
-      {safeTask.clientId === user?.id && safeTask.status === 'OPEN' && !safeTask.boostedUntil && (
+      {isOwner && safeTask.status === 'OPEN' && !safeTask.boostedUntil && (
         <TouchableOpacity
           style={{ position: 'absolute', bottom: 130, right: 16, backgroundColor: '#F59E0B', borderRadius: 30, paddingHorizontal: 16, paddingVertical: 10, flexDirection: 'row', alignItems: 'center', gap: 6, shadowColor: '#F59E0B', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 5 }}
           onPress={() => setShowBoostModal(true)}
@@ -391,7 +391,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           <Text style={{ color: '#fff', fontWeight: '700', fontSize: 13 }}>{isLt ? 'Boost' : 'Boost'}</Text>
         </TouchableOpacity>
       )}
-      {safeTask.clientId === user?.id && safeTask.status === 'OPEN' && (
+      {isOwner && safeTask.status === 'OPEN' && (
         <TouchableOpacity
           style={{ position: 'absolute', bottom: 100, right: 16, backgroundColor: '#6366F1', borderRadius: 30, paddingHorizontal: 16, paddingVertical: 10, flexDirection: 'row', alignItems: 'center', gap: 6, shadowColor: '#6366F1', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 5 }}
           onPress={() => navigation.navigate('Applications', { task: safeTask })}
@@ -413,7 +413,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           <Text style={styles.applyBtnText}>✓ {lang === 'lt' ? 'Patvirtinti atlikimą' : 'Mark as Complete'}</Text>
         </TouchableOpacity>
       )}
-      {safeTask.clientId !== user?.id && (
+      {!isOwner && (
         <View style={styles.actionBar}>
           <TouchableOpacity style={styles.messageBtn} onPress={handleMessage}>
             <Text style={styles.messageBtnText}>{t('task.message')}</Text>
