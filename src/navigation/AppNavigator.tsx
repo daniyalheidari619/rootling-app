@@ -1,3 +1,4 @@
+import SupplementPaymentScreen from '../screens/SupplementPayment/SupplementPaymentScreen';
 import SafetyScreen from '../screens/Safety/SafetyScreen';
 import NgoScreen from '../screens/NGO/NgoScreen';
 import TermsScreen from '../screens/Legal/TermsScreen';
@@ -114,6 +115,7 @@ function MainStack() {
       <Stack.Screen name="NGO" component={NgoScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Terms" component={TermsScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Privacy" component={PrivacyScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="SupplementPayment" component={SupplementPaymentScreen} options={{ headerShown: false }} />
 
       <Stack.Screen name="TaskDetail" component={require('../screens/TaskDetail/TaskDetailScreen').default} />
       <Stack.Screen name="ChatScreen" component={require('../screens/Chat/ChatScreen').default} />

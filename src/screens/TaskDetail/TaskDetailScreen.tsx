@@ -364,6 +364,14 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           </TouchableOpacity>
         </View>
       )}
+      {safeTask.clientId === user?.id && safeTask.status === 'AWAITING_ADDITIONAL_PAYMENT' && (
+        <TouchableOpacity
+          style={{ position: 'absolute', bottom: 20, left: 16, right: 16, backgroundColor: '#F59E0B', borderRadius: 14, padding: 16, alignItems: 'center' }}
+          onPress={() => navigation.navigate('SupplementPayment', { taskId: safeTask.id })}
+        >
+          <Text style={{ color: '#fff', fontWeight: '800', fontSize: 15 }}>Pay Price Difference</Text>
+        </TouchableOpacity>
+      )}
       {safeTask.clientId === user?.id && safeTask.status === 'OPEN' && !safeTask.boostedUntil && (
         <TouchableOpacity
           style={{ position: 'absolute', bottom: 130, right: 16, backgroundColor: '#F59E0B', borderRadius: 30, paddingHorizontal: 16, paddingVertical: 10, flexDirection: 'row', alignItems: 'center', gap: 6, shadowColor: '#F59E0B', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 5 }}
