@@ -17,6 +17,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
   const { task: initialTask } = route.params;
   const safeTask = task || initialTask || route.params?.task || {};
   const isOwner = !!(user?.id && safeTask?.clientId && user.id === safeTask.clientId);
+  console.log('isOwner check:', { userId: user?.id, clientId: safeTask?.clientId, isOwner, status: safeTask?.status, taskLoaded: !!task });
   const { user } = useAuthStore();
   const [applying, setApplying] = useState(false);
   const { t, lang } = useTranslation();
