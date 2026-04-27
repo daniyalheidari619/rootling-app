@@ -16,9 +16,24 @@ import { useAuthStore } from '../../store/authStore';
 export default function TaskDetailScreen({ route, navigation }: any) {
   const { task: initialTask } = route.params;
   const safeTask = task || initialTask || route.params?.task || {};
-  const isOwner = !!(user?.id && safeTask?.clientId && user.id === safeTask.clientId);
-  console.log('isOwner check:', { userId: user?.id, clientId: safeTask?.clientId, isOwner, status: safeTask?.status, taskLoaded: !!task });
-  const { user } = useAuthStore();
+  const effectiveUserId = user?.id || currentUserId;
+  const isOwner = !!(effectiveUserId && safeTask?.clientId && effectiveUserId === safeTask.clientId);
+  console.log('isOwner check:', { userId: effectiveUserId, clientId: safeTask?.clientId, isOwner, status: safeTask?.status });
+  const { user, token } = useAuthStore();
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Get user ID from stored auth if user object not loaded yet
+    if (user?.id) { setCurrentUserId(user.id); return; }
+    import('@react-native-async-storage/async-storage').then(({ default: AS }) => {
+      AS.getItem('auth').then(stored => {
+        if (stored) {
+          try { const { user: u } = JSON.parse(stored); if (u?.id) setCurrentUserId(u.id); } catch {}
+        }
+      });
+    });
+  }, [user?.id]);
+
   const [applying, setApplying] = useState(false);
   const { t, lang } = useTranslation();
   const isLt = lang === 'lt';
