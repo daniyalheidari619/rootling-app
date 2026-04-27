@@ -1,4 +1,5 @@
-import Reacport { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useTranslation } from '../../i18n';
 
 export default function NgoScreen({ navigation }: any) {
