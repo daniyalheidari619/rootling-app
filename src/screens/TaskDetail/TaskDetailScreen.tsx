@@ -26,13 +26,11 @@ export default function TaskDetailScreen({ route, navigation }: any) {
   useEffect(() => {
     // Get user ID from stored auth if user object not loaded yet
     if (user?.id) { setCurrentUserId(user.id); return; }
-    import('@react-native-async-storage/async-storage').then(({ default: AS }) => {
-      AS.getItem('auth').then(stored => {
-        if (stored) {
-          try { const { user: u } = JSON.parse(stored); if (u?.id) setCurrentUserId(u.id); } catch {}
-        }
-      });
-    });
+    AsyncStorage.getItem('auth').then(stored => {
+      if (stored) {
+        try { const { user: u } = JSON.parse(stored); if (u?.id) setCurrentUserId(u.id); } catch(e) { console.log('AsyncStorage parse error', e); }
+      } else { console.log('No auth in AsyncStorage'); }
+    }).catch(e => console.log('AsyncStorage error', e));
   }, [user?.id]);
 
   const [applying, setApplying] = useState(false);
