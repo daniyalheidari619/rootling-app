@@ -413,7 +413,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           <Text style={styles.applyBtnText}>✓ {lang === 'lt' ? 'Patvirtinti atlikimą' : 'Mark as Complete'}</Text>
         </TouchableOpacity>
       )}
-      {!isOwner && (
+      {!isOwner && !taskLoading && safeTask?.clientId && (
         <View style={styles.actionBar}>
           <TouchableOpacity style={styles.messageBtn} onPress={handleMessage}>
             <Text style={styles.messageBtnText}>{t('task.message')}</Text>
