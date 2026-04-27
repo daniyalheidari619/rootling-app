@@ -346,7 +346,8 @@ export default function TaskDetailScreen({ route, navigation }: any) {
                 placeholderTextColor="#9CA3AF"
                 multiline
               />
-              <TouchableOpacity style={styles.modalBtn} onPress={handleNegotiate} disabled={negotiating}>
+              <TouchableOpacity style={styles.modalBtn} onPress={handleNegotiate}
+          disabled={safeTask.clientId === user?.id} disabled={negotiating}>
                 {negotiating ? <ActivityIndicator color="#fff" /> : <Text style={styles.modalBtnText}>{t('task.sendOffer')}</Text>}
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setShowNegotiate(false)} style={styles.modalCancel}>
@@ -363,6 +364,14 @@ export default function TaskDetailScreen({ route, navigation }: any) {
             {uploadingReceipt ? <ActivityIndicator color="#fff" /> : <Text style={styles.applyBtnText}>📷 {lang === 'lt' ? 'Įkelti kvitą' : 'Upload Receipt'}</Text>}
           </TouchableOpacity>
         </View>
+      )}
+      {safeTask.clientId === user?.id && safeTask.status === 'PENDING_PAYMENT' && (
+        <TouchableOpacity
+          style={{ position: 'absolute', bottom: 20, left: 16, right: 16, backgroundColor: '#1FB6AE', borderRadius: 14, padding: 16, alignItems: 'center' }}
+          onPress={() => navigation.navigate('Payment', { taskId: safeTask.id })}
+        >
+          <Text style={{ color: '#fff', fontWeight: '800', fontSize: 15 }}>{isLt ? 'Moketi uz uzduoti' : 'Complete Payment'}</Text>
+        </TouchableOpacity>
       )}
       {safeTask.clientId === user?.id && safeTask.status === 'AWAITING_ADDITIONAL_PAYMENT' && (
         <TouchableOpacity
@@ -407,7 +416,8 @@ export default function TaskDetailScreen({ route, navigation }: any) {
         <TouchableOpacity style={styles.messageBtn} onPress={handleMessage}>
           <Text style={styles.messageBtnText}>{t('task.message')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.applyBtn} onPress={handleApply} disabled={applying}>
+        <TouchableOpacity style={styles.applyBtn} onPress={handleApply}
+          disabled={safeTask.clientId === user?.id} disabled={applying}>
           {applying ? <ActivityIndicator color="#fff" /> : <Text style={styles.applyBtnText}>{t('task.interested')}</Text>}
         </TouchableOpacity>
       </View>
