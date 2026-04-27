@@ -17,8 +17,9 @@ export default function TaskDetailScreen({ route, navigation }: any) {
   const { task: initialTask } = route.params;
   const safeTask = task || initialTask || route.params?.task || {};
   const effectiveUserId = user?.id || currentUserId;
-  const isOwner = !!(effectiveUserId && safeTask?.clientId && effectiveUserId === safeTask.clientId);
-  console.log('isOwner check:', { userId: effectiveUserId, clientId: safeTask?.clientId, isOwner, status: safeTask?.status });
+  const taskOwnerId = safeTask?.clientId || safeTask?.client?.id;
+  const isOwner = !!(effectiveUserId && taskOwnerId && effectiveUserId === taskOwnerId);
+  console.log('isOwner:', { userId: effectiveUserId, taskOwnerId, isOwner, status: safeTask?.status });
   const { user, token } = useAuthStore();
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
