@@ -4,7 +4,7 @@ import { translations } from '../../i18n/translations';
 import TranslateButton from '../../components/TranslateButton';
 import { anonName, anonAvatar } from '../../utils/anonName';
 import { useTranslation, getLanguage } from '../../i18n';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity,
   ActivityIndicator, Alert, TextInput, Modal,
