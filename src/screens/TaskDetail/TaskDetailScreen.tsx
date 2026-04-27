@@ -26,11 +26,20 @@ export default function TaskDetailScreen({ route, navigation }: any) {
   useEffect(() => {
     // Get user ID from stored auth if user object not loaded yet
     if (user?.id) { setCurrentUserId(user.id); return; }
+    // Try AsyncStorage first
     AsyncStorage.getItem('auth').then(stored => {
       if (stored) {
-        try { const { user: u } = JSON.parse(stored); if (u?.id) setCurrentUserId(u.id); } catch(e) { console.log('AsyncStorage parse error', e); }
-      } else { console.log('No auth in AsyncStorage'); }
-    }).catch(e => console.log('AsyncStorage error', e));
+        try { const { user: u } = JSON.parse(stored); if (u?.id) { setCurrentUserId(u.id); return; } } catch(e) {}
+      }
+      // Fallback: fetch from API using token
+      const { token: t } = require('../../store/authStore').useAuthStore.getState();
+      if (t) {
+        require('../../api/client').default.get('/api/auth/me').then((res: any) => {
+          const uid = res?.data?.user?.id || res?.data?.id;
+          if (uid) setCurrentUserId(uid);
+        }).catch(() => {});
+      }
+    }).catch(() => {});
   }, [user?.id]);
 
   const [applying, setApplying] = useState(false);
