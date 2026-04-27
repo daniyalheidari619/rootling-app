@@ -347,7 +347,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
                 multiline
               />
               <TouchableOpacity style={styles.modalBtn} onPress={handleNegotiate}
-          disabled={safeTask.clientId === user?.id} disabled={negotiating}>
+          disabled={safeTask.clientId === user?.id || negotiating}>
                 {negotiating ? <ActivityIndicator color="#fff" /> : <Text style={styles.modalBtnText}>{t('task.sendOffer')}</Text>}
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setShowNegotiate(false)} style={styles.modalCancel}>
@@ -412,15 +412,16 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           <Text style={styles.applyBtnText}>✓ {lang === 'lt' ? 'Patvirtinti atlikimą' : 'Mark as Complete'}</Text>
         </TouchableOpacity>
       )}
-      <View style={styles.actionBar}>
-        <TouchableOpacity style={styles.messageBtn} onPress={handleMessage}>
-          <Text style={styles.messageBtnText}>{t('task.message')}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.applyBtn} onPress={handleApply}
-          disabled={safeTask.clientId === user?.id} disabled={applying}>
-          {applying ? <ActivityIndicator color="#fff" /> : <Text style={styles.applyBtnText}>{t('task.interested')}</Text>}
-        </TouchableOpacity>
-      </View>
+      {safeTask.clientId !== user?.id && (
+        <View style={styles.actionBar}>
+          <TouchableOpacity style={styles.messageBtn} onPress={handleMessage}>
+            <Text style={styles.messageBtnText}>{t('task.message')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.applyBtn} onPress={handleApply} disabled={applying}>
+            {applying ? <ActivityIndicator color="#fff" /> : <Text style={styles.applyBtnText}>{t('task.interested')}</Text>}
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }
