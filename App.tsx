@@ -1,3 +1,4 @@
+import { registerForPushNotifications, savePushToken, setupNotificationListeners } from './src/utils/notifications';
 import { loadLanguage } from './src/i18n';
 import React, { useEffect } from 'react';
 import { StripeProvider } from '@stripe/stripe-react-native';
@@ -14,6 +15,10 @@ function AppContent() {
 
   useEffect(() => { loadLanguage();
     loadFromStorage();
+    // Register for push notifications
+    registerForPushNotifications().then(token => {
+      if (token) savePushToken(token);
+    });
   }, []);
 
   return <AppNavigator />;
