@@ -16,31 +16,11 @@ import { useAuthStore } from '../../store/authStore';
 export default function TaskDetailScreen({ route, navigation }: any) {
   const { task: initialTask } = route.params;
   const safeTask = task || initialTask || route.params?.task || {};
-  const effectiveUserId = user?.id || currentUserId;
+  const effectiveUserId = user?.id || require('../../store/authStore').useAuthStore.getState().user?.id;
   const taskOwnerId = safeTask?.clientId || safeTask?.client?.id;
   const isOwner = !!(effectiveUserId && taskOwnerId && effectiveUserId === taskOwnerId);
   console.log('isOwner:', { userId: effectiveUserId, taskOwnerId, isOwner, status: safeTask?.status });
   const { user, token } = useAuthStore();
-  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
-
-  useEffect(() => {
-    // Get user ID from stored auth if user object not loaded yet
-    if (user?.id) { setCurrentUserId(user.id); return; }
-    // Try AsyncStorage first
-    AsyncStorage.getItem('auth').then(stored => {
-      if (stored) {
-        try { const { user: u } = JSON.parse(stored); if (u?.id) { setCurrentUserId(u.id); return; } } catch(e) {}
-      }
-      // Fallback: fetch from API using token
-      const { token: t } = require('../../store/authStore').useAuthStore.getState();
-      if (t) {
-        require('../../api/client').default.get('/api/auth/me').then((res: any) => {
-          const uid = res?.data?.user?.id || res?.data?.id;
-          if (uid) setCurrentUserId(uid);
-        }).catch(() => {});
-      }
-    }).catch(() => {});
-  }, [user?.id]);
 
   const [applying, setApplying] = useState(false);
   const { t, lang } = useTranslation();
