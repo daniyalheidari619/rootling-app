@@ -19,7 +19,6 @@ export default function TaskDetailScreen({ route, navigation }: any) {
   const effectiveUserId = user?.id || require('../../store/authStore').useAuthStore.getState().user?.id;
   const taskOwnerId = safeTask?.clientId || safeTask?.client?.id;
   const isOwner = !!(effectiveUserId && taskOwnerId && effectiveUserId === taskOwnerId);
-  console.log('isOwner:', { userId: effectiveUserId, taskOwnerId, isOwner, status: safeTask?.status });
   const { user, token } = useAuthStore();
 
   const [applying, setApplying] = useState(false);
@@ -375,7 +374,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           style={{ position: 'absolute', bottom: 20, left: 16, right: 16, backgroundColor: '#1FB6AE', borderRadius: 14, padding: 16, alignItems: 'center' }}
           onPress={() => navigation.navigate('Payment', { taskId: safeTask.id })}
         >
-          <Text style={{ color: '#fff', fontWeight: '800', fontSize: 15 }}>{isLt ? 'Moketi uz uzduoti' : 'Complete Payment'}</Text>
+          <Text style={{ color: '#fff', fontWeight: '800', fontSize: 15 }}>{isLt ? 'Sumokėti už užduotį' : 'Complete Payment'}</Text>
         </TouchableOpacity>
       )}
       {isOwner && safeTask.status === 'AWAITING_ADDITIONAL_PAYMENT' && (
