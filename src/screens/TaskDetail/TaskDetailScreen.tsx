@@ -372,7 +372,7 @@ export default function TaskDetailScreen({ route, navigation }: any) {
       {isOwner && safeTask.status === 'PENDING_PAYMENT' && (
         <TouchableOpacity
           style={{ position: 'absolute', bottom: 20, left: 16, right: 16, backgroundColor: '#1FB6AE', borderRadius: 14, padding: 16, alignItems: 'center' }}
-          onPress={() => navigation.navigate('Payment', { taskId: safeTask.id })}
+          onPress={() => { try { navigation.navigate('Payment' as never, { taskId: safeTask.id } as never); } catch(e) { navigation.getParent()?.navigate('Payment', { taskId: safeTask.id }); } }}
         >
           <Text style={{ color: '#fff', fontWeight: '800', fontSize: 15 }}>{isLt ? 'Sumokėti už užduotį' : 'Complete Payment'}</Text>
         </TouchableOpacity>
