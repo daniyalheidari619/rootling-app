@@ -1,3 +1,4 @@
+import { useLocationStore } from '../../store/locationStore';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
@@ -23,14 +24,21 @@ const CATS = [
 
 export default function BrowseScreen({ navigation }: any) {
   const { lang } = useTranslation();
+  const { latitude, longitude } = useLocationStore();
   const [search, setSearch] = useState('');
+  const [maxDistance, setMaxDistance] = useState(50);
   const [category, setCategory] = useState('');
 
   const { data: tasks = [], isLoading } = useQuery({
-    queryKey: ['browse-tasks', category],
+    queryKey: ['browse-tasks', category, latitude, longitude, maxDistance],
     queryFn: async () => {
-      const params: any = { status: 'OPEN' };
+      const params: any = { status: 'OPEN', limit: 50 };
       if (category) params.category = category;
+      if (latitude && longitude) {
+        params.lat = latitude;
+        params.lng = longitude;
+        params.radius = maxDistance;
+      }
       const { data } = await client.get('/api/tasks', { params });
       return data.data || [];
     },
@@ -46,6 +54,15 @@ export default function BrowseScreen({ navigation }: any) {
     <View style={s.container}>
       <ScreenHeader title={lang === 'lt' ? 'Naršyti užduotis' : 'Browse Tasks'} navigation={navigation} />
       <TextInput style={s.search} value={search} onChangeText={setSearch} placeholder={lang === 'lt' ? '🔍 Ieškoti...' : '🔍 Search tasks...'} placeholderTextColor="#9CA3AF" />
+      <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingBottom: 8, gap: 8 }}>
+        <Text style={{ fontSize: 12, color: '#6B7280' }}>{lang === 'lt' ? 'Atstumas:' : 'Distance:'}</Text>
+        {[10, 25, 50, 100].map(d => (
+          <TouchableOpacity key={d} onPress={() => setMaxDistance(d)}
+            style={{ paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8, backgroundColor: maxDistance === d ? '#1FB6AE' : '#F3F4F6' }}>
+            <Text style={{ fontSize: 12, fontWeight: '600', color: maxDistance === d ? '#fff' : '#374151' }}>{d}km</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
       <FlatList
         horizontal data={CATS} keyExtractor={i => i.value}
         showsHorizontalScrollIndicator={false}
