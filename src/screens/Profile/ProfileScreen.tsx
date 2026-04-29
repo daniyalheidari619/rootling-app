@@ -491,6 +491,11 @@ export default function ProfileScreen({ navigation }: any) {
               <Text style={s.navLinkText}>{lang === 'lt' ? 'Privatumo politika' : 'Privacy Policy'}</Text>
               <Text style={s.navArrow}>›</Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Chatbot')} style={s.navLink}>
+              <Text style={{ fontSize: 16 }}>🤖</Text>
+              <Text style={s.navLinkText}>{lang === 'lt' ? 'AI Asistentas' : 'AI Assistant'}</Text>
+              <Text style={s.navArrow}>›</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={[s.primaryBtn, { backgroundColor: '#EF4444' }]} onPress={handleLogout}>
               <Text style={s.primaryBtnTxt}>{t('auth.logout')}</Text>
             </TouchableOpacity>
