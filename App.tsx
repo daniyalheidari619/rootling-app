@@ -34,13 +34,7 @@ function AppContent() {
 }
 
 export default function App() {
-  const [showOnboarding, setShowOnboarding] = useState<boolean | null>(null);
-  useEffect(() => {
-    AsyncStorage.getItem('onboardingDone').then(val => {
-      setShowOnboarding(val !== 'true');
-    });
-  }, []);
-  if (showOnboarding === null) return null;
+  const [showOnboarding, setShowOnboarding] = useState(true);
   if (showOnboarding) return <OnboardingScreen onDone={() => setShowOnboarding(false)} />;
 
   return (

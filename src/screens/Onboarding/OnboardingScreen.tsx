@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, FlatList, Platform } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from '../../i18n';
 
 const { width } = Dimensions.get('window');
@@ -34,6 +33,7 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
           return next;
         } else {
           clearInterval(timer);
+          setTimeout(() => onDone(), 800);
           return prev;
         }
       });
@@ -52,7 +52,6 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
   };
 
   const handleSkip = async () => {
-    await AsyncStorage.setItem('onboardingDone', 'true');
     onDone();
   };
 
