@@ -17,7 +17,7 @@ export default function ChatbotScreen({ navigation }: any) {
       <View style={s.content}>
         <Text style={s.emoji}>🤖</Text>
         <Text style={s.heading}>{isLt ? 'Netrukus!' : 'Coming Soon!'}</Text>
-        <Text style={s.desc}>{isLt ? 'AI asistentas bus prieinamas netrukus. Tuo tarpu apsilankykite mūsų svetainėje arba susisiekite su mumis el. paštu.' : 'The AI assistant will be available soon. In the meantime, visit our website or contact us by ema/Text>
+        <Text style={s.desc}>{isLt ? 'AI asistentas bus prieinamas netrukus.' : 'The AI assistant will be available soon. Contact us by email in the meantime.'}</Text>
         <TouchableOpacity style={s.webBtn} onPress={() => Linking.openURL('https://root-ling.com')}>
           <Text style={s.webBtnText}>{isLt ? 'Atidaryti svetainę' : 'Open Website'}</Text>
         </TouchableOpacity>
