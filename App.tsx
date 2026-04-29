@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import OnboardingScreen from './src/screens/Onboarding/OnboardingScreen';
 import { registerForPushNotifications, savePushToken, setupNotificationListeners } from './src/utils/notifications';
 import { loadLanguage } from './src/i18n';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StripeProvider } from '@stripe/stripe-react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AppNavigator from './src/navigation/AppNavigator';
