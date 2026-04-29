@@ -1,3 +1,4 @@
+import ChatbotScreen from '../screens/Chatbot/ChatbotScreen';
 import SupplementPaymentScreen from '../screens/SupplementPayment/SupplementPaymentScreen';
 import SafetyScreen from '../screens/Safety/SafetyScreen';
 import NgoScreen from '../screens/NGO/NgoScreen';
@@ -114,6 +115,7 @@ function MainStack() {
       <Stack.Screen name="NGO" component={NgoScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Terms" component={TermsScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Privacy" component={PrivacyScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Chatbot" component={ChatbotScreen} options={{ headerShown: false }} />
       <Stack.Screen name="SupplementPayment" component={SupplementPaymentScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Payment" component={PaymentScreen} options={{ headerShown: false }} />
 

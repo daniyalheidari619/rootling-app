@@ -43,6 +43,7 @@ export async function registerForPushNotifications(): Promise<string | null> {
     });
   }
 
+  console.log('EXPO PUSH TOKEN:', token);
   return token;
 }
 
