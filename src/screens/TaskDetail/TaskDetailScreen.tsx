@@ -7,7 +7,7 @@ import { useTranslation, getLanguage } from '../../i18n';
 import React, { useState, useMemo, useEffect } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity,
-  ActivityIndicator, Alert, TextInput, Modal,
+  ActivityIndicator, Alert, TextInput, Modal, Image, ScrollView as HScrollView,
 } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import client from '../../api/client';
@@ -205,7 +205,17 @@ export default function TaskDetailScreen({ route, navigation }: any) {
           {safeTask.createdAt && <View style={styles.metaItem}><Text style={styles.metaText}>📅 {formatDate(safeTask.createdAt)}</Text></View>}
         </View>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('task.description')}</Text>
+          {safeTask.images && safeTask.images.length > 0 && (
+          <View style={{ marginBottom: 16 }}>
+            <Text style={styles.sectionTitle}>{lang === 'lt' ? 'Nuotraukos' : 'Photos'}</Text>
+            <HScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {safeTask.images.map((img: string, i: number) => (
+                <Image key={i} source={{ uri: img }} style={{ width: 200, height: 150, borderRadius: 12, marginRight: 8 }} resizeMode="cover" />
+              ))}
+            </HScrollView>
+          </View>
+        )}
+        <Text style={styles.sectionTitle}>{t('task.description')}</Text>
           <TranslateButton text={safeTask.description} textStyle={styles.description} />
         </View>
         {safeTask.location && (
