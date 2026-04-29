@@ -58,7 +58,8 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
         keyExtractor={(_, i) => i.toString()}
         renderItem={({ item }) => (
           <View style={[s.slide, { width }]}>
-            <View style={[s.emojiContainer, { backgroundColo      <Text style={s.emoji}>{item.emoji}</Text>
+            <View style={[s.emojiContainer, { backgroundColor: item.color + '20' }]}>
+              <Text style={s.emoji}>{item.emoji}</Text>
             </View>
             <Text style={[s.title, { color: item.color }]}>{item.title}</Text>
             <Text style={s.desc}>{item.desc}</Text>
