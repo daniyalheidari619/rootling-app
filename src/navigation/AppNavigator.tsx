@@ -1,3 +1,23 @@
+
+const linking = {
+  prefixes: ['com.rootling.app://', 'https://root-ling.com'],
+  config: {
+    screens: {
+      Tabs: {
+        screens: {
+          Home: 'home',
+          Messages: 'messages',
+          MyTasks: 'my-tasks',
+        }
+      },
+      TaskDetail: 'tasks/:taskId',
+      Notifications: 'notifications',
+      ChatScreen: 'chat/:taskId',
+      Payment: 'payment/:taskId',
+    }
+  }
+};
+
 import ChatbotScreen from '../screens/Chatbot/ChatbotScreen';
 import SupplementPaymentScreen from '../screens/SupplementPayment/SupplementPaymentScreen';
 import SafetyScreen from '../screens/Safety/SafetyScreen';
@@ -129,7 +149,7 @@ function MainStack() {
 export default function AppNavigator() {
   const { token } = useAuthStore();
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       {token ? <MainStack /> : <AuthStack />}
     </NavigationContainer>
   );

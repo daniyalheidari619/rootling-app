@@ -59,12 +59,14 @@ export function setupNotificationListeners(navigation: any) {
   // Handle notification tap when app is in background/closed
   const subscription = Notifications.addNotificationResponseReceivedListener(response => {
     const data = response.notification.request.content.data as any;
-    if (data?.taskId) {
+    if (data?.type === 'message' && data?.taskId) {
+      navigation.navigate('ChatScreen', { taskId: data.taskId });
+    } else if (data?.taskId) {
       navigation.navigate('TaskDetail', { task: { id: data.taskId } });
-    } else if (data?.type === 'message') {
-      navigation.navigate('Messages');
     } else if (data?.type === 'application') {
       navigation.navigate('MyTasks');
+    } else if (data?.type === 'message') {
+      navigation.navigate('Messages');
     }
   });
 
