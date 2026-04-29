@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, FlatList, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from '../../i18n';
@@ -24,6 +24,22 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
   const slides = lang === 'lt' ? SLIDES_LT : SLIDES_EN;
   const [current, setCurrent] = useState(0);
   const listRef = useRef<FlatList>(null);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent(prev => {
+        if (prev < slides.length - 1) {
+          const next = prev + 1;
+          listRef.current?.scrollToIndex({ index: next, animated: true });
+          return next;
+        } else {
+          clearInterval(timer);
+          return prev;
+        }
+      });
+    }, 2500);
+    return () => clearInterval(timer);
+  }, []);
 
   const handleNext = async () => {
     if (current < slides.length - 1) {
