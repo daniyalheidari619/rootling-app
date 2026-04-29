@@ -95,7 +95,6 @@ function AuthStack() {
       <Stack.Screen name="Applications" component={ApplicationsScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Tracking" component={TrackingScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Browse" component={BrowseScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Notifications" component={NotificationsScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Negotiations" component={NegotiationsScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
@@ -116,6 +115,7 @@ function MainStack() {
       <Stack.Screen name="Terms" component={TermsScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Privacy" component={PrivacyScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Chatbot" component={ChatbotScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Notifications" component={NotificationsScreen} options={{ headerShown: false }} />
       <Stack.Screen name="SupplementPayment" component={SupplementPaymentScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Payment" component={PaymentScreen} options={{ headerShown: false }} />
 
